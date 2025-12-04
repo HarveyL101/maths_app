@@ -5,8 +5,11 @@ const Login = () => {
   return(
     <div>
       <div>
-        <img src='/cool_dog.jpg' alt="Cool Dog" />
-        <h1>Login</h1>
+        <img 
+          src='/cool_dog.jpg' 
+          alt='Cool Dog' 
+        />
+        <h1 className='text-4xl'>Login</h1>
       </div>
 
       

@@ -1,0 +1,19 @@
+export default {
+  theme: {
+    extend: {
+      colors: { // Preset colours for uniform app layout
+        primary: '',
+        secondary: '',
+        accent: '', 
+      },
+      spacing: { // Work in progress
+        'WIP': '18rem',
+      },
+      fontSize: {
+        'title': '10rem',
+        'subtitle': '8rem',
+        'text': '3rem',
+      }
+    }
+  }
+}

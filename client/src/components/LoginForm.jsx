@@ -1,23 +1,40 @@
-const LoginForm = () => {
-  const submitLogin = (formData) => {
-    // Call to the backend will go in this block
-    console.log(formData);
-  }
+import { useNavigate } from "react-router-dom";
 
+const LoginForm = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (formData) => {
+
+    const data = {
+      email: formData.get("userEmail"),
+      password: formData.get("userPassword")
+    }
+
+    console.log(data)
+
+    try {
+      const res = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json();
+      console.log(json);
+
+      if (res.ok) {
+        navigate("/home");
+      } else {
+        console.log("Login failed:", json.message);
+      }
+      } catch (error) {
+        console.log("Error: ", error);
+      }
+  };
   return(
     <div >
-      <div className="bg-red-500 p-10">TEST</div>
-      <form action={submitLogin} className="flex flex-col items-center gap-6 w-full max-w-md">
+      <form action={handleSubmit} className="flex flex-col items-center gap-6 w-full max-w-md">
         <div className="flex flex-col w-full gap-4">
-          <label htmlFor="name" className="flex flex-col text-sm font-medium">
-            Name:
-            <input 
-              type="text" 
-              name="userName" 
-              id="name" 
-            />
-          </label>
-        
           <label htmlFor="email" className="flex flex-col text-sm font-medium">
             Email:
             <input 
@@ -26,7 +43,6 @@ const LoginForm = () => {
               id="email" 
             />
           </label>
-        
 
           <label htmlFor="password" className="flex flex-col text-sm font-medium">
             Password:
@@ -45,6 +61,6 @@ const LoginForm = () => {
       </form>
     </div>
   )
-}
+};
 
 export default LoginForm;

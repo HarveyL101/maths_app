@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@layer components {
+  .nav-item {
+    @apply whitespace-nowrap px-8 py-5 rounded-b-lg cursor-pointer font-medium;
+  }
+}
+
+@layer pages {
+  .card {
+    @apply border rounded-xl  text-center;
+  }
+  .card-header {
+    @apply font-bold text-3xl
+  }
+  .card-content {
+    @apply text-gray-700
+  }
+  .card-footer {
+    @apply text-gray-700
+  }
+}

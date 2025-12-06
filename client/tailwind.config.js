@@ -9,11 +9,6 @@ export default {
       spacing: { // Work in progress
         'WIP': '18rem',
       },
-      fontSize: {
-        'title': '10rem',
-        'subtitle': '8rem',
-        'text': '3rem',
-      }
     }
   }
 }

@@ -1,7 +1,10 @@
 ### Todo Next
 - [x] Install PSQL
-- [ ] Setup prisma
-- [ ] Handle login/ registry
+- [x] Handle login/ registry
+- [ ] Build Homepage
+  - [ ] Build Nav bar
+  - [ ] Build Overview on homepage
+
 
 # Introduction
 
@@ -27,3 +30,11 @@ This will store client (student/ ~teacher) data as well as the educational conte
 
  * [`PostgreSQL`](https://www.postgresql.org/docs/) - High performance and robust, as well as scalable
 ___
+
+# Installation and Operation
+
+1. Clone this repo on your local machine
+2. Run the command `npm i` to install the necessary functionality
+3. Run the pre-made command `npm installAll` to setup both the front and backend
+4. Run the command `npm run dev` to initialise both the front and backend servers
+5. Open your browser at `http://localhost:5173` and enjoy!

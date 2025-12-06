@@ -1,7 +1,37 @@
-const RegisterForm = () => {
+import { useNavigate } from "react-router-dom";
 
-  const submitRegister = (formData) => {
-    console.log(formData);
+const RegisterForm = () => {
+  const navigate = useNavigate();
+
+  const submitRegister = async (formData) => {
+    
+    const data = {
+      name: formData.get("userName"),
+      email: formData.get("userEmail"),
+      password: formData.get("userPassword")
+    };
+
+    console.log(data);
+    try {
+      const res = await fetch("http://localhost:8080/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json();
+      console.log(json);
+
+      if (res.ok) {
+        navigate("/home");
+      } else {
+        console.log("Registry failed: ", json.message);
+      }
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+    
+
   }
 
   return(

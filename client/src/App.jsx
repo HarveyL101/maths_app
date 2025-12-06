@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import './App.css';
 import axios from "axios";
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Home from './pages/Home';
 
 const App = () => {
   const [array, setArray] = useState([]);
@@ -31,6 +31,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/home' element={<Home />}/>
       </Routes>
     </>
   )

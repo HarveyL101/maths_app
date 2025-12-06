@@ -4,7 +4,12 @@
 - [ ] Build Homepage
   - [ ] Build Nav bar
   - [ ] Build Overview on homepage
-
+- [ ] Structure lessons table in schema
+  - [ ] Operations
+    - [ ] Addition
+    - [ ] Subtraction
+    - [ ] Multiplication
+    - [ ] Division
 
 # Introduction
 

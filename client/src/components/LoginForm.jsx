@@ -4,7 +4,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (formData) => {
-
     const data = {
       email: formData.get("userEmail"),
       password: formData.get("userPassword")

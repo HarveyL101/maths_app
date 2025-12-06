@@ -6,6 +6,8 @@ CREATE TABLE users (
   created_at CURRENT_TIMESTAMP(2)
 );
 
+-- Lessons Table here
+
 -- Test Variables
 INSERT INTO users (name, email, password) VALUES
   ('Ella', 'Ellajoyce50@gmail.com', 'EllasPassword'),

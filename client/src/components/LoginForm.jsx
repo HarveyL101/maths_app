@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -31,21 +31,26 @@ const LoginForm = () => {
       }
   };
   return(
-    <div >
-      <form action={handleSubmit} className="flex flex-col items-center gap-6 w-full max-w-md">
-        <div className="flex flex-col w-full gap-4">
-          <label htmlFor="email" className="flex flex-col text-sm font-medium">
+    <div className="form-container">
+      <form 
+      onSubmit={handleSubmit}
+      className="form-card"
+    >
+        <div>
+          <label htmlFor="email" className="form-label">
             Email:
             <input 
+              className="form-input"
               type="email" 
               name="userEmail" 
               id="email" 
             />
           </label>
 
-          <label htmlFor="password" className="flex flex-col text-sm font-medium">
+          <label htmlFor="password" className="form-label">
             Password:
             <input 
+              className="form-input"
               type="password" 
               name="userPassword" 
               id="password" 
@@ -53,10 +58,12 @@ const LoginForm = () => {
           </label>
         </div>
 
-        <div className="flex gap-6">
-          <button type="reset" className="px-6 py-3 bg-gray-200 rounded hover:bg-gray-300">Reset</button>
-          <button type="submit" className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700">Submit</button>
+        <div className="form-button-container">
+          <button type="reset" className="form-button-orange">Reset</button>
+          <button type="submit" className="form-button-blue">Submit</button>
         </div>
+        
+        <Link to='/register' className="form-link">Don't have an account? Register Here!</Link>
       </form>
     </div>
   )

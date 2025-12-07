@@ -1,14 +1,40 @@
 @import "tailwindcss";
 
 @layer components {
+  /* --- TITLE BAR --- */
   .nav-item {
     @apply whitespace-nowrap px-8 py-5 rounded-b-lg cursor-pointer font-medium;
+  }
+  /* --- LOGIN/ REGISTER FORM --- */
+  .form-container {
+    @apply min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 p-6;
+  }
+  .form-card {
+    @apply bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-2/5 border border-purple-100;
+  }
+  .form-label {
+    @apply flex flex-col text-lg font-bold;
+  }
+  .form-input {
+    @apply mt-1 p-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-300 outline-none transition;
+  }
+  .form-button-container {
+    @apply flex justify-center gap-6 w-full pt-2
+  }
+  .form-button-blue {
+    @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
+  }
+  .form-button-orange {
+    @apply px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg shadow hover:bg-orange-600 hover:shadow-lg hover:cursor-pointer transition;
+  }
+  .form-link {
+    @apply text-sm text-blue-600 hover:text-blue-800 transition;
   }
 }
 
 @layer pages {
   .card {
-    @apply border rounded-xl  text-center;
+    @apply border rounded-xl text-center;
   }
   .card-header {
     @apply font-bold text-3xl

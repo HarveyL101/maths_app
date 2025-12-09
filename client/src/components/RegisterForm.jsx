@@ -13,7 +13,7 @@ const RegisterForm = () => {
     };
     // --- Client-Side Validation ---
     if (!data.name || !data.email || !data.password) {
-      setError = ("Please fill out all fields before submitting");
+      setError("Please fill out all fields before submitting");
       return;
     }
     if (!/\S+@\S+\.\S+/.test(data.email)) {
@@ -34,14 +34,14 @@ const RegisterForm = () => {
 
       const json = await res.json();
       
-      // --- Server Side Error Handling ---
-      if (res.ok) {
-        navigate("/home");
-      } else {
-        // console.log("Registry failed: ", json.message);
-      }
+      // // --- Server Side Error Handling ---
+      // if (res.ok) {
+      //   navigate("/home");
+      // } else {
+      //   return <div>Error: {error.message}</div>
+      // }
     } catch (error) {
-      // console.error("BIG BUMHOLES: ", error);
+      return <div>Error: {error.message}</div>
     }
   }
 
@@ -78,6 +78,7 @@ const RegisterForm = () => {
               id="password" 
             />
           </label>
+          {error && <p className="text-red-500">{error}</p>}
         </div>
 
         <div className="form-button-container">

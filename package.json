@@ -5,5 +5,9 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "node": "^20.19.6",
+    "npm": "^11.6.4"
   }
 }

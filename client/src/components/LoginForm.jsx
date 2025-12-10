@@ -1,15 +1,32 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
-  const handleSubmit = async (formData) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    
     const data = {
       email: formData.get("userEmail"),
       password: formData.get("userPassword")
     }
 
-    console.log(data)
+    if (!data.email || !data.password) {
+      setError("Please fill out all fields before submitting.");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(data.email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (data.password.length < 8) {
+      setError("Please enter a password longer than 8 characters.");
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:8080/login", {
@@ -19,7 +36,6 @@ const LoginForm = () => {
       });
 
       const json = await res.json();
-      console.log(json);
 
       if (res.ok) {
         navigate("/home");
@@ -56,6 +72,8 @@ const LoginForm = () => {
               id="password" 
             />
           </label>
+
+          {error && <p className="text-red-500">{error}</p>}
         </div>
 
         <div className="form-button-container">

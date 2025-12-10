@@ -5,7 +5,11 @@ const RegisterForm = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
 
-  const handleRegister = async (formData) => {
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+
     const data = {
       name: formData.get("userName"),
       email: formData.get("userEmail"),
@@ -13,15 +17,15 @@ const RegisterForm = () => {
     };
     // --- Client-Side Validation ---
     if (!data.name || !data.email || !data.password) {
-      setError("Please fill out all fields before submitting");
+      setError("Please fill out all fields before submitting.");
       return;
     }
     if (!/\S+@\S+\.\S+/.test(data.email)) {
-      setError("Please enter a valid email address/");
+      setError("Please enter a valid email address.");
       return;
     }
     if (data.password.length < 8) {
-      setError("Please enter a password longer than 8 characters");
+      setError("Please enter a password longer than 8 characters.");
       return;
     }
 
@@ -34,21 +38,21 @@ const RegisterForm = () => {
 
       const json = await res.json();
       
-      // // --- Server Side Error Handling ---
-      // if (res.ok) {
-      //   navigate("/home");
-      // } else {
-      //   return <div>Error: {error.message}</div>
-      // }
-    } catch (error) {
-      return <div>Error: {error.message}</div>
+      // --- Server Side Error Handling ---
+      if (res.ok) {
+        navigate("/home");
+      } else {
+        setError(json.error || "Server error occurred, please check your connection and try again.");
+      }
+    } catch (err) {
+      setError(err.message);
     }
   }
 
   return(
     <div className="form-container">
       <form 
-        action={handleRegister} 
+        onSubmit={handleRegister} 
         className="form-card"
       >
         <div>
@@ -78,6 +82,7 @@ const RegisterForm = () => {
               id="password" 
             />
           </label>
+
           {error && <p className="text-red-500">{error}</p>}
         </div>
 

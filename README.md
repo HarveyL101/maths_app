@@ -1,15 +1,8 @@
 # Todo Next
 - [x] Install PSQL
 - [x] Handle login/ registry
-- [ ] Build Homepage
-  - [ ] Build Nav bar
-  - [ ] Build Overview on homepage
-- [ ] Structure lessons table in schema
-  - [ ] Operations
-    - [ ] Addition
-    - [ ] Subtraction
-    - [ ] Multiplication
-    - [ ] Division
+- [ ] Finish Schema (for now)
+- [ ] Add .env template to repo for easier use on foreign devices
   
 ## Lesson Structure
 

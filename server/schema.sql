@@ -80,6 +80,10 @@ CREATE TABLE tooltips (
 
 -- ****************************************************************** -- 
 
+-- ROLES --
+
+CREATE ROLE user;
+CREATE ROLE educator;
 
 -- Change password of user WIP
 -- UPDATE users SET password = new_password

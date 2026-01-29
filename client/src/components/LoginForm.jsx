@@ -4,6 +4,7 @@ import { useState } from "react";
 const LoginForm = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +47,12 @@ const LoginForm = () => {
         console.log("Error: ", error);
       }
   };
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(!isChecked);
+    console.log(`Checkbox is set to ${isChecked}!`);
+  };
+
   return(
     <div className="form-container">
       <form 
@@ -74,6 +81,20 @@ const LoginForm = () => {
           </label>
 
           {error && <p className="text-red-500">{error}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="isEducator" className="flex items-center justify-center text-gray-500 mx-2">
+            Are you a Teacher/ Educator?
+            <input
+              className="mx-2"
+              type="checkbox"
+              name="isEducator"
+              id="educatorCheckbox"
+              checked={!isChecked}
+              onChange={handleCheckboxChange}
+            />
+          </label>
         </div>
 
         <div className="form-button-container">

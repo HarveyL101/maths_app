@@ -3,29 +3,28 @@ import { useState } from "react";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setErrorMessage(null);
+
     const formData = new FormData(e.target);
     
     const data = {
       email: formData.get("userEmail"),
-      password: formData.get("userPassword")
+      password: formData.get("userPassword"),
+      isEducator: isChecked
     }
 
     if (!data.email || !data.password) {
-      setError("Please fill out all fields before submitting.");
+      setErrorMessage("Please fill out all fields before submitting.");
       return;
     }
     if (!/\S+@\S+\.\S+/.test(data.email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    if (data.password.length < 8) {
-      setError("Please enter a password longer than 8 characters.");
+      setErrorMessage("Please enter a valid email address.");
       return;
     }
 
@@ -41,10 +40,10 @@ const LoginForm = () => {
       if (res.ok) {
         navigate("/home");
       } else {
-        console.log("Login failed:", json.message);
+        setErrorMessage(json.message || "Login failed. Please try again.");
       }
       } catch (error) {
-        console.log("Error: ", error);
+        console.log("error: ", error);
       }
   };
 
@@ -60,13 +59,16 @@ const LoginForm = () => {
       className="form-card"
     >
         <div>
+          <h1 className="form-title">Login</h1>
+
           <label htmlFor="email" className="form-label">
             Email:
             <input 
               className="form-input"
               type="email" 
               name="userEmail" 
-              id="email" 
+              id="email"
+              placeholder="E.g johnsmith@gmail.com"
             />
           </label>
 
@@ -76,15 +78,16 @@ const LoginForm = () => {
               className="form-input"
               type="password" 
               name="userPassword" 
-              id="password" 
+              id="password"
+              placeholder="Don't share your password with others!"
             />
           </label>
 
-          {error && <p className="text-red-500">{error}</p>}
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
 
         <div>
-          <label htmlFor="isEducator" className="flex items-center justify-center text-gray-500 mx-2">
+          <label htmlFor="isEducator" className="educator-checkbox">
             Are you a Teacher/ Educator?
             <input
               className="mx-2"
@@ -98,8 +101,8 @@ const LoginForm = () => {
         </div>
 
         <div className="form-button-container">
-          <button type="reset" className="form-button-orange">Reset</button>
-          <button type="submit" className="form-button-blue">Submit</button>
+          <button type="reset" className="form-button bg-orange-500">Reset</button>
+          <button type="submit" className="form-button bg-blue-600">Submit</button>
         </div>
         
         <Link to='/register' className="form-link">Don't have an account? Register Here!</Link>

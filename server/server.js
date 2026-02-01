@@ -25,29 +25,35 @@ app.get("/api", (req, res) => {
 
 // --- Register User ---
 app.post("/register", async (req, res) => {
+  console.log("BODY RECEIVED: ", req.body);
   // define variables
-  const { name, email, password } = req.body;
+  const { name, email, password, isEducator } = req.body;
 
   const hashed = await bcrypt.hash(password, 10);
 
   const result = await pool.query(
-    `INSERT INTO users (name, email, password)
-    VALUES ($1, $2, $3)
-    RETURNING id, name, email`,
-    [name, email, hashed]
+    `INSERT INTO users (id, name, email, password_hash, isEducator)
+    VALUES (gen_random_uuid(), $1, $2, $3, $4)
+    RETURNING id, name, email, isEducator`,
+    [name, email, hashed, isEducator]
   );
 
   res.json(result.rows[0]);
 });
 
+// app.post("/register:educator")
+
 // --- Login User ---
 app.post("/login", async (req, res) => {
   console.log("BODY RECEIVED: ", req.body);
 
-  const { email, password } = req.body;
+  const { email, password, isEducator } = req.body;
 
   const userQuery = await pool.query(
-    `SELECT * FROM users WHERE email = $1`,
+    `SELECT * 
+     FROM users 
+     WHERE email = $1 
+     AND isEducator = $2`,
     [email]
   );
 
@@ -55,7 +61,7 @@ app.post("/login", async (req, res) => {
 
   if (!user) return res.status(401).json({ body: req.body, message: "Invalid email" });
 
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.password_hash);
 
   if (!isMatch) return res.status(401).json({ message: "Incorrect password" });
 

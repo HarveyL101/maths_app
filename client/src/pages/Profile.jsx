@@ -9,6 +9,27 @@ const Profile = () => {
         <li>A non functional feature could include an accessibility tab for things like text/ button size, as well as a dark-mode capability</li>
       </ul>
       <p></p>
+
+      <button>poo</button>
+      <details className="">
+        <summary>Change Your Email</summary>
+        <p>WIP</p>
+      </details>
+
+      <details>
+        <summary>Change Your Password</summary>
+        <p>WIP</p>
+      </details>
+
+      <details>
+        <summary>Change Name</summary>
+        <p>WIP</p>
+      </details>
+
+      <details>
+        <summary>Change Profile Picture</summary>
+        <p>WIP</p>
+      </details>
     </div>
   );
 }

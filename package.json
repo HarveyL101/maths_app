@@ -1,7 +1,9 @@
 {
+  "private": true,
+  "workspaces": ["client", "server"],
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
-    "installAll": "concurrently \"npm i\" \"npm i --prefix client\" \"npm i --prefix server\""
+    "setup": "npm install",
+    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w client\""
   },
   "devDependencies": {
     "baseline-browser-mapping": "^2.9.19",

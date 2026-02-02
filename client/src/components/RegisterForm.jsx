@@ -6,7 +6,7 @@ import { useState } from "react";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
-  const [isEducator, setIsEducator] = useState(false);
+  const [role, setRole] = useState(null);
 
 
   const handleRegister = async (e) => {
@@ -96,19 +96,12 @@ const RegisterForm = () => {
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
 
-        <div>
-          <label htmlFor="isEducator" className="educator-checkbox">
-            Are you a Teacher/ Educator?
-            <input
-              className="mx-2"
-              type="checkbox"
-              name="isEducator"
-              id="educatorCheckbox"
-              checked={isEducator}
-              onChange={(e) => setIsEducator(e.target.checked)}
-            />
-          </label>
-        </div>
+        <label>{role ? `Selected role ${role}` : "Please select a role"}</label>
+        <select name="role" onChange={(e) => setRoleLabel(e.target.value)}>
+          <option value="">Choose Here</option>  
+          <option value="student">Student</option>
+          <option value="educator">Educator</option>
+        </select>
 
         <div className="form-button-container">
           <button type="reset" className="form-button bg-orange-500">Reset</button>

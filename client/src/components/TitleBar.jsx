@@ -23,7 +23,7 @@ const TitleBar = () => {
         <Link to='/profile'>
           <img 
             className='object-contain w-20 border border-gray-700 rounded-full p-1 shadow-lg hover:shadow-3xl transition-shadow duration-200 cursor-pointer'
-            src="/default_pfp.png" 
+            src="/pfps/default_pfp.png" 
             alt="Profile Picture" 
             title='Press me to see your profile!'
           />

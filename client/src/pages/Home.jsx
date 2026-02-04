@@ -1,5 +1,4 @@
 import { SideBar, TitleBar } from '../utils/index';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
   return (
@@ -12,49 +11,49 @@ const Home = () => {
         <div className='grid grid-cols-2 gap-4'>
           <div className='card'>
             <a href="">
-              <img src="/placeholder.png" alt="Placeholder Image" />
+              <img src="/placeholders/placeholder.png" alt="Placeholder Image" />
               <h3 className='card-header'>Continue...</h3>
             </a>
           </div>
 
           <div className='card'>
             <a href="">
-              <img src="/placeholder.png" alt="Placeholder Image" />
+              <img src="/placeholders/placeholder.png" alt="Placeholder Image" />
               <h3 className='card-header'>Card Header</h3>
             </a>
           </div>
 
           <div className='card'>
             <a href="">
-              <img src="/placeholder.png" alt="Placeholder Image" />
+              <img src="/placeholders/placeholder.png" alt="Placeholder Image" />
               <h3 className='card-header'>Card Header</h3>
             </a>
           </div>
 
           <div className='card'>
             <a href="">
-              <img src="/placeholder.png" alt="Placeholder Image" />
+              <img src="/placeholders/placeholder.png" alt="Placeholder Image" />
               <h3 className='card-header'>Card Header</h3>
             </a>
           </div>
 
           <div className='card'>
             <a href="">
-              <img src="/placeholder.png" alt="Placeholder Image" />
+              <img src="/placeholders/placeholder.png" alt="Placeholder Image" />
               <h3 className='card-header'>Card Header</h3>
             </a>
           </div>
 
           <div className='card'>
             <a href="">
-              <img src="/placeholder.png" alt="Placeholder Image" />
+              <img src="/placeholders/placeholder.png" alt="Placeholder Image" />
               <h3 className='card-header'>Card Header</h3>
             </a>
           </div>
 
           <div className='card'>
             <a href="">
-              <img src="/placeholder.png" alt="Placeholder Image" />
+              <img src="/placeholders/placeholder.png" alt="Placeholder Image" />
               <h3 className='card-header'>Card Header</h3>
             </a>
           </div>

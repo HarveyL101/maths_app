@@ -6,8 +6,11 @@
     @apply whitespace-nowrap px-8 py-5 rounded-b-lg cursor-pointer font-medium;
   }
   /* --- LOGIN/ REGISTER FORM --- */
+  .form-title {
+    @apply text-gray-700 text-3xl flex justify-center my-2;
+  }
   .form-container {
-    @apply min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 p-6;
+    @apply min-h-screen shrink-0 flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 p-6;
   }
   .form-card {
     @apply bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-2/5 border border-purple-100;
@@ -16,19 +19,19 @@
     @apply flex flex-col text-lg font-bold;
   }
   .form-input {
-    @apply mt-1 p-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-300 outline-none transition;
+    @apply mt-1 p-3 rounded-lg border border-gray-300 focus:border-purple-950 focus:ring-2 focus:ring-purple-300 outline-none transition;
   }
   .form-button-container {
     @apply flex justify-center gap-6 w-full pt-2
   }
-  .form-button-blue {
-    @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
-  }
-  .form-button-orange {
-    @apply px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg shadow hover:bg-orange-600 hover:shadow-lg hover:cursor-pointer transition;
+  .form-button {
+    @apply px-6 py-3 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
   }
   .form-link {
-    @apply flex items-center justify-center text-sm text-blue-600 hover:text-blue-800 transition;
+    @apply flex items-center justify-center whitespace-nowrap text-sm text-blue-600 hover:text-blue-800 transition my-1.5;
+  }
+  .educator-checkbox {
+    @apply flex items-center justify-center text-gray-500 mx-2;
   }
 }
 

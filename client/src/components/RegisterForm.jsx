@@ -18,7 +18,7 @@ const RegisterForm = () => {
       name: formData.get("userName"),
       email: formData.get("userEmail"),
       password: formData.get("userPassword"),
-      isEducator: isEducator
+      role: role
     };
     // --- Client-Side Validation ---
     if (!data.name || !data.email || !data.password) {
@@ -35,7 +35,7 @@ const RegisterForm = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/register", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -97,7 +97,7 @@ const RegisterForm = () => {
         </div>
 
         <label>{role ? `Selected role ${role}` : "Please select a role"}</label>
-        <select name="role" onChange={(e) => setRoleLabel(e.target.value)}>
+        <select name="role" onChange={(e) => setRole(e.target.value)}>
           <option value="">Choose Here</option>  
           <option value="student">Student</option>
           <option value="educator">Educator</option>

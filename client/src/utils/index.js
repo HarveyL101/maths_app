@@ -1,5 +1,6 @@
 // A barrel file for exporting all components/ pages from a uniform place.
 // --- Components directory ---
+export {default as ChangeEmail} from '../components/ChangeEmail.jsx';
 export {default as Header} from '../components/Header.jsx';
 export {default as LoginForm} from '../components/LoginForm.jsx';
 export {default as RegisterForm} from '../components/RegisterForm.jsx';

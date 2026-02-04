@@ -1,4 +1,7 @@
+import { ChangeEmail } from '../utils/index';
+
 const Profile = () => {
+
   return (
     <div>
       <h1>This is the current page for /profile</h1>
@@ -10,11 +13,7 @@ const Profile = () => {
       </ul>
       <p></p>
 
-      <button>poo</button>
-      <details className="">
-        <summary>Change Your Email</summary>
-        <p>WIP</p>
-      </details>
+      <ChangeEmail />
 
       <details>
         <summary>Change Your Password</summary>

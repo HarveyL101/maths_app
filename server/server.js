@@ -114,9 +114,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// --- Logout ---
-
-
 // --- Credentials ---
 app.get("/credentials", async (req, res) => {
   try {

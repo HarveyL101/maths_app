@@ -1,6 +1,9 @@
+import { TitleBar } from "../utils/index";
+
 const Profile = () => {
   return (
     <div>
+      <TitleBar/>
       <h1>This is the current page for /profile</h1>
 
       <ul>

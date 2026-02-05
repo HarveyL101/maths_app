@@ -25,35 +25,55 @@ app.get("/api", (req, res) => {
 
 // --- Register User ---
 app.post("/register", async (req, res) => {
-  console.log("BODY RECEIVED: ", req.body);
-  // define variables
-  const { name, email, password, isEducator } = req.body;
+  try {
+    console.log("BODY RECEIVED: ", req.body);
 
-  const hashed = await bcrypt.hash(password, 10);
+    const { name, email, password, role } = req.body;
 
-  const result = await pool.query(
-    `INSERT INTO users (id, name, email, password_hash, isEducator)
-    VALUES (gen_random_uuid(), $1, $2, $3, $4)
-    RETURNING id, name, email, isEducator`,
-    [name, email, hashed, isEducator]
-  );
+    const hashed = await bcrypt.hash(password, 10); // password is always encrypted during storage
 
-  res.json(result.rows[0]);
+    const result = await pool.query(
+      `
+      BEGIN;
+
+      WITH new_user AS (
+        INSERT INTO users (id, name, email, password_hash)
+        VALUES (gen_random_uuid(), $1, $2, $3)
+        RETURNING id
+      )
+
+      INSERT INTO user_roles (user_uuid, role_id)
+      SELECT
+        new_user.id,
+        roles.id
+      FROM 
+        new_user
+      JOIN 
+        roles 
+      ON 
+        roles.role = $4
+
+      COMMIT;
+      `, [name, email, hashed, role]
+    );
+
+    res.json(result.rows[0]);
+  } catch(error) {
+
+  }
+  
 });
-
-// app.post("/register:educator")
 
 // --- Login User ---
 app.post("/login", async (req, res) => {
   console.log("BODY RECEIVED: ", req.body);
 
-  const { email, password, isEducator } = req.body;
+  const { email, password } = req.body;
 
   const userQuery = await pool.query(
     `SELECT * 
      FROM users 
-     WHERE email = $1 
-     AND isEducator = $2`,
+     WHERE email = $1`,
     [email]
   );
 

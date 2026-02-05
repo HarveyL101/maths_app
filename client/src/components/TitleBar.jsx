@@ -30,15 +30,15 @@ const TitleBar = () => {
         </Link>
       </div>
 
-        <nav className='w-full border-t pt-0.5'>
-          <ul className='flex justify-center gap-4 text-lg'>
-            <li className='nav-item text-blue-500 border solid-blue-500 hover:bg-blue-500 hover:text-white transition'><Link to='/home'>Home</Link></li>
-            <li className='nav-item text-orange-400 border solid-orange-400 hover:bg-orange-400 hover:text-white transition'><Link to='/practice'>Practice</Link></li>
-            <li className='nav-item text-green-700 border solid-green-700 hover:bg-green-700 hover:text-white transition'><Link to="/learn">Learn</Link></li>
-            <li className='nav-item text-purple-500 border solid-purple-500 hover:bg-purple-500 hover:text-white transition'><Link to="/help">Tips & Help</Link></li>
-          </ul>
-        </nav>
-      </div>
+      <nav className='w-full border-t pt-0.5'>
+        <ul className='flex justify-center gap-4 text-lg'>
+          <li className='nav-item text-blue-500 border solid-blue-500 hover:bg-blue-500 hover:text-white transition'><Link to='/home'>Home</Link></li>
+          <li className='nav-item text-orange-400 border solid-orange-400 hover:bg-orange-400 hover:text-white transition'><Link to='/practice'>Practice</Link></li>
+          <li className='nav-item text-green-700 border solid-green-700 hover:bg-green-700 hover:text-white transition'><Link to="/learn">Learn</Link></li>
+          <li className='nav-item text-purple-500 border solid-purple-500 hover:bg-purple-500 hover:text-white transition'><Link to="/help">Tips & Help</Link></li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 

@@ -18,7 +18,7 @@ const RegisterForm = () => {
       name: formData.get("userName"),
       email: formData.get("userEmail"),
       password: formData.get("userPassword"),
-      isEducator: isEducator
+      role: role
     };
     // --- Client-Side Validation ---
     if (!data.name || !data.email || !data.password) {
@@ -96,9 +96,8 @@ const RegisterForm = () => {
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
 
-        <label>{role ? `Selected role ${role}` : "Please select a role"}</label>
-        <select name="role" onChange={(e) => setRoleLabel(e.target.value)}>
-          <option value="">Choose Here</option>  
+        <label>Selected Role: </label>
+        <select name="role" onChange={(e) => setRole(e.target.value)}>
           <option value="student">Student</option>
           <option value="educator">Educator</option>
         </select>

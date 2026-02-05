@@ -16,7 +16,7 @@ const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PG_PORT || 8080;
 
 // --- Route Definitions ---
 app.get("/api", (req, res) => {
@@ -25,10 +25,13 @@ app.get("/api", (req, res) => {
 
 // --- Register User ---
 app.post("/register", async (req, res) => {
+  console.log("BODY RECEIVED: ", req.body);
   try {
-    console.log("BODY RECEIVED: ", req.body);
+  const { name, email, password, role } = req.body;
 
-    const { name, email, password, role } = req.body;
+  if (!name || !email || !password) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
     const hashed = await bcrypt.hash(password, 10); // password is always encrypted during storage
 
@@ -57,9 +60,13 @@ app.post("/register", async (req, res) => {
       `, [name, email, hashed, role]
     );
 
-    res.json(result.rows[0]);
-  } catch(error) {
-
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    if (error.code === "23505") { // violation of UNIQUE condition
+      return res.status(409).json({ error: "Email already registered" });
+    }
+    console.log(error);
+    res.status(500).json({ error: "Registrations Failed" });
   }
   
 });
@@ -86,10 +93,27 @@ app.post("/login", async (req, res) => {
   if (!isMatch) return res.status(401).json({ message: "Incorrect password" });
 
   const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-    expiresIn: "2hr",
+    expiresIn: "2d",
   });
 
   res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
+});
+
+// --- Change Email ---
+app.post("/change-email", async (req, res) => { // need to add error handling
+  console.log("BODY RECEIVED: ", req.body);
+
+  const { oldEmail, newEmail } = req.body;
+
+  const userQuery = await pool.query(
+    `UPDATE users
+     SET email = $1
+     WHERE email = $2`,
+     [newEmail, oldEmail]
+  );
+
+  const result = userQuery.rows[0];
+  // should probably log the user out to aqcuire a new web token 
 });
 
 // --- Listener ---

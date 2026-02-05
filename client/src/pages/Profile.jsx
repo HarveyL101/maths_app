@@ -1,6 +1,7 @@
-import { TitleBar } from "../utils/index";
+import { ChangeEmail, TitleBar } from '../utils/index';
 
 const Profile = () => {
+
   return (
     <div>
       <TitleBar/>
@@ -13,11 +14,7 @@ const Profile = () => {
       </ul>
       <p></p>
 
-      <button>poo</button>
-      <details className="">
-        <summary>Change Your Email</summary>
-        <p>WIP</p>
-      </details>
+      <ChangeEmail />
 
       <details>
         <summary>Change Your Password</summary>

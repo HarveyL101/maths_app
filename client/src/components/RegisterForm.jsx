@@ -35,7 +35,7 @@ const RegisterForm = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/register", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -96,8 +96,9 @@ const RegisterForm = () => {
           {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
 
-        <label>Selected Role: </label>
+        <label>{role ? `Selected role ${role}` : "Please select a role"}</label>
         <select name="role" onChange={(e) => setRole(e.target.value)}>
+          <option value="">Choose Here</option>  
           <option value="student">Student</option>
           <option value="educator">Educator</option>
         </select>

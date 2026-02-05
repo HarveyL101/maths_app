@@ -10,7 +10,11 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      "/api": "http://localhost:8080"
+      "/register": 'http://localhost:5000',
+      "/login": 'http://localhost:5000',
+      "/credentials": 'http://localhost:5000',
+      "/logout": 'http://localhost:5000',
+      "/api": "http://localhost:5000"
     }
   }
 })

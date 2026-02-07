@@ -1,10 +1,13 @@
 import { useAuth } from '../useAuth';
+import { Navigate, useLocation } from "react-router-dom";
 
 export default function RequireAuth({ children }) {
   const { isLoading, isAuthenticated } = useAuth();
-  const location = useLoaction();
+  const location = useLocation();
 
-  if (isLoading) return null; // Could replace this with a spinner somehow
+  if (isLoading) {
+    return <div>Loading...</div>
+  }; // Could replace this with a spinner somehow
 
   if (!isAuthenticated) {
     return (

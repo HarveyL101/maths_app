@@ -60,7 +60,7 @@ app.post("/register", async (req, res) => {
       `, [newUser.id, role]
     )
 
-    await pool.query('COMMIT');
+    await client.query('COMMIT');
 
     const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
       expiresIn: "2hr",
@@ -174,21 +174,45 @@ app.get("/credentials", async (req, res) => {
 });
 
 // --- Change Email ---
-app.post("/change-email", async (req, res) => { // need to add error handling
-  console.log("BODY RECEIVED: ", req.body);
+app.patch("/profile/:userId/change-email", async (req, res) => {
+  const { userId } = req.params;
+  const { newEmail } = req.body;
+  const authUserId = req.user.id;
 
-  const { oldEmail, newEmail } = req.body;
+  if (userId !== authUserId) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
 
-  const userQuery = await pool.query(
-    `UPDATE users
-     SET email = $1
-     WHERE email = $2`,
-     [newEmail, oldEmail]
-  );
+  const client = await pool.connect();
 
-  const result = userQuery.rows[0];
-  // should probably log the user out to aqcuire a new web token 
-});
+  try {
+    await client.query("BEGIN");
+
+    await client.query(
+      `
+      UPDATE
+        users
+      SET 
+        email = $1
+      WHERE 
+        id = $2
+      `, [newEmail, authUserId]
+    );
+
+    await client.query("COMMIT")
+
+    res.json({ message: "Email updated" });
+  } catch(error) {
+    await client.query("ROLLBACK");
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error during /change-email"});
+  } finally {
+    client.release();
+  }
+  
+}
+
+)
 
 // --- Listener ---
 app.listen(PORT, () => {

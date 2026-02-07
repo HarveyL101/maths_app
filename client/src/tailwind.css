@@ -33,6 +33,30 @@
   .educator-checkbox {
     @apply flex items-center justify-center text-gray-500 mx-2;
   }
+  /* **************************** */
+
+  /* Profile Form Fields */
+  .profile-container {
+    @apply min-h-60 shrink-0 flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 p-6;
+  }
+  .profile-form-card {
+    @apply bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-2/5 border border-purple-100;
+  }
+  .profile-form-title {
+    @apply text-gray-700 text-3xl flex justify-center my-2;
+  }
+  .profile-form-label {
+    @apply flex flex-col text-lg font-bold;
+  }
+  .profile-input {
+    @apply mt-1 p-3 rounded-lg border border-gray-300 hover:border-green-700 hover:shadow-lg outline-none transition;
+  }
+  .profile-button-container {
+    @apply flex justify-center gap-6 w-full pt-2;
+  }
+  .profile-button {
+    @apply px-6 py-3 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
+  }
 }
 
 @layer pages {

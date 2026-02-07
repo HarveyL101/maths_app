@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useAuth } from '../auth/useAuth';
 
 const TitleBar = () => {
+  const { hasRole } = useAuth();
   return (
     <div className="w-full">
       {/* --- Top Row --- */}
@@ -28,6 +30,7 @@ const TitleBar = () => {
             title='Press me to see your profile!'
           />
         </Link>
+
       </div>
 
       <nav className='w-full border-t pt-0.5'>
@@ -36,6 +39,8 @@ const TitleBar = () => {
           <li className='nav-item text-orange-400 border solid-orange-400 hover:bg-orange-400 hover:text-white transition'><Link to='/practice'>Practice</Link></li>
           <li className='nav-item text-green-700 border solid-green-700 hover:bg-green-700 hover:text-white transition'><Link to="/learn">Learn</Link></li>
           <li className='nav-item text-purple-500 border solid-purple-500 hover:bg-purple-500 hover:text-white transition'><Link to="/help">Tips & Help</Link></li>
+          {hasRole('educator') && <li className='nav-item text-purple-500 border solid-purple-500 hover:bg-purple-500 hover:text-white transition'><Link to="/help">Teacher Portal</Link></li>}
+
         </ul>
       </nav>
     </div>

@@ -30,6 +30,11 @@ const Profile = () => {
         <summary>Change Profile Picture</summary>
         <p>WIP</p>
       </details>
+
+      <details>
+        <summary>I've forgotten my password</summary>
+        <p>WIP</p>
+      </details>
     </div>
   );
 }

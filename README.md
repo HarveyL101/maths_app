@@ -277,7 +277,6 @@ ___
 # Installation and Operation
 
 1. Clone this repo on your local machine
-2. Run the command `npm i` to install the necessary functionality
-3. Run the pre-made command `npm run installAll` to setup both the front and backend
-4. Run the command `npm run dev` to initialise both the front and backend servers
-5. Open your browser at `http://localhost:5173` and enjoy! (A hyperlink can be found in the terminal upon launch)
+2. Run the pre-made command `npm run setup` to concurrently setup the codebase for use
+3. Run the command `npm run dev` to initialise both the front and backend servers
+4. Open your browser at `http://localhost:5173` and enjoy! (A hyperlink can be found in the terminal upon launch)

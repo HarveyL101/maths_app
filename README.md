@@ -8,7 +8,7 @@
 
 ### Year Three
 - [ ] Number
-  - [ ] Number and place value
+  - [ ] Number & Place Value
     * count from 0 in multiples of 4, 8, 50 and 100; find 10 or 100 more or less than a given number
     * recognise the place value of each digit in a three-digit number (hundreds, tens, ones)
     * compare and order numbers up to 1000
@@ -16,7 +16,7 @@
     * read and write numbers up to 1000 in numerals and in words
     * solve number problems and practical problems involving these ideas
 
-  - [ ] Addition and subtraction
+  - [ ] Addition & Subtraction
     * add and subtract numbers mentally, including:
     * a three-digit number and ones
     * a three-digit number and tens
@@ -25,7 +25,7 @@
     * estimate the answer to a calculation and use inverse operations to check answers
     * solve problems, including missing number problems, using number facts, place value, and more complex addition and subtraction.
 
-  - [ ] Multiplication and division
+  - [ ] Multiplication & Division
     * recall and use multiplication and division facts for the 3, 4 and 8 multiplication tables
     * write and calculate mathematical statements for multiplication and division using the multiplication tables that they know, including for two-digit numbers times one-digit numbers, using mental and progressing to formal written methods
     * solve problems, including missing number problems, involving multiplication and division, including positive integer scaling problems and correspondence problems in which n objects are connected to m objects.
@@ -49,7 +49,7 @@
   * compare durations of events [for example to calculate the time taken by particular events or tasks]. 
 
 - [ ] Geometry
-  - [ ] Properties of shapes
+  - [ ] Properties of Shapes
     * draw 2-D shapes and make 3-D shapes using modelling materials; recognise 3-D shapes in different orientations and describe them
     * recognise angles as a property of shape or a description of a turn
     * identify right angles, recognise that two right angles make a half-turn, three make three quarters of a turn and four a complete turn; identify whether angles are greater than or less than a right angle
@@ -60,9 +60,41 @@
   * solve one-step and two-step questions [for example, ‘How many more?’ and ‘How many fewer?’] using information presented in scaled bar charts and pictograms and tables.
 ---
 
-- [ ] Year Four
-- [ ] Year Five
-- [ ] Year Six
+### Year Four
+- [ ] Number
+  - [ ] Number & Place Value
+  - [ ] Addition & Subtraction
+  - [ ] Multiplication & Division
+  - [ ] Fractions (Including Decimals)
+- [ ] Geometry
+  - [ ] Properties of Shapes
+  - [ ] Position & Direction
+     
+  
+### Year Five
+- [ ] Number
+  - [ ] Number & Place Value
+  - [ ] Addition & Subtraction
+  - [ ] Multiplication & Division
+  - [ ] Fractions (Including Decimals & Percentages)
+- [ ] Measurement
+- [ ] Geometry
+  - [ ] Properties of Shapes
+  - [ ] Position & Direction
+- [ ] Statistics
+
+### Year Six
+- [ ] Number
+  - [ ] Addition, Subtraction, Multiplication & Division
+  - [ ] Fractions (Including Decimals & Percentages)
+- [ ] Ratio & Proportion
+- [ ] Algebra
+- [ ] Measurement
+- [ ] Geometry
+  - [ ] Properties of Shapes
+  - [ ] Position & Direction
+- [ ] Statistics
+___
 # Introduction
 
 This is my dissertation project for the final year of my Software Engineering (BSc) degree at the [University of Portsmouth](https://www.port.ac.uk/). This is currently a WIP, *much like the documentation*, and will be updated over time to hopefully become more comprehensive when `version 1.0.0` is released.

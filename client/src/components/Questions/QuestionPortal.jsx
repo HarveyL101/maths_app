@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 const QuestionPortal = () => {
+    const [template, setTemplate] = useState(null);
+
     return (
         <div className="portal-container">
             <div className="portal-card">
@@ -72,9 +76,15 @@ const QuestionPortal = () => {
                 </div>
 
                 <div className="portal-body"> {/** Will hopefully be able to conditionally render a question preset based on the selected tags */}
+                    {/** Something like `if subtopic.value === x, render template_x` */}
+                    {/** Maybe a switch case, after importing all templates */}
 
                 </div>
-                <div className="portal-footer"></div>
+
+                <div className="portal-footer">
+                    <button type="reset">Reset</button>
+                    <button type="submit">Submit</button>
+                </div>
             </div>
         </div>
     );

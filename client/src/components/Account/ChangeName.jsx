@@ -32,4 +32,4 @@ const ChangeName = () => {
   );
 }
 
-export default changeName;
+export default ChangeName;

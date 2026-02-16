@@ -2,15 +2,16 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../useAuth';
 import RequireAuth from './RequireAuth';
 
-export default function RequireRole({ role, children }) {
-  const { isLoading, hasRole } = useAuth();
+const RequireRole = ({ children, role }) => {
+  const { hasRole, isLoading } = useAuth();
 
   if (isLoading) return null;
-  if (!hasRole(role)) return null;
+  
+  if (!hasRole(role)) {
+    return <Navigate to="/home" replace />;
+  }
 
-  return (
-    <RequireAuth>
-      {hasRole(role) ? children : <Navigate to="/" replace />}
-    </RequireAuth>
-  );
+  return children;
 }
+
+export default RequireRole;

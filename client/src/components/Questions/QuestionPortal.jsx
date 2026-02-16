@@ -1,7 +1,56 @@
+import {
+    Algebra,
+    PositionDirection,
+    PropertiesOfShapes,
+    Measurement,
+    Addition,
+    Division,
+    Fractions,
+    FractionsDec,
+    FractionsDecPerc,
+    Multiplication,
+    NumberPlaceValue,
+    Subtraction,
+    Statistics
+} from './Presets/index.js';
+
+import { curriculum } from './curriculumConfig';
 import { useState } from "react";
 
 const QuestionPortal = () => {
+    const [selectedYear, setSelectedYear] = useState('');
+    const [selectedTopic, setSelectedTopic] = useState('');
+    const [selectedSubTopic, setSelectedSubTopic] = useState('');
     const [template, setTemplate] = useState(null);
+
+    const PRESET_COMPONENTS = {
+        'Algebra': <Algebra />,
+        'Properties of Shapes': <PropertiesOfShapes />,
+        'Position & Direction': <PositionDirection />,
+        'Measurement': <Measurement />,
+        'Number & Place Value': <NumberPlaceValue />,
+        'Addition': <Addition />,
+        'Subtraction': <Subtraction />,
+        'Multiplication': <Multiplication />,
+        'Division': <Division />,
+        'Fractions': <Fractions />,
+        'Fractions (Including Decimals)': <FractionsDec />,
+        'Fractions (Including Decimals & Percentages)': <FractionsDecPerc />,
+        'Statistics': <Statistics />
+    }
+
+    const SelectedPreset = selectedSubTopic && PRESET_COMPONENTS[selectedSubTopic];
+
+    const handleYearChange = (e) => {
+        setSelectedYear(e.target.value);
+        setSelectedTopic('');
+        setSelectedSubTopic('');
+    }
+
+    const handleTopicChange = (e) => {
+        setSelectedTopic(e.target.value);
+        setSelectedSubTopic('');
+    }
 
     return (
         <div className="portal-container">
@@ -11,66 +60,53 @@ const QuestionPortal = () => {
 
                     <label> {/** Needs to display based on prev select element (Year Group -> Topic -> SubTopic) */}
                         Target Year Group:
-                        <select name="selectedYear">
-                            <option value="3">Year 3</option>
-                            <option value="4">Year 4</option>
-                            <option value="5">Year 5</option>
-                            <option value="6">Year 6</option>
+                        <select value={selectedYear} onChange={handleYearChange}>
+                            <option value="">Select year</option>
+                            {[3, 4, 5, 6].map((year) => (
+                                <option key={year} value={year}>
+                                    Year {year}
+                                </option>
+                            ))}
                         </select>
                     </label>
 
                     <label>
                         Topic:
-                        <select name="selectedTopic"> {/** Somehow needs to render based on previous option value */}
-                            <option value="">Number</option>
-                            <option value="">Ratio & Proportion</option> {/* Year 6 only */}
-                            <option value="">Algebra</option> {/* Year 6 only */}
-                            <option value="">Measurement</option>
-                            <option value="">Geometry</option>
-                            <option value="">Statistics</option>
+                        <select
+                            value={selectedTopic}
+                            onChange={e => {
+                                setSelectedTopic(e.target.value)
+                                setSelectedSubTopic('')
+                            }}
+                            disabled={!selectedYear}
+                        >
+                            <option value="">Select topic</option>
+
+                            {selectedYear && 
+                                Object.keys(curriculum[selectedYear]).map((topic) => (
+                                    <option key={topic} value={topic}>
+                                        {topic}
+                                    </option>
+                                ))}
                         </select>
                     </label>
 
                     <label>
                         Sub-Topic:
-                        <select name="selectedSubTopic">
-                            {/* Years 3+ */}
-                            {/** Number */}
-                            <option value="">Number & Place Value</option>
-                            <option value="">Addition & Subtraction</option>
-                            <option value="">Multiplication & Division</option>
-                            <option value="">Fractions</option>
+                        <select
+                            value={selectedSubTopic}
+                            onChange={(e) => setSelectedSubTopic(e.target.value)}
+                            disabled={!selectedTopic}
+                        >
+                            <option value="">Select sub-topic</option>
 
-                            {/** Geometry */}
-                            <option value="">Properties of Shapes</option>
-
-                            {/* Years 4+ */}
-                            {/** Number */}
-                            <option value="">Number & Place Value</option>
-                            <option value="">Addition & Subtraction</option>
-                            <option value="">Multiplication & Division</option>
-                            <option value="">Fractions (Inc. Decimals)</option>
-
-                            {/** Geometry */}
-                            <option value="">Properties of Shapes</option>
-                            <option value="">Position & Direction</option>
-
-                            {/* Years 5+ */}
-                            {/** Number */}
-                            <option value="">Number & Place Value</option>
-                            <option value="">Addition & Subtraction</option>
-                            <option value="">Multiplication & Division</option>
-                            <option value="">Fractions (Inc. Decimals & Percentages)</option>
-
-                            {/** Geometry */}
-                            <option value="">Properties of Shapes</option>
-                            <option value="">Position & Direction</option>
-
-                            {/* Year 6 only */}
-                            {/** Number */}
-                            <option value="">Number & Place Value</option>
-                            <option value="">Addition, Subtraction, Multiplication & Division</option>
-                            <option value="">Fractions (Inc. Decimals & Percentages)</option>
+                            {selectedYear && 
+                                selectedTopic &&
+                                curriculum[selectedYear][selectedTopic].map((subTopic) => (
+                                    <option key={subTopic} value={subTopic}>
+                                        {subTopic}
+                                    </option>
+                                ))}
                         </select>
                     </label>
                 </div>
@@ -78,6 +114,10 @@ const QuestionPortal = () => {
                 <div className="portal-body"> {/** Will hopefully be able to conditionally render a question preset based on the selected tags */}
                     {/** Something like `if subtopic.value === x, render template_x` */}
                     {/** Maybe a switch case, after importing all templates */}
+
+                    <div>
+                        {SelectedPreset && <SelectedPreset />}
+                    </div>
 
                 </div>
 

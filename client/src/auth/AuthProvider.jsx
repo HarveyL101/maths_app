@@ -3,26 +3,33 @@ import { AuthContext } from './AuthContext';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     async function loadUser() {
+      const token = localStorage.getItem('jwt');
+
+      if (!token) {
+        // If a token is not present, the user is not logged in
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const res = await fetch('/credentials', {
-          credentials: 'include',
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+          headers: { Authorization: `Bearer ${token}` }
         });
 
         if (!res.ok) {
           setUser(null);
-          return;
+        } else {
+          const data = await res.json();
+          setUser(data.user);
         }
-
-        const data = await res.json();
-        setUser(data.user);
-      } catch {
+      } catch (err) {
+        console.error("Credentials could not be fetched", err);
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -30,37 +37,34 @@ export function AuthProvider({ children }) {
     }
 
     loadUser();
-
   }, []);
 
   // Helpers
   const isAuthenticated = !!user;
 
   const hasRole = useCallback(
-    (role) => user?.roles.includes(role), [user]
+    (role) => user?.roles?.some(r => r.trim() === role) ?? false,
+    [user]
   );
 
   const hasAnyRole = useCallback(
-    (roles) => user?.roles?.includes(role), [user]
+    (roles) => roles.some(role => user?.roles?.includes(role)),
+    [user]
   );
 
-  const logout = () => {
-    localStorage.removeItem('jwt');
-    setUser(null)
+  const login = (token, userData) => {
+    localStorage.setItem('jwt', token);
+    setUser(userData);
+  }
+
+  const logout = async () => {
+    localStorage.removeItem('jwt')
+    setUser(null);
   };
 
   return (
-    <AuthContext.Provider 
-      value={{
-        user,
-        isLoading,
-        isAuthenticated,
-        hasRole,
-        hasAnyRole,
-        logout
-      }}
-    >
+    <AuthContext.Provider value={{ user, isLoading, isAuthenticated, hasRole, hasAnyRole, login, logout }}>
       {children}
     </AuthContext.Provider>
-  )
+  );
 }

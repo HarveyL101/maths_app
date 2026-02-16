@@ -98,6 +98,14 @@ ___
     * compare numbers with the same number of decimal places up to two decimal places
     * solve simple measure and money problems involving fractions and decimals to two decimal places
 
+- [ ] Measurement
+  * Convert between different units of measure [for example, kilometre to metre; hour to minute]
+  * measure and calculate the perimeter of a rectilinear figure (including squares) in centimetres and metres
+  * find the area of rectilinear shapes by counting squares
+  * estimate, compare and calculate different measures, including money in pounds and pence
+  * read, write and convert time between analogue and digital 12- and 24-hour clocks
+  * solve problems involving converting from hours to minutes; minutes to seconds; years to months; weeks to days.
+
 - [ ] Geometry
   - [ ] Properties of Shapes
     * compare and classify geometric shapes, including quadrilaterals and triangles, based on their properties and sizes

@@ -76,3 +76,5 @@ const Addition = () => {
     </div>
   );
 };
+
+export default Addition;

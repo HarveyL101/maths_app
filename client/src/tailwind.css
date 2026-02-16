@@ -57,6 +57,24 @@
   .profile-button {
     @apply px-6 py-3 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
   }
+
+  /* Portal Form Fields */
+  .q-container {
+    @apply bg-gray-700;
+  }
+  .qform-container {
+    @apply bg-pink-400;
+  }
+
+  /* Preview Fields */
+  .preview-container {
+    @apply bg-purple-600;
+  }
+  .preview-title {
+    @apply bg-purple-800;
+
+  }
+
 }
 
 @layer pages {

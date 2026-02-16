@@ -1,32 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import 'katex/dist/katex.min.css';
+import { BlockMath } from 'react-katex';
 
 const Addition = () => {
   // state definitions go here
-  const [previewTitle, setPreviewTitle] = useState(null);
-  const [previewBody, setPreviewBody] = useState(null);
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [previewBody, setPreviewBody] = useState("");
+  const [arg1, setArg1] = useState('');
+  const [arg2, setArg2] = useState('');
 
   
-  const createKatex = (arg1, arg2) => {
-    const result = Array.from(arg1 + arg2);
-    const arr1 = Array.from(arg1);
-    const arr2 = Array.from(arg2);
+  const createKatex = (input1, input2) => {
 
-    cols = Math.max(arr1.length(), arr2.length());
+    // Protects against crashing on load
+    if (!input1 || !input2) return "";
+    
+    const num1 = input1.split("");
+    const num2 = input2.split("");
 
-    const row1 = "& " + arr1.join(" & ");
-    const row2 = "+ & " + arr2.join(" & ");
-    const answer = result.join(" & ");
+    console.log(num1, num2);
+
+    const maxDigits = Math.max(num1.length, num2.length); // allows for dynamic inputs independant of length
+    const totalCols = maxDigits + 1; // extra column for  the operator (+)
+
+    // Pads both numbers from the left to enforce H, T, U places
+    const padded1 = Array(maxDigits - num1.length).fill("").concat(num1);
+    const padded2 = Array(maxDigits - num2.length).fill("").concat(num2);
+
+    // Row 1: clears first column before num1 starts
+    const row1 = ["", ...padded1].join(" & ");
+
+    // Row 2: + in the first column before num2 starts
+    const row2 = ["+"].concat(padded2).join(" & ");
+
+    // Answer = sum the digits, and pad the left-most column for alignment
+    const sumDigits = (parseInt(input1) + parseInt(input2))
+      .toString()
+      .split("");
+    const answer = Array(totalCols - sumDigits.length).fill("").concat(sumDigits).join(" & ");
 
     const template = `
-    \begin{array}{${cols}}
-      ${row1} \\
-    + ${row2} \\
-    \hline
+    \\begin{array}{${"c".repeat(totalCols)}}
+      ${row1} \\\\
+      ${row2} \\\\
+      \\hline
       ${answer}
-    \end {array}
+    \\end{array}
     `;
 
     return template;
+  }
+
+  // Updates previewBody whenever arg1 or arg2 changes
+  useEffect(() => {
+    setPreviewBody(createKatex(arg1, arg2));
+  }, [arg1, arg2]);
+
+  const handleReset = () => {
+    setPreviewTitle(null);
+    setArg1("");
+    setArg2("");
+    setPreviewBody(null); // also clears the current preview
   }
 
   const handleSubmit = () => {
@@ -34,45 +68,57 @@ const Addition = () => {
   }
 
   return (
-    <div className="question-container">
-
+    <div className="q-container">
       <div className="qform-container">
         <form action={handleSubmit}>
           <label>
             Question Title:
-            <input type="text" name="questionTitle" onChange={(e) => setPreviewTitle(e.target.value)}/>
+            <input 
+              type="text" 
+              value={previewTitle}
+              onChange={(e) => setPreviewTitle(e.target.value)}
+            />
           </label>
           <label>
             Input 1:
-            <input type="text" name="input1" placeholder="First Parameter Here."/>
+            <input 
+              type="text"
+              value={arg1}
+              onChange={(e) => setArg1(e.target.value)}
+              placeholder="First Parameter Here."
+            />
           </label>
           <label>
             Input 2:
-            <input type="text" name="input2" placeholder="Second Parameter Here."/>
+            <input 
+              type="text" 
+              value={arg2}
+              onChange={(e) => setArg2(e.target.value)}
+              placeholder="Second Parameter Here."/>
           </label>
 
-          <button type="reset">Reset</button>
-          <button type="button">Preview</button> {/** Button that passes the input value to produce a template, then displays in the preview section */}
+          <button type="reset" onClick={() => {handleReset}}>Reset</button>
           <button type="submit">Submit</button>
         </form>
       </div>
 
       <div className="preview-container">
         <div className="preview-title">
-          <h1>{previewTitle && "Question Title Here"}</h1>
+          <h1>{previewTitle || "Question Title Here"}</h1>
         </div>
         <div className="preview-body">
-          <p>{previewBody && "Your Equation here"}</p>
+          {previewBody ? (
+            <BlockMath math={previewBody} />
+          ) : (
+            <p>Enter numbers and click preview</p>
+          )}
         </div>
         <div>
-          <button type="reset">Reset</button>
-          <button type="button" onClick={createKatex}>Preview</button>
-          <button type="submit">Submit</button>
+          <button type="reset" disabled>Reset</button>
+          <button type="button" disabled>Preview</button>
+          <button type="submit" disabled>Submit</button>
         </div>
       </div>
-
-      <h1>katex to html will go here</h1>
-      <p>{template && 'Template is not yet usable.'}</p>
     </div>
   );
 };

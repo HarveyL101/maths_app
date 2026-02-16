@@ -2,7 +2,13 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
 
 const TitleBar = () => {
-  const { hasRole } = useAuth();
+  const { user, hasRole, isLoading } = useAuth();
+
+  console.log("User:", user);
+  console.log("Roles:", user?.roles);
+  console.log("Has educator:", hasRole('educator'));
+
+  if (isLoading) return null;
   return (
     <div className="w-full">
       {/* --- Top Row --- */}
@@ -39,8 +45,11 @@ const TitleBar = () => {
           <li className='nav-item text-orange-400 border solid-orange-400 hover:bg-orange-400 hover:text-white transition'><Link to='/practice'>Practice</Link></li>
           <li className='nav-item text-green-700 border solid-green-700 hover:bg-green-700 hover:text-white transition'><Link to="/learn">Learn</Link></li>
           <li className='nav-item text-purple-500 border solid-purple-500 hover:bg-purple-500 hover:text-white transition'><Link to="/help">Tips & Help</Link></li>
-          {hasRole('educator') && <li className='nav-item text-purple-500 border solid-purple-500 hover:bg-purple-500 hover:text-white transition'><Link to="/help">Teacher Portal</Link></li>}
-
+          {hasRole('educator') && (
+            <li className='nav-item text-indigo-800 border solid-indigo-800 hover:bg-indigo-800 hover:text-white transition'>
+              <Link to="/teacher-portal">Teacher Portal</Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../auth/useAuth";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,6 +38,7 @@ const LoginForm = () => {
       const json = await res.json();
 
       if (res.ok) {
+        login(json.token, json.user); // Sets User immediately to ensure auth fires properly
         navigate("/home");
       } else {
         setErrorMessage(json.message || "Login failed. Please try again.");

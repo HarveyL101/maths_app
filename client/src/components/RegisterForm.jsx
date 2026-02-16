@@ -47,7 +47,7 @@ const RegisterForm = () => {
       if (res.ok) {
         navigate("/home");
       } else {
-        setErrorMessage(json.message || "Server error occurred, please check your connection and try again.");
+        setErrorMessage(json.error || "Server error occurred, please check your connection and try again.");
       }
     } catch (err) {
       console.log("error: ", err);

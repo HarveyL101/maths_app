@@ -2,8 +2,10 @@ export const curriculum = {
   3: {
     Number: [
       'Number & Place Value',
-      'Addition & Subtraction',
-      'Multiplication & Division',
+      'Addition',
+      'Subtraction',
+      'Multiplication',
+      'Division',
       'Fractions',
     ],
     Measurement: ['Measurement'],
@@ -13,8 +15,10 @@ export const curriculum = {
   4: {
     Number: [
       'Number & Place Value',
-      'Addition & Subtraction',
-      'Multiplication & Division',
+      'Addition',
+      'Subtraction',
+      'Multiplication',
+      'Division',
       'Fractions (Including Decimals)'
     ],
     Measurement: ['Measurement'],
@@ -24,8 +28,10 @@ export const curriculum = {
   5: {
     Number: [
       'Number & Place Value',
-      'Addition & Subtraction',
-      'Multiplication & Division',
+      'Addition',
+      'Subtraction',
+      'Multiplication',
+      'Division',
       'Fractions (Including Decimals & Percentages)'
     ],
     Measurement: ['Measurement'],

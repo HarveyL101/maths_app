@@ -6,8 +6,53 @@ const pg = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const saltRounds = 10;
+// --- Middleware for JWT Authentication ---
+const authenticateJWT = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  if (!authHeader) return res.status(401).json({ error: "No token provided" });
 
+  const token = authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({ error: "Malformed token" });
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { id: payload.id }; // attach the user's id 
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid or expired token" });
+  }
+}
+
+// Defining role-based access control middleware
+const hasRole = (requireRole) => {
+  return async (req, res, next) => {
+    try {
+      const userId = req.user.id;
+
+      const result = await pool.query(
+        `
+        SELECT r.role
+        FROM user_roles ur
+        JOIN roles r ON ur.role_id = r.id
+        WHERE ur.user_uuid = $1
+        `, [userId]
+      );
+
+      const roles = result.rows.map(r => r.role);
+
+      if (!roles.includes(requiredRole)) {
+        return res.status(403).json({ error: "Forbidden: missing role" });
+      }
+
+      next();
+    } catch (err) {
+      console.error("Error in hasRole middleware:", err);
+      res.status(500).json({ error: "Server error during role check" });
+    }
+  };
+};
+
+const saltRounds = 10;
 
 const app = express();
 app.use(cors(corsOptions));
@@ -39,7 +84,7 @@ app.post("/register", async (req, res) => {
 
     await client.query('BEGIN');
 
-    const insertUser = await pool.query(
+    const insertUser = await client.query(
       `
       INSERT INTO users (id, name, email, password_hash)
       VALUES (gen_random_uuid(), $1, $2, $3)
@@ -70,7 +115,7 @@ app.post("/register", async (req, res) => {
   } catch (error) {
     await client.query('ROLLBACK'); // cancels transaction on fail
     console.log(error);
-    if (error.code === "23505") return res.status(409).json({ error: "Email already registered" }); // error code for UNIQUE constraint violations
+    if (error.code === "23505") return res.status(409).json({ error: "Email already registered, please use another." }); // error code for UNIQUE constraint violations
     res.status(500).json({ error: "Registrations Failed" });
   } finally {
     client.release();
@@ -103,12 +148,33 @@ app.post("/login", async (req, res) => {
 
     if (!isMatch) return res.status(401).json({ message: "Incorrect password" });
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "2hr",
-    });
+    // fetch roles
+    const rolesQuery = await pool.query(
+      `
+      SELECT r.role
+      FROM roles r
+      JOIN user_roles ur ON ur.role_id = r.id
+      WHERE ur.user_uuid = $1      
+      `,
+      [user.id]
+    );
 
-    res.json({ token, user: { id: user.id, email: user.email } });
-  
+    const roles = rolesQuery.rows.map(r => r.role);
+
+    const token = jwt.sign(
+      { id: user.id }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: "2hr" }
+    );
+
+    res.json({ 
+      token, 
+      user: { 
+        id: user.id, 
+        email: user.email,
+        roles 
+      } 
+    });
   } catch(error) {
 
   }
@@ -163,9 +229,17 @@ app.get("/credentials", async (req, res) => {
         ur.user_uuid = $1
       `, [userId]
     );
+
     const roles = rolesQuery.rows.map(r => r.role);
 
-    res.json({ user: { ...user, roles } });
+    res.json({
+      token, 
+      user: {
+        id: user.id,
+        email: user.email,
+        roles
+      }
+    });
 
   } catch(error) {
     console.error("Error in /credentials:", error);
@@ -209,10 +283,17 @@ app.patch("/profile/:userId/change-email", async (req, res) => {
   } finally {
     client.release();
   }
-  
-}
+});
 
-)
+app.get(
+  "/teacher-portal",
+  authenticateJWT,
+  hasRole("educator"), // Needs to match the DB role
+  (req, res) => {
+    res.json({ message: "Welcome to the Teacher Portal!" });
+  }
+);
+
 
 // --- Listener ---
 app.listen(PORT, () => {

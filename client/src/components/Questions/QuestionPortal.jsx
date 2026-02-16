@@ -24,19 +24,19 @@ const QuestionPortal = () => {
     const [template, setTemplate] = useState(null);
 
     const PRESET_COMPONENTS = {
-        'Algebra': <Algebra />,
-        'Properties of Shapes': <PropertiesOfShapes />,
-        'Position & Direction': <PositionDirection />,
-        'Measurement': <Measurement />,
-        'Number & Place Value': <NumberPlaceValue />,
-        'Addition': <Addition />,
-        'Subtraction': <Subtraction />,
-        'Multiplication': <Multiplication />,
-        'Division': <Division />,
-        'Fractions': <Fractions />,
-        'Fractions (Including Decimals)': <FractionsDec />,
-        'Fractions (Including Decimals & Percentages)': <FractionsDecPerc />,
-        'Statistics': <Statistics />
+        'Algebra': Algebra,
+        'Properties of Shapes': PropertiesOfShapes,
+        'Position & Direction': PositionDirection,
+        'Measurement': Measurement,
+        'Number & Place Value': NumberPlaceValue,
+        'Addition': Addition,
+        'Subtraction': Subtraction,
+        'Multiplication': Multiplication,
+        'Division': Division,
+        'Fractions': Fractions,
+        'Fractions (Including Decimals)': FractionsDec,
+        'Fractions (Including Decimals & Percentages)': FractionsDecPerc,
+        'Statistics': Statistics
     }
 
     const SelectedPreset = selectedSubTopic && PRESET_COMPONENTS[selectedSubTopic];
@@ -74,10 +74,7 @@ const QuestionPortal = () => {
                         Topic:
                         <select
                             value={selectedTopic}
-                            onChange={e => {
-                                setSelectedTopic(e.target.value)
-                                setSelectedSubTopic('')
-                            }}
+                            onChange={handleTopicChange}
                             disabled={!selectedYear}
                         >
                             <option value="">Select topic</option>
@@ -122,8 +119,7 @@ const QuestionPortal = () => {
                 </div>
 
                 <div className="portal-footer">
-                    <button type="reset">Reset</button>
-                    <button type="submit">Submit</button>
+                    <p>this is the portal footer</p>
                 </div>
             </div>
         </div>

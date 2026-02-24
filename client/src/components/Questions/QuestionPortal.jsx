@@ -87,8 +87,7 @@ const QuestionPortal = () => {
                                 ))}
                         </select>
                     </label>
-
-                    <label>
+                <label>
                         Sub-Topic:
                         <select
                             value={selectedSubTopic}

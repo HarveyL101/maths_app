@@ -5,7 +5,7 @@ const RequireAuth = ({ children }) => {
   const { isLoading, isAuthenticated } = useAuth();
   const location = useLocation();
 
-  if (isLoading) return null; // Could replace this with a spinner somehow
+  if (isLoading) return <div>Loading...</div>; // Could replace this with a spinner somehow
 
   if (!isAuthenticated) {
     return (<Navigate to='/' state={{ from: location }} replace />);

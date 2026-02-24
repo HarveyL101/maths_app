@@ -57,7 +57,7 @@ const Addition = () => {
   }, [arg1, arg2]);
 
   const handleReset = () => {
-    setPreviewTitle(null);
+    setPreviewTitle("");
     setArg1("");
     setArg2("");
     setPreviewBody(null); // also clears the current preview
@@ -70,35 +70,40 @@ const Addition = () => {
   return (
     <div className="q-container">
       <div className="qform-container">
-        <form action={handleSubmit}>
-          <label>
-            Question Title:
-            <input 
-              type="text" 
-              value={previewTitle}
-              onChange={(e) => setPreviewTitle(e.target.value)}
-            />
-          </label>
-          <label>
-            Input 1:
-            <input 
-              type="text"
-              value={arg1}
-              onChange={(e) => setArg1(e.target.value)}
-              placeholder="First Parameter Here."
-            />
-          </label>
-          <label>
-            Input 2:
-            <input 
-              type="text" 
-              value={arg2}
-              onChange={(e) => setArg2(e.target.value)}
-              placeholder="Second Parameter Here."/>
-          </label>
+        <div className="qform-title">
+          <h1>Addition Template</h1>
+        </div>
+        <form onSubmit={(e) => { e.preventDefault(); handleSubmit();}}>
 
-          <button type="reset" onClick={() => {handleReset}}>Reset</button>
-          <button type="submit">Submit</button>
+          <input 
+            className="qform-input"
+            type="text" 
+            value={previewTitle}
+            onChange={(e) => setPreviewTitle(e.target.value)}
+            placeholder="Question Title..."
+          />
+
+          <input 
+            className="qform-input"
+            type="text"
+            value={arg1}
+            onChange={(e) => setArg1(e.target.value)}
+            placeholder="First Parameter Here..."
+          />
+
+          <input 
+            className="qform-input"
+            type="text" 
+            value={arg2}
+            onChange={(e) => setArg2(e.target.value)}
+            placeholder="Second Parameter Here..."
+          />
+
+          <div className="qform-button-container">
+            <button className="qform-button" type="reset" onClick={handleReset}>Reset</button>
+            <button className="qform-button" type="submit">Submit</button>
+          </div>
+          
         </form>
       </div>
 
@@ -110,13 +115,15 @@ const Addition = () => {
           {previewBody ? (
             <BlockMath math={previewBody} />
           ) : (
-            <p>Enter numbers and click preview</p>
+            <p>A complete calculation will appear here.</p>
           )}
         </div>
-        <div>
-          <button type="reset" disabled>Reset</button>
-          <button type="button" disabled>Preview</button>
-          <button type="submit" disabled>Submit</button>
+
+        <input className="qform-input" type="text" placeholder="Answer will go here..." disabled/>
+        
+        <div className="preview-button-container ">
+          <button className="preview-button" type="reset" disabled>Reset</button>
+          <button className="preview-button" type="submit" disabled>Submit</button>
         </div>
       </div>
     </div>

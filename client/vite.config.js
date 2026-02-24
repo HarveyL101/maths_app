@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/credentials': 'http://localhost:5000/',
+      '/credentials': 'http://localhost:5000',
       '/login': 'http://localhost:5000',
       '/register': 'http://localhost:5000/',      
       '/logout': 'http://localhost:5000/',

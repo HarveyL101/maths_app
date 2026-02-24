@@ -164,10 +164,10 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: user.id }, 
       process.env.JWT_SECRET, 
-      { expiresIn: "2hr" }
+      { expiresIn: "2h" }
     );
 
-    res.json({ 
+    return res.json({ 
       token, 
       user: { 
         id: user.id, 
@@ -176,7 +176,7 @@ app.post("/login", async (req, res) => {
       } 
     });
   } catch(error) {
-
+    return res.status(401).json({ error: "Invalid Credentials" });
   }
 });
 

@@ -21,7 +21,12 @@ const QuestionPortal = () => {
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedTopic, setSelectedTopic] = useState('');
     const [selectedSubTopic, setSelectedSubTopic] = useState('');
-    const [template, setTemplate] = useState(null);
+    const [formData, setFormData] = useState(null);
+
+    const handleFormSubmit = (submittedData) => {
+        console.log("Data received in parent:", submittedData);
+        setFormData(submittedData);
+    }
 
     const PRESET_COMPONENTS = {
         'Algebra': Algebra,
@@ -58,7 +63,7 @@ const QuestionPortal = () => {
                 <div className="portal-header">
                     <h1>This is the header portion</h1>
 
-                    <label> {/** Needs to display based on prev select element (Year Group -> Topic -> SubTopic) */}
+                    <label> {/** Displays the appropriate subgroup options based on the selected grouping (Hierarchy = YearGroup -> Topic -> SubTopic) */}
                         Target Year Group:
                         <select value={selectedYear} onChange={handleYearChange}>
                             <option value="">Select year</option>
@@ -107,12 +112,9 @@ const QuestionPortal = () => {
                     </label>
                 </div>
 
-                <div className="portal-body"> {/** Will hopefully be able to conditionally render a question preset based on the selected tags */}
-                    {/** Something like `if subtopic.value === x, render template_x` */}
-                    {/** Maybe a switch case, after importing all templates */}
-
-                    <div>
-                        {SelectedPreset && <SelectedPreset />}
+                <div className="portal-body"> {/* Selected preset component must pass form values back to the parent layer for submission */}
+                    <div> 
+                        {SelectedPreset && <SelectedPreset onSubmit={handleFormSubmit}/>}
                     </div>
 
                 </div>

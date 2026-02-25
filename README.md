@@ -1,8 +1,6 @@
 # Todo Next
-- [x] Install PSQL
-- [x] Handle login/ registry
-- [ ] Finish Schema (for now)
-- [ ] Add .env template to repo for easier use on foreign devices
+- [ ] Install dnd-kit/react library
+- [ ] Install reactjs-popup library
   
 ## Lesson Structure
 

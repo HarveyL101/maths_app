@@ -63,8 +63,24 @@ const Addition = () => {
     setPreviewBody(null); // also clears the current preview
   }
 
+  // requires further sanitation (assert INT datatype, etc.)
   const handleSubmit = () => {
-    // Form submission for question details go here
+    e.preventDefault();
+
+    if (!previewTitle || !arg1 || !arg2) {
+      alert("Please fill in all fields before submission!");
+      return;
+    }
+
+    const formData = {
+      previewTitle,
+      arg1,
+      arg2
+    };
+
+    onSubmit(formData); // Passing data to parent component
+
+    handleReset(); // Clears fields after submission
   }
 
   return (
@@ -73,7 +89,7 @@ const Addition = () => {
         <div className="qform-title">
           <h1>Addition Template</h1>
         </div>
-        <form onSubmit={(e) => { e.preventDefault(); handleSubmit();}}>
+        <form onSubmit={handleSubmit}>
 
           <input 
             className="qform-input"

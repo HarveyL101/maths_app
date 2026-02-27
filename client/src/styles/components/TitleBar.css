@@ -1,0 +1,6 @@
+/* --- TITLE BAR --- */
+@layer components {
+  .nav-item {
+    @apply whitespace-nowrap px-8 py-5 rounded-b-lg cursor-pointer font-medium;
+  }
+}

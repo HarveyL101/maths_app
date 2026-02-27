@@ -13,13 +13,28 @@ const Subtraction = () => {
     // protects against crashing on load
     if (!input1 || !input2) return "";
 
+    // Checks if either input does not contain only one or more digits
+    if (!/^\d+$/.test(input1) || !/^\d+$/.test(input2)) {
+      return `
+      \\begin{array}{c}
+      \\text{Please use positive whole numbers only}
+      \\end{array}
+      `;
+    }
+
     const num1 = input1.split("");
     const num2 = input2.split("");
 
     console.log(num1, num2);
 
-    if (num1.length < num2.length) return "Your first number must be larger than the second, to avoid a negative answer";
-
+    if (num1.length < num2.length) {
+      return `
+      \\begin{array}{c}
+      \\text{The second input cannot be larger than the first}
+      \\end{array}
+      `;
+    }
+    
     const maxDigits = Math.max(num1.length, num2.length);
     const totalCols = maxDigits + 1;
 
@@ -38,7 +53,7 @@ const Subtraction = () => {
       .toString()
       .split("");
     
-    const answer = Array(totalCols - subtractDigits.length).fill("").concat(sumDigits).join(" & ");
+    const answer = Array(totalCols - subtractDigits.length).fill("").concat(subtractDigits).join(" & ");
 
     const template = 
     `
@@ -66,7 +81,7 @@ const Subtraction = () => {
   }
 
   // requires further sanitation (assert INT datatype, )
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!previewTitle || !arg1 || !arg2) {
@@ -131,7 +146,9 @@ const Subtraction = () => {
         </div>
         <div className="preview-body">
           {previewBody ? (
-            <BlockMath math={previewBody} />
+            <div className="text-4xl">
+              <BlockMath math={previewBody} />
+            </div>
           ) : (
             <p>A complete calculation will appear here.</p>
           )}

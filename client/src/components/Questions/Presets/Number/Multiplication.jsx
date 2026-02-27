@@ -13,31 +13,44 @@ const Multiplication = () => {
     // protects against crashing on load
     if (!input1 || !input2) return "";
 
+    // Checks if either input does not contain only one or more digits
+    if (!/^\d+$/.test(input1) || !/^\d+$/.test(input2)) {
+      return `
+      \\begin{array}{c}
+      \\text{Please use positive whole numbers only}
+      \\end{array}
+      `;
+    }
+
     const num1 = input1.split("");
     const num2 = input2.split("");
 
     console.log(num1, num2);
 
     const maxDigits = Math.max(num1.length, num2.length); // alows for dynamic inputs independant of length
-    const totalCols = maxDigits + 1; // extra column is for the relevant operator (x)
+    const timesDigits = (parseInt(input1) * parseInt(input2)).toString().split("");
+    const totalCols = Math.max(maxDigits + 1, timesDigits.length); // extra column is for the relevant operator (x)
 
     // pads both numbers from the left to enforce H, T, U places
     const padded1 = Array(maxDigits - num1.length).fill("").concat(num1);
     const padded2 = Array(maxDigits - num2.length).fill("").concat(num2);
 
     // Row1 clears first column before the start of num1
-    const row1 = ["", ...padded1].join(" & ");
-
+    const row1 = Array(totalCols - (padded1.length + 1))
+    .fill("")
+    .concat("", ...padded1)
+    .join(" & ");
     // Row2 preceds num2 with the relevant operator (x)
     // Need to double check whether an `x` or KaTeX's `\times` will render correctly here
-    const row2 = ["\\times"].concat(padded2).join(" & ");
-
+    const row2 = Array(totalCols - (padded2.length + 1))
+    .fill("")
+    .concat("\\times", ...padded2)
+    .join(" & ");
     // Answer = multiply the digits, and pad the left-most column for alignment
-    const timesDigits = (parseInt(input1) * parseInt(input2))
-      .toString()
-      .toSplit("");
-
-    const answer = Array(totalCols - timesDigits.length).fill("").concat(sumDigits).join(" & ");
+    const answer = Array(totalCols - timesDigits.length)
+    .fill("")
+    .concat(timesDigits)
+    .join(" & ");
 
     const template = 
     `
@@ -61,11 +74,11 @@ const Multiplication = () => {
     setPreviewTitle("");
     setArg1("");
     setArg2("");
-    setPreviewBody(null); // also clears the current preview
+    setPreviewBody(""); // also clears the current preview
   }
 
   // requires further sanitation (assert INT datatype, etc.)
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!previewTitle || !arg1 || !arg2) {
@@ -130,7 +143,9 @@ const Multiplication = () => {
         </div>
         <div className="preview-body">
           {previewBody ? (
-            <BlockMath math={previewBody} />
+            <div className="text-4xl">
+              <BlockMath math={previewBody} />
+            </div>
           ) : (
             <p>A complete calculation will appear here.</p>
           )}

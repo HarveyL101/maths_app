@@ -14,6 +14,15 @@ const Addition = () => {
 
     // Protects against crashing on load
     if (!input1 || !input2) return "";
+
+    // Checks if either input does not contain only one or more digits
+    if (!/^\d+$/.test(input1) || !/^\d+$/.test(input2)) {
+      return `
+      \\begin{array}{c}
+      \\text{Please use positive whole numbers only}
+      \\end{array}
+      `;
+    }
     
     const num1 = input1.split("");
     const num2 = input2.split("");
@@ -64,7 +73,7 @@ const Addition = () => {
   }
 
   // requires further sanitation (assert INT datatype, etc.)
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!previewTitle || !arg1 || !arg2) {
@@ -129,7 +138,9 @@ const Addition = () => {
         </div>
         <div className="preview-body">
           {previewBody ? (
-            <BlockMath math={previewBody} />
+            <div className="text-4xl">
+              <BlockMath math={previewBody} />
+            </div>
           ) : (
             <p>A complete calculation will appear here.</p>
           )}

@@ -37,4 +37,8 @@
   .preview-button {
     @apply flex-1 bg-purple-200 text-purple-500 rounded-lg py-3 font-semibold cursor-not-allowed;
   }
+/* Fraction input variant */
+  .qform-input-fraction {
+    @apply text-2xl
+  }
 }

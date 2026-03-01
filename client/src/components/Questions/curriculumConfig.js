@@ -5,8 +5,13 @@ export const curriculum = {
       'Addition',
       'Subtraction',
       'Multiplication',
-      'Division',
-      'Fractions',
+      'Division'
+    ],
+    Fractions: [
+      'Fraction Addition',
+      'Fraction Counting Up',
+      'Fractions Including Decimals',
+      'Fractions Including Decimals & Percentages'
     ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes'],

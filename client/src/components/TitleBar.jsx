@@ -25,7 +25,6 @@ const TitleBar = () => {
             title='Press me for the homepage!'
           />
         </Link>
-        {/* \\underline{Number Ninjas} */}
         {/* Center: title */}
         <h1 className='text-2xl font-bold flex-1'>
           <BlockMath math={`

@@ -41,12 +41,12 @@ const QuestionPortal = () => {
         'Subtraction': Subtraction,
         'Multiplication': Multiplication,
         'Division': Division,
-        'Addition': FracAddition,
-        'Subtraction': FracSubtraction,
-        'Counting Up': FracCountUp,
+        'Fraction Addition': FracAddition,
+        'Fraction Subtraction': FracSubtraction,
+        'Fraction Counting Up': FracCountUp,
         'Fractions': Fractions,
-        'Fractions Including Decimals': FractionsDec,
-        'Fractions Including Decimals & Percentages': FractionsDecPerc,
+        'Fractions (Inc. Decimals)': FractionsDec,
+        'Fractions (Inc. Decimals & Percentages)': FractionsDecPerc,
         'Statistics': Statistics
     }
 

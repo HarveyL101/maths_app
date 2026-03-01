@@ -60,7 +60,7 @@ const FracAddition = () => {
         =
         \\frac{${newA}}{${commonDenom}} + \\frac{${newC}}{${commonDenom}}
         =
-        \\frac{${numerator}}{${commonDenom}} \\underlinesegment{\\degree\\degree}
+        \\frac{${numerator}}{${commonDenom}}
       `;
     }
 

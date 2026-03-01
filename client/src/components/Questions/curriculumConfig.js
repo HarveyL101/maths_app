@@ -8,11 +8,9 @@ export const curriculum = {
       'Division'
     ],
     Fractions: [
-      'Addition',
-      'Subtraction',
-      'Counting Up',
-      'Fractions (Inc. Decimals)',
-      'Fractions (Inc. Decimals & Percentages)'
+      'Fraction Addition',
+      'Fraction Subtraction',
+      'Fraction Counting Up',
     ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes'],
@@ -25,7 +23,12 @@ export const curriculum = {
       'Subtraction',
       'Multiplication',
       'Division',
-      'Fractions (Including Decimals)'
+    ],
+    Fractions: [
+      'Fraction Addition',
+      'Fraction Subtraction',
+      'Fraction Counting Up',
+      'Fractions (Inc. Decimals)',
     ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes', 'Position & Direction'],
@@ -38,7 +41,12 @@ export const curriculum = {
       'Subtraction',
       'Multiplication',
       'Division',
-      'Fractions (Including Decimals & Percentages)'
+    ],
+    Fractions: [
+      'Fraction Addition',
+      'Fraction Subtraction',
+      'Fraction Counting Up',
+      'Fractions (Inc. Decimals & Percentages)',
     ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes', 'Position & Direction'],
@@ -48,9 +56,14 @@ export const curriculum = {
     Number: [
       'Number & Place Value',
       'Addition, Subtraction, Multiplication & Division',
-      'Fractions (Inclusive Decimals & Percentages)'
     ],
-    RatioAndProportion: ['Ratio & Proportion'],
+    Fractions: [
+      'Fraction Addition',
+      'Fraction Subtraction',
+      'Fraction Counting Up',
+      'Fractions (Inc. Decimals & Percentages)',
+    ],
+    'Ratio and Proportion': ['Ratio & Proportion'],
     Algebra: ['Algebra'],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes', 'Position & Direction'],

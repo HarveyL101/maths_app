@@ -5,6 +5,8 @@ import {
     Measurement,
     Addition,
     Division,
+    FracAddition,
+    FracCountUp,
     Fractions,
     FractionsDec,
     FractionsDecPerc,
@@ -38,9 +40,11 @@ const QuestionPortal = () => {
         'Subtraction': Subtraction,
         'Multiplication': Multiplication,
         'Division': Division,
+        'Fraction Addition': FracAddition,
+        'Fraction Counting Up': FracCountUp,
         'Fractions': Fractions,
-        'Fractions (Including Decimals)': FractionsDec,
-        'Fractions (Including Decimals & Percentages)': FractionsDecPerc,
+        'Fractions Including Decimals': FractionsDec,
+        'Fractions Including Decimals & Percentages': FractionsDecPerc,
         'Statistics': Statistics
     }
 

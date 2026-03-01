@@ -33,15 +33,15 @@ const FracSubtraction = () => {
     const a = Number(input1);
     const b = Number(input2);
     const c = Number(input3);
-    const d = Number(input4); 
+    const d = Number(input4);
 
     // Check if the denominators are the same (Year 3/4)
     if (b === d) {
-        const numerator = a - c;
-        return `
-            \\frac{${a}}{${b}} - \\frac{${c}}{${d}}
-            = \\frac{${numerator}}{${b}}
-        `;
+      const numerator = a - c;
+      return `
+          \\frac{${a}}{${b}} - \\frac{${c}}{${d}}
+          = \\frac{${numerator}}{${b}}
+      `;
     }
 
     // Check if a denominator is a multiple of the other (Year 5 Skill)
@@ -66,7 +66,121 @@ const FracSubtraction = () => {
         \\text{Unsuitable denominators for KS2 fraction subtraction}
     `;
   } 
+
+  useEffect(() => {
+    setPreviewBody(createKatex(arg1, arg2, arg3, arg4));
+  }, [arg1, arg2, arg3, arg4]);
+
+  const handleReset = () => {
+    setPreviewTitle("");
+    setArg1("");
+    setArg2("");
+    setArg3("");
+    setArg4("");
+    setPreviewBody(""); // also clears the current preview
+  }
+
+  // requires further sanitation (assert INT datatype, etc.)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!previewTitle || !arg1 || !arg2 || !arg3 || !arg4)  {
+      alert("Please fill in all fields before submission!");
+      return;
+    }
+
+    const formData = {
+      previewTitle,
+      arg1,
+      arg2,
+      arg3,
+      arg4
+    };
+
+    onSubmit(formData); // Passing data to parent component
+
+    handleReset(); // Clears fields after submission
+  }
+
+  return(
+    <div className="q-container">
+      <div className="qform-container">
+        <div className="qform-title">
+          <h1>Fraction Subtraction Template</h1>
+        </div>
+        <form onSubmit={handleSubmit}>
+
+          <input 
+            className="qform-input"
+            type="text" 
+            value={previewTitle}
+            onChange={(e) => setPreviewTitle(e.target.value)}
+            placeholder="Question Title..."
+          />
+
+          <input 
+            className="qform-input"
+            type="text"
+            value={arg1}
+            onChange={(e) => setArg1(e.target.value)}
+            placeholder="First Numerator Here..."
+          />
+
+          <input 
+            className="qform-input"
+            type="text" 
+            value={arg2}
+            onChange={(e) => setArg2(e.target.value)}
+            placeholder="First Denominator Here..."
+          />
+
+          <input 
+            className="qform-input"
+            type="text" 
+            value={arg3}
+            onChange={(e) => setArg3(e.target.value)}
+            placeholder="Second Numerator Here..."
+          />
+
+          <input 
+            className="qform-input"
+            type="text" 
+            value={arg4}
+            onChange={(e) => setArg4(e.target.value)}
+            placeholder="Second Denominator Here..."
+          />
+
+          <div className="qform-button-container">
+            <button className="qform-button" type="reset" onClick={handleReset}>Reset</button>
+            <button className="qform-button" type="submit">Submit</button>
+          </div>
+          
+        </form>
+      </div>
+
+      <div className="preview-container">
+        <div className="preview-title">
+          <h1>{previewTitle || "Question Title Here"}</h1>
+        </div>
+        <div className="preview-body">
+          {previewBody ? (
+            <div className="text-3xl">
+              <BlockMath math={previewBody} />
+            </div>
+          ) : (
+            <p>A complete calculation will appear here.</p>
+          )}
+        </div>
+
+        <input className="qform-input" type="text" placeholder="Answer will go here..." disabled/>
+        
+        <div className="preview-button-container ">
+          <button className="preview-button" type="reset" disabled>Reset</button>
+          <button className="preview-button" type="submit" disabled>Submit</button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default FracSubtraction;
-// harveylovesellasomuch

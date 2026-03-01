@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 
-const Fractions = () => {
+const FracAddition = () => {
   // state definitions go here
   const [previewTitle, setPreviewTitle] = useState("");
   const [previewBody, setPreviewBody] = useState("");
@@ -65,7 +65,7 @@ const Fractions = () => {
     }
 
     return `
-      \\text{Unsuitable denominators for KS2 addition}
+      \\text{Unsuitable denominators for KS2 fraction addition}
     `;
   }
 
@@ -109,7 +109,7 @@ const Fractions = () => {
     <div className="q-container">
       <div className="qform-container">
         <div className="qform-title">
-          <h1>Addition Template</h1>
+          <h1>Fraction Addition Template</h1>
         </div>
         <form onSubmit={handleSubmit}>
 
@@ -186,4 +186,4 @@ const Fractions = () => {
   );
 };
 
-export default Fractions;
+export default FracAddition;

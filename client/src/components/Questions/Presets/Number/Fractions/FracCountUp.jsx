@@ -18,7 +18,7 @@ const CountUp = () => {
         <div className="q-container">
             <div className="qform-container">
                 <div className="qform-title">
-                <h1>Fractions Template</h1>
+                <h1>Fractional Counting Up Template</h1>
                 <h4>Here you can create a question for counting up and down in fractions</h4>
                 </div>
                 <form onSubmit={handleSubmit}>

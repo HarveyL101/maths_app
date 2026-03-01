@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 
-import { FracAddition, FracCountUp } from '../index.js';
-
 const Fractions = () => {
   // state definitions go here
   const [previewTitle, setPreviewTitle] = useState("");

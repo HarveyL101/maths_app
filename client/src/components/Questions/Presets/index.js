@@ -17,6 +17,7 @@ export {default as Subtraction} from './Number/Subtraction.jsx';
 
 // Number/Fractions
 export {default as FracAddition} from './Number/Fractions/FracAddition.jsx';
+export {default as FracSubtraction} from './Number/Fractions/FracSubtraction.jsx';
 export {default as FracCountUp} from './Number/Fractions/FracCountUp.jsx';
 export {default as Fractions} from './Number/Fractions/Fractions.jsx';
 export {default as FractionsDec} from './Number/Fractions/FractionsDec.jsx';

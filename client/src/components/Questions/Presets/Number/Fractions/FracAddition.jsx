@@ -60,7 +60,7 @@ const FracAddition = () => {
         =
         \\frac{${newA}}{${commonDenom}} + \\frac{${newC}}{${commonDenom}}
         =
-        \\frac{${numerator}}{${commonDenom}}
+        \\frac{${numerator}}{${commonDenom}} \\underlinesegment{\\degree\\degree}
       `;
     }
 
@@ -126,7 +126,7 @@ const FracAddition = () => {
             type="text"
             value={arg1}
             onChange={(e) => setArg1(e.target.value)}
-            placeholder="First Parameter Here..."
+            placeholder="First Numerator Here..."
           />
 
           <input 
@@ -134,7 +134,7 @@ const FracAddition = () => {
             type="text" 
             value={arg2}
             onChange={(e) => setArg2(e.target.value)}
-            placeholder="Second Parameter Here..."
+            placeholder="First Denominator Here..."
           />
 
           <input 
@@ -142,7 +142,7 @@ const FracAddition = () => {
             type="text" 
             value={arg3}
             onChange={(e) => setArg3(e.target.value)}
-            placeholder="Third Parameter Here..."
+            placeholder="Second Numerator Here..."
           />
 
           <input 
@@ -150,7 +150,7 @@ const FracAddition = () => {
             type="text" 
             value={arg4}
             onChange={(e) => setArg4(e.target.value)}
-            placeholder="Fourth Parameter Here..."
+            placeholder="Second Denominator Here..."
           />
 
           <div className="qform-button-container">

@@ -8,10 +8,11 @@ export const curriculum = {
       'Division'
     ],
     Fractions: [
-      'Fraction Addition',
-      'Fraction Counting Up',
-      'Fractions Including Decimals',
-      'Fractions Including Decimals & Percentages'
+      'Addition',
+      'Subtraction',
+      'Counting Up',
+      'Fractions (Inc. Decimals)',
+      'Fractions (Inc. Decimals & Percentages)'
     ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes'],

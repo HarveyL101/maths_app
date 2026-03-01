@@ -67,3 +67,6 @@ const FracSubtraction = () => {
     `;
   } 
 }
+
+export default FracSubtraction;
+// harveylovesellasomuch

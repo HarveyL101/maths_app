@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
+import 'katex/dist/katex.min.css';
+import { BlockMath } from 'react-katex'; 
 
 const TitleBar = () => {
   const { user, hasRole, isLoading } = useAuth();
@@ -25,7 +27,9 @@ const TitleBar = () => {
         </Link>
         
         {/* Center: title */}
-        <h1 className='text-2xl font-bold text-center flex-1'><u>Number Ninjas</u></h1>
+        <h1 className='text-2xl font-bold text-center flex-1'>
+          <BlockMath math={`\\text{\\underline{Number Ninjas} \\centerdot \\bigcup \\centerdot}`}/>
+        </h1>
 
         {/* Right: profile picture */}
         <Link to='/profile'>

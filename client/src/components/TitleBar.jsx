@@ -25,10 +25,13 @@ const TitleBar = () => {
             title='Press me for the homepage!'
           />
         </Link>
-        
+        {/* \\underline{Number Ninjas} */}
         {/* Center: title */}
-        <h1 className='text-2xl font-bold text-center flex-1'>
-          <BlockMath math={`\\text{\\underline{Number Ninjas} \\centerdot \\bigcup \\centerdot}`}/>
+        <h1 className='text-2xl font-bold flex-1'>
+          <BlockMath math={`
+            \\utilde{Number Ninjas}
+            \\left( \\overset{\\thicksim}{\\odot} \\; \\underlinesegment{} \\;  \\overset{\\thicksim}{\\odot} \\right) \\; 
+          `}/>
         </h1>
 
         {/* Right: profile picture */}

@@ -41,4 +41,6 @@
   .qform-input-fraction {
     @apply text-2xl
   }
+/* Bubble input variant (Number & place value etc.) */
+/* Will be a rounded square input field to be lined up in a row */
 }

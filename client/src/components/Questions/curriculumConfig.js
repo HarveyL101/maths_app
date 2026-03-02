@@ -12,6 +12,10 @@ export const curriculum = {
       'Fraction Subtraction',
       'Fraction Counting Up',
     ],
+    'Number & Place Value': [
+      'Counting Up',
+      'Number & Place Value'
+    ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes'],
     Statistics: ['Statistics'],
@@ -30,6 +34,10 @@ export const curriculum = {
       'Fraction Counting Up',
       'Fractions (Inc. Decimals)',
     ],
+    'Number & Place Value': [
+      'Counting Up',
+      'Number & Place Value'
+    ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes', 'Position & Direction'],
     Statistics: ['Statistics'],
@@ -47,6 +55,10 @@ export const curriculum = {
       'Fraction Subtraction',
       'Fraction Counting Up',
       'Fractions (Inc. Decimals & Percentages)',
+    ],
+    'Number & Place Value': [
+      'Counting Up',
+      'Number & Place Value'
     ],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes', 'Position & Direction'],

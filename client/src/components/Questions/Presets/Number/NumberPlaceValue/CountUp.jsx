@@ -5,7 +5,7 @@ import { BlockMath } from 'react-katex';
 const CountUp = () => {
   const [previewTitle, setPreviewTitle] = useState("");
   const [previewBody, setPreviewBody] = useState("");
-  // Will represent an array of fractions in KaTeX format e.g. [1/5, 2/5, 3/5, 4/5, 5/5]
+  // Will represent an array of fractions in KaTeX format e.g. [1, 2, 3, 4, 5]
   // Trialling an idea of using an array of values instead of 10 separate variables
   const [numbers, setNumbers] = useState([
     { value: '', hidden: false },
@@ -56,8 +56,7 @@ const CountUp = () => {
     <div className="q-container">
       <div className="qform-container">
         <div className="qform-title">
-          <h1>Fractional Counting Up Template</h1>
-          <h4>Here you can create a question for counting up and down in fractions</h4>
+          <h1>Number & Place Value Template</h1>
         </div>
 
           <form onSubmit={handleSubmit}>

@@ -27,6 +27,7 @@ import {
 
 import { curriculum } from './curriculumConfig';
 import { useState } from "react";
+import TitleBar from '../TitleBar.jsx';
 
 const QuestionPortal = () => {
     const [selectedYear, setSelectedYear] = useState('');
@@ -60,13 +61,13 @@ const QuestionPortal = () => {
         'Fractions (Inc. Decimals)': FractionsDec,
         'Fractions (Inc. Decimals & Percentages)': FractionsDecPerc,
         // Number/NumberPlaceValue
-        'Counting up': CountUp,
+        'Counting Up': CountUp,
         'Number & Place Value': NumberPlaceValue,
         // Statistics
         'Statistics': Statistics
     }
 
-    const SelectedPreset = selectedSubTopic && PRESET_COMPONENTS[selectedSubTopic];
+    const SelectedPreset = selectedSubTopic && PRESET_COMPONENTS[selectedSubTopic?.trim()];
 
     const handleYearChange = (e) => {
         setSelectedYear(e.target.value);
@@ -81,6 +82,7 @@ const QuestionPortal = () => {
 
     return (
         <div className="portal-container">
+            <TitleBar />
             <div className="portal-card">
                 <div className="portal-header">
                     <h1>This is the header portion</h1>

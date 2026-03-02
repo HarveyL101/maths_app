@@ -17,12 +17,27 @@ const FracCountUp = () => {
 
     useEffect(() => {
         const katexStr = numbers
-            .map(n => n.hidden ? '\\_' : n.value || '?')
+            .map(n => {
+                if (n.hidden) return '\\_';
+                if (!n.value) return '?';
+
+                const [numerator, denominator] = n.value.split('/');
+                return `\\frac{${numerator}}{${denominator}}`; // splits and assign given inputs x/y
+            })
             .join(', \\; '); // padding between each value
+
         setPreviewBody(katexStr);
     }, [numbers]);
 
     const handleNumberChange = (index, value) => {
+        // Allows only digits and one forward slash 
+        const validCharacters = /^[0-9/]*$/;
+        if (!validCharacters.test(value)) return;
+
+        // Allow only one slash
+        const slashCount = (value.match(/\//g) || []).length;
+        if (slashCount > 1) return;
+
         const newNumbers = [...numbers];
         newNumbers[index].value = value;
         setNumbers(newNumbers);
@@ -91,6 +106,8 @@ const FracCountUp = () => {
                                 value={n.value}
                                 onChange={(e) => handleNumberChange(i, e.target.value)}
                                 placeholder={`Number ${i + 1}`}
+                                pattern="\d+\/\d+"
+                                title="Enter a fraction in the form a/b"
                             />
                         ))}
                     </div>

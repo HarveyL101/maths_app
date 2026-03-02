@@ -62,6 +62,7 @@ const QuestionPortal = () => {
         // Number/NumberPlaceValue
         'Counting up': CountUp,
         'Number & Place Value': NumberPlaceValue,
+        // Statistics
         'Statistics': Statistics
     }
 
@@ -86,7 +87,10 @@ const QuestionPortal = () => {
 
                     <label> {/** Displays the appropriate subgroup options based on the selected grouping (Hierarchy = YearGroup -> Topic -> SubTopic) */}
                         Target Year Group:
-                        <select value={selectedYear} onChange={handleYearChange}>
+                        <select 
+                            value={selectedYear} 
+                            onChange={handleYearChange}
+                        >
                             <option value="">Select year</option>
                             {[3, 4, 5, 6].map((year) => (
                                 <option key={year} value={year}>
@@ -103,7 +107,7 @@ const QuestionPortal = () => {
                             onChange={handleTopicChange}
                             disabled={!selectedYear}
                         >
-                            <option value="">Select topic</option>
+                            <option value="">Select Topic</option>
 
                             {selectedYear && 
                                 Object.keys(curriculum[selectedYear]).map((topic) => (
@@ -113,14 +117,14 @@ const QuestionPortal = () => {
                                 ))}
                         </select>
                     </label>
-                <label>
+                    <label>
                         Sub-Topic:
                         <select
                             value={selectedSubTopic}
                             onChange={(e) => setSelectedSubTopic(e.target.value)}
                             disabled={!selectedTopic}
                         >
-                            <option value="">Select sub-topic</option>
+                            <option value="">Select Sub-Topic</option>
 
                             {selectedYear && 
                                 selectedTopic &&

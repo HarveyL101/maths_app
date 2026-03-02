@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
+import ToolTip from '../../../ToolTip.jsx';
 
 const Addition = () => {
   // state definitions go here
@@ -95,11 +96,21 @@ const Addition = () => {
   return (
     <div className="q-container">
       <div className="qform-container">
-        <div className="qform-title">
+        <div className="qform-title relative">
           <h1>Addition Template</h1>
+
+          <div className="absolute top-0 right-2">
+            <ToolTip
+              title="This is a Popup Title" 
+              body="
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio ipsam, 
+                nostrum assumenda fugit eum hic quis nesciunt rerum expedita delectus, 
+                nobis velit doloribus fugiat odio quod? Rerum reprehenderit autem ex!"
+            />
+          </div>
+          
         </div>
         <form onSubmit={handleSubmit}>
-
           <input 
             className="qform-input"
             type="text" 

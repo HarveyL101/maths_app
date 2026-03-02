@@ -48,7 +48,7 @@ const CountUp = () => {
   // Also updates the array to be displayed in preview
   useEffect(() => {
     setPreviewBody(createKatex(arg1, arg2, arg3, arg4, arg5));
-    setNumArr(input1, input2, input3, input4, input5);
+    setNumArr(arg1, arg2, arg3, arg4, arg5);
   }, [arg1, arg2, arg3, arg4, arg5]);
 
   const handleReset = () => {

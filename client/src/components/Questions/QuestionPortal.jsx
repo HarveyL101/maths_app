@@ -1,19 +1,27 @@
 import {
+    // Algebra
     Algebra,
+    // Geometry
     PositionDirection,
     PropertiesOfShapes,
+    // Measurement
     Measurement,
+    // Number
     Addition,
+    Subtraction,
+    Multiplication,
     Division,
+    // Number/Fractions
     FracAddition,
     FracSubtraction,
     FracCountUp,
     Fractions,
     FractionsDec,
     FractionsDecPerc,
-    Multiplication,
+    // Number/NumberPlaceValue
+    CountUp,
     NumberPlaceValue,
-    Subtraction,
+    // Statistics
     Statistics
 } from './Presets/index.js';
 
@@ -32,21 +40,28 @@ const QuestionPortal = () => {
     }
 
     const PRESET_COMPONENTS = {
+        // Algebra
         'Algebra': Algebra,
+        // Geometry
         'Properties of Shapes': PropertiesOfShapes,
         'Position & Direction': PositionDirection,
+        // Measurement
         'Measurement': Measurement,
-        'Number & Place Value': NumberPlaceValue,
+        // Number
         'Addition': Addition,
         'Subtraction': Subtraction,
         'Multiplication': Multiplication,
         'Division': Division,
+        // Number/Fraction
         'Fraction Addition': FracAddition,
         'Fraction Subtraction': FracSubtraction,
         'Fraction Counting Up': FracCountUp,
         'Fractions': Fractions,
         'Fractions (Inc. Decimals)': FractionsDec,
         'Fractions (Inc. Decimals & Percentages)': FractionsDecPerc,
+        // Number/NumberPlaceValue
+        'Counting up': CountUp,
+        'Number & Place Value': NumberPlaceValue,
         'Statistics': Statistics
     }
 

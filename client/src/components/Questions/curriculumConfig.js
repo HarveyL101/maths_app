@@ -63,7 +63,11 @@ export const curriculum = {
       'Fraction Counting Up',
       'Fractions (Inc. Decimals & Percentages)',
     ],
-    'Ratio and Proportion': ['Ratio & Proportion'],
+    'Number & Place Value': [
+      'Counting Up',
+      'Number & Place Value'
+    ],
+    'Ratio & Proportion': ['Ratio & Proportion'],
     Algebra: ['Algebra'],
     Measurement: ['Measurement'],
     Geometry: ['Properties of Shapes', 'Position & Direction'],

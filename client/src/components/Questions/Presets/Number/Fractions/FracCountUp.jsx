@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 
-const CountUp = () => {
+const FracCountUp = () => {
     const [previewTitle, setPreviewTitle] = useState("");
     const [previewBody, setPreviewBody] = useState("");
     // Will represent an array of fractions in KaTeX format e.g. [1/5, 2/5, 3/5, 4/5, 5/5]
@@ -129,4 +129,4 @@ const CountUp = () => {
     );
 }
 
-export default CountUp;
+export default FracCountUp;

@@ -101,11 +101,29 @@ const Addition = () => {
 
           <div className="absolute top-0 right-2">
             <ToolTip
-              title="This is a Popup Title" 
-              body="
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio ipsam, 
-                nostrum assumenda fugit eum hic quis nesciunt rerum expedita delectus, 
-                nobis velit doloribus fugiat odio quod? Rerum reprehenderit autem ex!"
+              title="Addition Guidance (National Curriculum backed)" 
+              body={
+                <>
+                  <p><strong>Year 3:</strong></p>
+                  <p>
+                    Pupils add three-digit numbers mentally and using 
+                    formal column methods. They estimate answers and check using 
+                    inverse operations. They solve missing number and word problems.
+                  </p>
+
+                  <p><strong>Year 4:</strong></p>
+                  <p>
+                    Pupils use formal written methods with four-digit numbers. 
+                    They solve two-step problems and decide which methods are appropriate.
+                  </p>
+
+                  <p><strong>Year 5:</strong></p>
+                  <p>
+                    Pupils add numbers with more than four digits using formal and mental methods.
+                    They solve multi-step contextual problems and use rounding to judge accuracy.
+                  </p>
+                </>
+              }
             />
           </div>
           

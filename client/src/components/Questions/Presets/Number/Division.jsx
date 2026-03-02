@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
 import { BlockMath } from "react-katex";
+import ToolTip from "../../../ToolTip";
 
 const Division = () => {
   // state definitions here
@@ -127,8 +128,44 @@ const Division = () => {
   return (
     <div className="q-container">
       <div className="qform-container">
-        <div className="qform-title">
+        <div className="qform-title relative">
           <h1>Division Template</h1>
+
+          <div className="absolute top-0 right-2">
+            <ToolTip
+              title="Addition Guidance (National Curriculum backed)" 
+              body={
+                <>
+                  <p><strong>Year 3:</strong></p>
+                  <p>
+                    Pupils recall the 3, 4 and 8 times tables. 
+                    They multiply two-digit numbers by one-digit numbers
+                    and solve simple scaling and correspondence problems.
+                  </p>
+
+                  <p><strong>Year 4:</strong></p>
+                  <p>
+                    Pupils recall all multiplication facts to 12 &times; 12. 
+                    They multiply two- and three-digit numbers by one digit using formal methods 
+                    and use factor pairs and the distributive law.
+                  </p>
+
+                  <p><strong>Year 5:</strong></p>
+                  <p>
+                    Pupils multiply up to four digits by one- or two-digit numbers 
+                    using long multiplication. They divide using short division and interpret 
+                    remainders in context. They identify primes, factors and multiples.
+                  </p>
+                  <p><strong>Year: 6</strong></p>
+                  <p>
+                    Pupils divide using long division with two-digit divisors. 
+                    They apply order of operations and solve complex multi-step problems 
+                    involving all four operations.
+                  </p>
+                </>
+              }
+            />
+          </div>
         </div>
         <form onSubmit={handleSubmit}>
 
@@ -145,7 +182,7 @@ const Division = () => {
             type="text"
             value={arg1}
             onChange={(e) => setArg1(e.target.value)}
-            placeholder="First Parameter Here..."
+            placeholder="Dividend..."
           />
 
           <input 
@@ -153,7 +190,7 @@ const Division = () => {
             type="text" 
             value={arg2}
             onChange={(e) => setArg2(e.target.value)}
-            placeholder="Second Parameter Here..."
+            placeholder="Divisor..."
           />
 
           <div className="qform-button-container">

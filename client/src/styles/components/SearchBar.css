@@ -1,0 +1,38 @@
+@layer components {
+  .search-container {
+    @apply w-full p-6;
+  }
+
+  .search-bar {
+    @apply flex flex-wrap items-center gap-3 bg-slate-100 p-4 rounded-xl shadow-sm;
+  }
+
+  .search-bar select,
+  .search-input {
+    @apply px-3 py-2 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-400;
+  }
+
+  .search-input {
+    @apply flex-1 min-w-50;
+  }
+
+  .reset-btn {
+    @apply px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors;
+  }
+
+  .search-btn {
+    @apply px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors;
+  }
+
+  .results-area {
+    @apply mt-8;
+  }
+
+  .results-area h2 {
+    @apply text-xl font-semibold mb-3;
+  }
+
+  .results-box {
+    @apply min-h-40 p-6 bg-white border border-gray-200 rounded-xl shadow-sm;
+  }
+}

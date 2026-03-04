@@ -61,6 +61,40 @@ CREATE TABLE topic (
   UNIQUE (name, year_group)
 );
 
+-- Will need to contain each subtopic and its level
+-- or a script on the backend that checs if it already exists and makes a new one if not
+INSERT INTO topic (name, year_group) 
+VALUES 
+-- Number
+  ('Addition', 3),
+  ('Subtraction', 3),
+  ('Multiplication', 3),
+  ('Division', 3),
+-- Fractions
+  ('Fraction Addition', 3),
+  ('Fraction Count Up', 3),
+  ('Fraction Subtraction', 3),
+  ('Fractions (Inc. Decimals)', 4),
+  ('Fraction Addition', 4),
+  ('Fraction Count Up', 4),
+  ('Fraction Subtraction', 4),
+  ('Fractions (inc. Decimals & Percentages)', 5),
+  ('Fraction Addition', 5),
+  ('Fraction Count Up', 5),
+  ('Fraction Subtraction', 5),
+  ('Fractions (inc. Decimals & Percentages)', 6),
+  ('Fraction Addition', 6),
+  ('Fraction Count Up', 6),
+  ('Fraction Subtraction', 6),
+-- Number & Place Value
+  ('Count Up', 3),
+  ('Count Up', 4),
+  ('Count Up', 5),
+  ('Count Up', 6),
+  ('Number & Place Value', 3),
+  ('Number & Place Value', 4),
+  ('Number & Place Value', 5),
+  ('Number & Place Value', 6);
 -- 
 -- Subtopic Declaration
 -- 
@@ -122,7 +156,7 @@ ON attempts(user_uuid, question_id);
 -- 
 -- Views
 -- 
-CREATE VIEW user_accuracy AS 
+CREATE VIEW user_accuracy AS  
 SELECT 
   user_uuid,
   question_id,

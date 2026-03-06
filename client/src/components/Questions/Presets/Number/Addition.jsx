@@ -3,7 +3,7 @@ import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import ToolTip from '../../../ToolTip.jsx';
 
-const Addition = () => {
+const Addition = ({ onSubmit }) => {
   // state definitions go here
   const [previewTitle, setPreviewTitle] = useState("");
   const [previewBody, setPreviewBody] = useState("");
@@ -82,11 +82,7 @@ const Addition = () => {
       return;
     }
 
-    const formData = {
-      previewTitle,
-      arg1,
-      arg2
-    };
+    const formData = { previewTitle, arg1, arg2 };
 
     onSubmit(formData); // Passing data to parent component
 

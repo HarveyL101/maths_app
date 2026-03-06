@@ -13,7 +13,9 @@
     "concurrently": "^9.2.1"
   },
   "dependencies": {
+    "@base-ui/react": "^1.2.0",
     "@dnd-kit/react": "^0.3.2",
+    "bootstrap": "^5.3.8",
     "katex": "^0.16.28",
     "node": "^20.19.6",
     "npm": "^11.6.0",

@@ -37,6 +37,11 @@ const QuestionPortal = () => {
 
     const handleFormSubmit = (submittedData) => {
         console.log("Data received in parent:", submittedData);
+
+        // Needs to contain YearGroup, Topic, Sub-Topic, Title, Input1, Input2
+        const formData = {
+
+        }
         setFormData(submittedData);
     }
 

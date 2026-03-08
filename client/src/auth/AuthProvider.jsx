@@ -13,14 +13,18 @@ export function AuthProvider({ children }) {
       if (!token) {
         // If a token is not present, the user is not logged in
         setUser(null);
-        setIsLoading(false);
         return;
       }
 
       try {
-        const res = await fetch('/credentials', {
+        const res = await fetch('http://localhost:5000/credentials', {
           headers: { Authorization: `Bearer ${token}` }
         });
+
+        if (res.status === 401) {
+          logout(); // Invalid token
+          return;
+        }
 
         if (!res.ok) {
           setUser(null);
@@ -48,7 +52,7 @@ export function AuthProvider({ children }) {
   );
 
   const hasAnyRole = useCallback(
-    (roles) => roles.some(role => user?.roles?.includes(role)),
+    (roles) => roles?.some(role => user?.roles?.includes(role)) ?? false,
     [user]
   );
 

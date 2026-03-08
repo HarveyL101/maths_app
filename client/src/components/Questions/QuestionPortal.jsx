@@ -27,7 +27,6 @@ import {
 
 import { curriculum } from './curriculumConfig';
 import { useState } from "react";
-import TitleBar from '../TitleBar.jsx';
 
 const QuestionPortal = () => {
     const [selectedYear, setSelectedYear] = useState('');
@@ -55,17 +54,34 @@ const QuestionPortal = () => {
 
         created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
         */
+
+        // Sanitising against excess whitespace
+        const qTitle = submittedData.previewTitle.trim();
+
         const formData = {
             year: selectedYear,
             topic: selectedTopic,
             subtopic: selectedSubTopic,
-            title: submittedData.previewTitle,
+            title: qTitle,
             input: {
                 input1: submittedData.arg1,
                 input2: submittedData.arg2
             }
         };
-        setFormData(submittedData);
+        // Checks QuestionPortal values
+        if (!formData.year || !formData.topic || !formData.subtopic) {
+            alert("Missing necessary tags (Year Group, Topic, Subtopic).");
+            return;
+        }
+        // Checks Child Component values
+        if (!formData.title || !formData.input.input1 || !formData.input.input2) {
+            alert("Missing necessary question parameters (Title, Input1, Input2");
+            return;
+        }
+
+        // Api endpoint call will go here
+
+        console.log("Form Data: \n", formData);
     }
 
     const PRESET_COMPONENTS = {
@@ -110,7 +126,6 @@ const QuestionPortal = () => {
 
     return (
         <div className="portal-container">
-            <TitleBar />
             <div className="portal-card">
                 <div className="portal-header">
                     <h1>This is the header portion</h1>

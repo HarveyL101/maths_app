@@ -1,6 +1,5 @@
 import TitleBar from '../components/TitleBar.jsx';
 import SearchBar from '../components/SearchBar.jsx';
-import SideBar from '../components/SideBar.jsx';
 import Accordion from '../components/Accordion.jsx';
 
 const curriculum = [

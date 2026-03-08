@@ -38,10 +38,33 @@ const QuestionPortal = () => {
     const handleFormSubmit = (submittedData) => {
         console.log("Data received in parent:", submittedData);
 
-        // Needs to contain YearGroup, Topic, Sub-Topic, Title, Input1, Input2
-        const formData = {
+        console.log(`
+            Input 1: ${submittedData.arg1} \n
+            Input 2: ${submittedData.arg2} \n
+            Question Title: ${submittedData.previewTitle} \n    
+        `);
 
-        }
+        // Needs to contain YearGroup, Topic, Sub-Topic, Title, Input1, Input2
+        /*
+        id SERIAL PRIMARY KEY,
+        subtopic_id INT REFERENCES subtopic(id) ON DELETE CASCADE,
+        educator_uuid UUID REFERENCES users(id),
+
+        title TEXT NOT NULL,
+        input JSONB NOT NULL,
+
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+        */
+        const formData = {
+            year: selectedYear,
+            topic: selectedTopic,
+            subtopic: selectedSubTopic,
+            title: submittedData.previewTitle,
+            input: {
+                input1: submittedData.arg1,
+                input2: submittedData.arg2
+            }
+        };
         setFormData(submittedData);
     }
 

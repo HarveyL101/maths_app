@@ -114,13 +114,12 @@ CREATE TABLE questions (
   educator_uuid UUID REFERENCES users(id),
 
   title TEXT NOT NULL,
-  question_text TEXT NOT NULL,
-  input JSONB,
+  input JSONB NOT NULL,
   answer JSONB,
 
-  difficulty SMALLINT CHECK (difficulty BETWEEN 1 AND 5),
-  version INT DEFAULT 1,
-  is_active BOOLEAN DEFAULT TRUE,
+  difficulty SMALLINT CHECK (difficulty BETWEEN 1 AND 5), -- Accounts for future functionality of setting difficulties
+  version INT DEFAULT 1, -- Accounts for future functionality of altering questions
+  is_active BOOLEAN DEFAULT TRUE, -- Allows for soft deletion of questions through querying
 
   created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );

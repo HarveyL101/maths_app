@@ -27,6 +27,15 @@ import {
 
 import { curriculum } from './curriculumConfig';
 import { useState } from "react";
+import { useContext } from 'react';
+import { AuthContext } from '../../auth/AuthContext.jsx';
+
+const { user } = useContext(AuthContext);
+
+if (!user) {
+    alert("You must be logged in to create a question.");
+    return;
+}
 
 const QuestionPortal = () => {
     const [selectedYear, setSelectedYear] = useState('');
@@ -34,54 +43,57 @@ const QuestionPortal = () => {
     const [selectedSubTopic, setSelectedSubTopic] = useState('');
     const [formData, setFormData] = useState(null);
 
-    const handleFormSubmit = (submittedData) => {
+    const handleFormSubmit = async (submittedData) => {
         console.log("Data received in parent:", submittedData);
 
-        console.log(`
-            Input 1: ${submittedData.arg1} \n
-            Input 2: ${submittedData.arg2} \n
-            Question Title: ${submittedData.previewTitle} \n    
-        `);
-
-        // Needs to contain YearGroup, Topic, Sub-Topic, Title, Input1, Input2
-        /*
-        id SERIAL PRIMARY KEY,
-        subtopic_id INT REFERENCES subtopic(id) ON DELETE CASCADE,
-        educator_uuid UUID REFERENCES users(id),
-
-        title TEXT NOT NULL,
-        input JSONB NOT NULL,
-
-        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-        */
-
-        // Sanitising against excess whitespace
         const qTitle = submittedData.previewTitle.trim();
 
-        const formData = {
+        const payload = {
+            creator: user.uuid, // Educator_uuid must go here
             year: selectedYear,
             topic: selectedTopic,
             subtopic: selectedSubTopic,
             title: qTitle,
             input: {
-                input1: submittedData.arg1,
-                input2: submittedData.arg2
+                input1: submittedData.arg1?.trim(),
+                input2: submittedData.arg2?.trim()
             }
         };
         // Checks QuestionPortal values
-        if (!formData.year || !formData.topic || !formData.subtopic) {
+        if (!payload.year || !payload.topic || !payload.subtopic) {
             alert("Missing necessary tags (Year Group, Topic, Subtopic).");
             return;
         }
         // Checks Child Component values
-        if (!formData.title || !formData.input.input1 || !formData.input.input2) {
+        if (!payload.title || !payload.input.input1 || !payload.input.input2) {
             alert("Missing necessary question parameters (Title, Input1, Input2");
             return;
         }
+        console.log("Form Data: \n", payload);
 
-        // Api endpoint call will go here
+        try {
+            const res = await fetch(`/questions`, {
+                method: "POST", 
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('jwt')}`
+                },
+                body: JSON.stringify(payload)
+            });
 
-        console.log("Form Data: \n", formData);
+            const json = await res.json();
+
+            if (res.ok) {
+                alert("Question successfully created!");
+                setFormData(null); // Resets form
+            } else {
+                alert("Server error occurre, please check your connection and try again");
+                return;
+            }
+        } catch(error) {
+            console.log("Error: ", error);
+            return;
+        }
     }
 
     const PRESET_COMPONENTS = {
@@ -155,7 +167,7 @@ const QuestionPortal = () => {
                             <option value="">Select Topic</option>
 
                             {selectedYear && 
-                                Object.keys(curriculum[selectedYear]).map((topic) => (
+                                Object.keys(curriculum[selectedYear]).sort().map((topic) => (
                                     <option key={topic} value={topic}>
                                         {topic}
                                     </option>
@@ -173,7 +185,7 @@ const QuestionPortal = () => {
 
                             {selectedYear && 
                                 selectedTopic &&
-                                curriculum[selectedYear][selectedTopic].map((subTopic) => (
+                                curriculum[selectedYear][selectedTopic].sort().map((subTopic) => (
                                     <option key={subTopic} value={subTopic}>
                                         {subTopic}
                                     </option>

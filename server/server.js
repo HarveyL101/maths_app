@@ -62,12 +62,18 @@ const PORT = process.env.PORT || 5000;
 // --- Route Definitions ---
 const credentialsRoute = require('./routes/credentials.js');
 const loginRoute = require('./routes/login.js');
+const questionsRoute = require('./routes/question.js');
+const questionPortalRoute = require('./routes/questionPortal.js');
 const registerRoute = require('./routes/register.js');
+const subtopicRoute = require('./routes/subtopic.js');
 const teacherPortalRouter = require('./routes/teacherPortal.js');
 
 app.use('/credentials', credentialsRoute);
 app.use('/login', loginRoute);
+app.use('/questions', questionsRoute);
+app.use('/question-portal', questionPortalRoute);
 app.use('/register', registerRoute);
+app.use('/subtopics', subtopicRoute);
 app.use('/teacher-portal', teacherPortalRouter(authenticateJWT, hasRole));
 
 // --- Change Email (Currently unused, will remain here while so) ---

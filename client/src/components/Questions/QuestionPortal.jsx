@@ -30,18 +30,20 @@ import { useState } from "react";
 import { useContext } from 'react';
 import { AuthContext } from '../../auth/AuthContext.jsx';
 
-const { user } = useContext(AuthContext);
 
-if (!user) {
-    alert("You must be logged in to create a question.");
-    return;
-}
 
 const QuestionPortal = () => {
     const [selectedYear, setSelectedYear] = useState('');
     const [selectedTopic, setSelectedTopic] = useState('');
     const [selectedSubTopic, setSelectedSubTopic] = useState('');
     const [formData, setFormData] = useState(null);
+
+    const { user } = useContext(AuthContext);
+
+    if (!user) {
+        alert("You must be logged in to create a question.");
+        return;
+    }
 
     const handleFormSubmit = async (submittedData) => {
         console.log("Data received in parent:", submittedData);
@@ -54,10 +56,7 @@ const QuestionPortal = () => {
             topic: selectedTopic,
             subtopic: selectedSubTopic,
             title: qTitle,
-            input: {
-                input1: submittedData.arg1?.trim(),
-                input2: submittedData.arg2?.trim()
-            }
+            params: submittedData.params
         };
         // Checks QuestionPortal values
         if (!payload.year || !payload.topic || !payload.subtopic) {
@@ -121,6 +120,33 @@ const QuestionPortal = () => {
         'Number & Place Value': NumberPlaceValue,
         // Statistics
         'Statistics': Statistics
+    }
+
+    const QUESTION_SCHEMAS = {
+        addition: {
+            fields: ["a", "b"]
+        },
+        subtraction: {
+            fields: ["a", "b"]
+        },
+        multiplication: {
+            fields: ["a", "b"]
+        },
+        division: {
+            fields: ["a", "b"]
+        },
+        fraction_addition: {
+            fields: ["a", "b", "c", "d"]
+        },
+        fraction_subtraction: {
+            fields: ["a", "b", "c", "d"]
+        },
+        fraction_count_up: {
+            fields: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
+        },
+        count_up: {
+            fields: ["a", "b", "c", "d", "e"]
+        }
     }
 
     const SelectedPreset = selectedSubTopic && PRESET_COMPONENTS[selectedSubTopic?.trim()];

@@ -106,6 +106,22 @@ CREATE TABLE subtopic (
 );
 
 -- 
+-- Question_Type Declaration 
+-- 
+CREATE TABLE question_type (
+  id SERIAL PRIMARY KEY,
+  name TEXT UNIQUE NOT NULL
+);
+
+INSERT INTO question_type (name)
+VALUES
+  ('addition'),
+  ('subtraction'),
+  ('multiplication'),
+  ('division'),
+  ('fraction_addition');
+
+-- 
 -- Questions Declaration
 -- 
 CREATE TABLE questions (
@@ -113,6 +129,7 @@ CREATE TABLE questions (
   subtopic_id INT REFERENCES subtopic(id) ON DELETE CASCADE,
   educator_uuid UUID REFERENCES users(id),
 
+  question_type_id INT REFERENCES question_type(id),
   title TEXT NOT NULL,
   input JSONB NOT NULL,
   answer JSONB,

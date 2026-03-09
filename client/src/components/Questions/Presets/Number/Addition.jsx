@@ -2,31 +2,24 @@ import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import ToolTip from '../../../ToolTip.jsx';
+import BaseQuestionForm from "../../BaseQuestionForm.jsx";
 
-const Addition = ({ onSubmit }) => {
-  // state definitions go here
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [previewBody, setPreviewBody] = useState("");
-  const [arg1, setArg1] = useState('');
-  const [arg2, setArg2] = useState('');
-
-  
-  const createKatex = (input1, input2) => {
+const createKatex = ({ a, b }) => {
 
     // Protects against crashing on load
-    if (!input1 || !input2) return "";
+    if (!a || !b) return "";
 
     // Checks if either input does not contain only one or more digits
-    if (!/^\d+$/.test(input1) || !/^\d+$/.test(input2)) {
+    if (!/^\d+$/.test(a) || !/^\d+$/.test(b)) {
       return `
       \\begin{array}{c}
       \\text{Please use positive whole numbers only}
       \\end{array}
       `;
     }
-    
-    const num1 = input1.split("");
-    const num2 = input2.split("");
+
+    const num1 = a.split("");
+    const num2 = b.split("");
 
     console.log(num1, num2);
 
@@ -44,22 +37,31 @@ const Addition = ({ onSubmit }) => {
     const row2 = ["+"].concat(padded2).join(" & ");
 
     // Answer = sum the digits, and pad the left-most column for alignment
-    const sumDigits = (parseInt(input1) + parseInt(input2))
+    const sumDigits = (parseInt(a) + parseInt(b))
       .toString()
       .split("");
     const answer = Array(totalCols - sumDigits.length).fill("").concat(sumDigits).join(" & ");
 
-    const template = `
-    \\begin{array}{${"c".repeat(totalCols)}}
-      ${row1} \\\\
-      ${row2} \\\\
-      \\hline
-      ${answer}
-    \\end{array}
-    `;
 
-    return template;
+    return `
+      \\begin{array}{${"c".repeat(totalCols)}}
+        ${row1} \\\\
+        ${row2} \\\\
+        \\hline
+        ${answer}
+      \\end{array}
+    `;
   }
+
+const Addition = ({ onSubmit }) => {
+  // state definitions go here
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [previewBody, setPreviewBody] = useState("");
+  const [arg1, setArg1] = useState('');
+  const [arg2, setArg2] = useState('');
+
+  
+  
 
   // Updates previewBody whenever arg1 or arg2 changes
   useEffect(() => {

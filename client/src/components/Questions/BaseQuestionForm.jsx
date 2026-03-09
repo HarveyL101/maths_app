@@ -1,4 +1,4 @@
-import { useState, useEffect, useEffectEvent } from "react";
+import { useState, useEffect } from "react";
 import { BlockMath } from "react-katex";
 
 const BaseQuestionForm = ({ title, tooltipText, fields, createKatex, onSubmit }) => {

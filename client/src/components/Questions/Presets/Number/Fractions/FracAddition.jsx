@@ -1,188 +1,86 @@
-import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
-import { BlockMath } from 'react-katex';
+import BaseQuestionForm from "../../../BaseQuestionForm";
 
-const FracAddition = () => {
-  // state definitions go here
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [previewBody, setPreviewBody] = useState("");
-  const [arg1, setArg1] = useState('');
-  const [arg2, setArg2] = useState('');
-  const [arg3, setArg3] = useState('');
-  const [arg4, setArg4] = useState('');
+const createKatex = (params) => {
+  const { frac1, frac2 } = params;
 
-  
-  const createKatex = (input1, input2, input3, input4) => {
+  // Protects against crashing on load
+  if (!frac1 || !frac2) return "";
 
-    // Protects against crashing on load
-    if (!input1 || !input2 || !input3 || !input4) return "";
+  const numerator1 = frac1.n;
+  const denominator1 = frac1.d;
+  const numerator2 = frac2.n;
+  const denominator2 = frac2.d;
 
-    // Protects against invalid fractions
-    if (input2 === "0" || input4 === "0") {
-      return `
-        \\text{Denominator cannot be zero}
-      `;
-    }
+  // Protects against crashing on load
+  if (!numerator1 || !denominator1 || !numerator2 || !denominator2) return "";
 
-    // Checks if either input does not contain only one or more digits
-    if (!/^\d+$/.test(input1) || !/^\d+$/.test(input2) || 
-        !/^\d+$/.test(input3) || !/^\d+$/.test(input4)) {
-      return `
-        \\frac{${input1}}{${input2}} + \\frac{${input3}}{${input4}} = 
-      `;
-    }
-
-    const a = Number(input1);
-    const b = Number(input2);
-    const c = Number(input3);
-    const d = Number(input4);
-
-    // Check if the denominators are the same (Year 3/4)
-    if (b === d) {
-      const numerator = a + c;
-      return `
-        \\frac{${a}}{${b}} + \\frac{${c}}{${d}}
-        = \\frac{${numerator}}{${b}}
-      `;
-    }
-
-    // Check if a denominator is a multiple of the other (Year 5 Skill)
-    if (b % d === 0 || d % b === 0) {
-      const commonDenom = Math.max(b, d);
-
-      const newA = a * (commonDenom / b);
-      const newC = c * (commonDenom / d);
-
-      const numerator = newA + newC;
-
-      return `
-        \\frac{${a}}{${b}} + \\frac{${c}}{${d}}
-        =
-        \\frac{${newA}}{${commonDenom}} + \\frac{${newC}}{${commonDenom}}
-        =
-        \\frac{${numerator}}{${commonDenom}}
-      `;
-    }
-
+  // Protects against invalid fractions
+  if (denominator1 === "0" || denominator2 === "0") {
     return `
-      \\text{Unsuitable denominators for KS2 fraction addition}
+      \\text{Denominator cannot be zero}
     `;
   }
 
-  // Updates previewBody whenever arg1 or arg2 changes
-  useEffect(() => {
-    setPreviewBody(createKatex(arg1, arg2, arg3, arg4));
-  }, [arg1, arg2, arg3, arg4]);
-
-  const handleReset = () => {
-    setPreviewTitle("");
-    setArg1("");
-    setArg2("");
-    setArg3("");
-    setArg4("");
-    setPreviewBody(""); // also clears the current preview
+  // Checks if either input does not contain only one or more digits
+  if (!/^\d+$/.test(numerator1) || !/^\d+$/.test(denominator1) || 
+      !/^\d+$/.test(numerator2) || !/^\d+$/.test(denominator2)) {
+    return `
+      \\frac{${numerator1}}{${denominator1}} + \\frac{${numerator2}}{${denominator2}} = 
+    `;
   }
 
-  // requires further sanitation (assert INT datatype, etc.)
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const a = Number(numerator1);
+  const b = Number(denominator1);
+  const c = Number(numerator2);
+  const d = Number(denominator2);
 
-    if (!previewTitle || !arg1 || !arg2 || !arg3 || !arg4)  {
-      alert("Please fill in all fields before submission!");
-      return;
-    }
-
-    const formData = {
-      previewTitle,
-      arg1,
-      arg2,
-      arg3,
-      arg4
-    };
-
-    onSubmit(formData); // Passing data to parent component
-
-    handleReset(); // Clears fields after submission
+  // Check if the denominators are the same (Year 3/4)
+  if (b === d) {
+    const numerator = a + c;
+    return `
+      \\frac{${a}}{${b}} + \\frac{${c}}{${d}}
+      = \\frac{${numerator}}{${b}}
+    `;
   }
+
+  // Check if a denominator is a multiple of the other (Year 5 Skill)
+  if (b % d === 0 || d % b === 0) {
+    const commonDenom = Math.max(b, d);
+
+    const newA = a * (commonDenom / b);
+    const newC = c * (commonDenom / d);
+
+    const numerator = newA + newC;
+
+    return `
+      \\frac{${a}}{${b}} + \\frac{${c}}{${d}}
+      =
+      \\frac{${newA}}{${commonDenom}} + \\frac{${newC}}{${commonDenom}}
+      =
+      \\frac{${numerator}}{${commonDenom}}
+    `;
+  }
+
+  return `
+    \\text{Unsuitable denominators for KS2 fraction addition}
+  `;
+}
+
+const FracAddition = () => {
 
   return (
-    <div className="q-container">
-      <div className="qform-container">
-        <div className="qform-title">
-          <h1>Fraction Addition Template</h1>
-        </div>
-        <form onSubmit={handleSubmit}>
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={previewTitle}
-            onChange={(e) => setPreviewTitle(e.target.value)}
-            placeholder="Question Title..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text"
-            value={arg1}
-            onChange={(e) => setArg1(e.target.value)}
-            placeholder="First Numerator Here..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={arg2}
-            onChange={(e) => setArg2(e.target.value)}
-            placeholder="First Denominator Here..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={arg3}
-            onChange={(e) => setArg3(e.target.value)}
-            placeholder="Second Numerator Here..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={arg4}
-            onChange={(e) => setArg4(e.target.value)}
-            placeholder="Second Denominator Here..."
-          />
-
-          <div className="qform-button-container">
-            <button className="qform-button" type="reset" onClick={handleReset}>Reset</button>
-            <button className="qform-button" type="submit">Submit</button>
-          </div>
-          
-        </form>
-      </div>
-
-      <div className="preview-container">
-        <div className="preview-title">
-          <h1>{previewTitle || "Question Title Here"}</h1>
-        </div>
-        <div className="preview-body">
-          {previewBody ? (
-            <div className="text-2xl">
-              <BlockMath math={previewBody} />
-            </div>
-          ) : (
-            <p>A complete calculation will appear here.</p>
-          )}
-        </div>
-
-        <input className="qform-input" type="text" placeholder="Answer will go here..." disabled/>
-        
-        <div className="preview-button-container ">
-          <button className="preview-button" type="reset" disabled>Reset</button>
-          <button className="preview-button" type="submit" disabled>Submit</button>
-        </div>
-      </div>
-    </div>
+    <BaseQuestionForm
+      title="Fraction Addition Template"
+      createKatex={createKatex}
+      fields={[
+        { name: "frac1.n", placeholder: "First Numerator" },
+        { name: "frac1.d", placeholder: "First Denominator" },
+        { name: "frac2.n", placeholder: "Second Numerator" },
+        { name: "frac2.d", placeholder: "Second Denominator" }
+      ]}
+      onSubmit={onSubmit}
+    />
   );
 };
 

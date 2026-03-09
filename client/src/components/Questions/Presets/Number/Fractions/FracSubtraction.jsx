@@ -2,184 +2,84 @@ import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 
-const FracSubtraction = () => {
-    // state definitions go here
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [previewBody, setPreviewBody] = useState("");
-  const [arg1, setArg1] = useState('');
-  const [arg2, setArg2] = useState('');
-  const [arg3, setArg3] = useState('');
-  const [arg4, setArg4] = useState('');
+const createKatex = (params) => {
+  const { frac1, frac2 } = params;
 
-  const createKatex = (input1, input2, input3, input4) => {
-    // Protects against crashing on load
-    if (!input1 || !input2 || !input3 || !input4) return "";
+  // Protects against crashing on load
+  if (!frac1 || !frac2) return "";
 
-    // Protects against invalid fractions
-    if (input2 === "0" || input4 === "0") {
-        return `
-            \\text{Denominator cannot be zero}
-        `;
-    }
+  const numerator1 = frac1.n;
+  const denominator1 = frac1.d;
+  const numerator2 = frac2.n;
+  const denominator2 = frac2.d;
 
-    // Checks if either input does not contain only one or more digits
-    if (!/^\d+$/.test(input1) || !/^\d+$/.test(input2) || 
-        !/^\d+$/.test(input3) || !/^\d+$/.test(input4)) {
+  if (!numerator1 || !denominator1 || !numerator2 || !denominator2) return "";
+
+  // Protects against invalid fractions
+  if (denominator1 === "0" || denominator2 === "0") {
       return `
-        \\frac{${input1}}{${input2}} - \\frac{${input3}}{${input4}} = 
+          \\text{Denominator cannot be zero}
       `;
-    }
+  }
 
-    const a = Number(input1);
-    const b = Number(input2);
-    const c = Number(input3);
-    const d = Number(input4);
+  // Checks if either input does not contain only one or more digits
+  if (!/^\d+$/.test(numerator1) || !/^\d+$/.test(denominator1) || 
+      !/^\d+$/.test(numerator2) || !/^\d+$/.test(denominator2)) {
+    return `
+      \\frac{${numerator1}}{${denominator1}} - 
+      \\frac{${numerator2}}{${denominator2}} = 
+    `;
+  }
 
-    // Check if the denominators are the same (Year 3/4)
-    if (b === d) {
-      const numerator = a - c;
-      return `
-          \\frac{${a}}{${b}} - \\frac{${c}}{${d}}
-          = \\frac{${numerator}}{${b}}
-      `;
-    }
+  const a = Number(frac1.n);
+  const b = Number(frac1.d);
+  const c = Number(frac2.n);
+  const d = Number(frac2.d);
 
-    // Check if a denominator is a multiple of the other (Year 5 Skill)
-    if (b % d === 0 || d % b === 0) {
-      const commonDenom = Math.max(b, d);
-
-      const newA = a * (commonDenom / b);
-      const newC = c * (commonDenom / d);
-
-      const numerator = newA - newC;
-
-      return `
+  // Check if the denominators are the same (Year 3/4)
+  if (b === d) {
+    const numerator = a - c;
+    return `
         \\frac{${a}}{${b}} - \\frac{${c}}{${d}}
-        =
-        \\frac{${newA}}{${commonDenom}} - \\frac{${newC}}{${commonDenom}}
-        =
-        \\frac{${numerator}}{${commonDenom}}
-      `;
-    }
+        = \\frac{${numerator}}{${b}}
+    `;
+  }
+
+  // Check if a denominator is a multiple of the other (Year 5 Skill)
+  if (b % d === 0 || d % b === 0) {
+    const commonDenom = Math.max(b, d);
+
+    const newA = a * (commonDenom / b);
+    const newC = c * (commonDenom / d);
+
+    const numerator = newA - newC;
 
     return `
-        \\text{Unsuitable denominators for KS2 fraction subtraction}
+      \\frac{${a}}{${b}} - \\frac{${c}}{${d}}
+      =
+      \\frac{${newA}}{${commonDenom}} - \\frac{${newC}}{${commonDenom}}
+      =
+      \\frac{${numerator}}{${commonDenom}}
     `;
-  } 
-
-  useEffect(() => {
-    setPreviewBody(createKatex(arg1, arg2, arg3, arg4));
-  }, [arg1, arg2, arg3, arg4]);
-
-  const handleReset = () => {
-    setPreviewTitle("");
-    setArg1("");
-    setArg2("");
-    setArg3("");
-    setArg4("");
-    setPreviewBody(""); // also clears the current preview
   }
 
-  // requires further sanitation (assert INT datatype, etc.)
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  return `\\text{Unsuitable denominators for KS2 fraction subtraction}`;
+} 
 
-    if (!previewTitle || !arg1 || !arg2 || !arg3 || !arg4)  {
-      alert("Please fill in all fields before submission!");
-      return;
-    }
-
-    const formData = {
-      previewTitle,
-      arg1,
-      arg2,
-      arg3,
-      arg4
-    };
-
-    onSubmit(formData); // Passing data to parent component
-
-    handleReset(); // Clears fields after submission
-  }
+const FracSubtraction = ({ onSubmit }) => {
 
   return(
-    <div className="q-container">
-      <div className="qform-container">
-        <div className="qform-title">
-          <h1>Fraction Subtraction Template</h1>
-        </div>
-        <form onSubmit={handleSubmit}>
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={previewTitle}
-            onChange={(e) => setPreviewTitle(e.target.value)}
-            placeholder="Question Title..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text"
-            value={arg1}
-            onChange={(e) => setArg1(e.target.value)}
-            placeholder="First Numerator Here..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={arg2}
-            onChange={(e) => setArg2(e.target.value)}
-            placeholder="First Denominator Here..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={arg3}
-            onChange={(e) => setArg3(e.target.value)}
-            placeholder="Second Numerator Here..."
-          />
-
-          <input 
-            className="qform-input"
-            type="text" 
-            value={arg4}
-            onChange={(e) => setArg4(e.target.value)}
-            placeholder="Second Denominator Here..."
-          />
-
-          <div className="qform-button-container">
-            <button className="qform-button" type="reset" onClick={handleReset}>Reset</button>
-            <button className="qform-button" type="submit">Submit</button>
-          </div>
-          
-        </form>
-      </div>
-
-      <div className="preview-container">
-        <div className="preview-title">
-          <h1>{previewTitle || "Question Title Here"}</h1>
-        </div>
-        <div className="preview-body">
-          {previewBody ? (
-            <div className="text-3xl">
-              <BlockMath math={previewBody} />
-            </div>
-          ) : (
-            <p>A complete calculation will appear here.</p>
-          )}
-        </div>
-
-        <input className="qform-input" type="text" placeholder="Answer will go here..." disabled/>
-        
-        <div className="preview-button-container ">
-          <button className="preview-button" type="reset" disabled>Reset</button>
-          <button className="preview-button" type="submit" disabled>Submit</button>
-        </div>
-      </div>
-    </div>
+    <BaseQuestionForm
+      title="Fraction Subtraction Template"
+      createKatex={createKatex}
+      fields={[
+        { name: "frac1.n", placeholder: "First Numerator" },
+        { name: "frac1.d", placeholder: "First Denominator" },
+        { name: "frac2.n", placeholder: "Second Numerator" },
+        { name: "frac2.d", placeholder: "Second Denominator" }
+      ]}
+      onSubmit={onSubmit}
+    />
   );
 }
 

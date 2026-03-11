@@ -13,6 +13,7 @@ export function AuthProvider({ children }) {
       if (!token) {
         // If a token is not present, the user is not logged in
         setUser(null);
+        setIsLoading(false);
         return;
       }
 
@@ -23,14 +24,22 @@ export function AuthProvider({ children }) {
 
         if (res.status === 401) {
           logout(); // Invalid token
+          setIsLoading(false);
           return;
         }
 
         if (!res.ok) {
           setUser(null);
         } else {
-          const data = await res.json();
-          setUser(data.user);
+          let data = null;
+
+          try {
+            data = await res.json();
+          } catch {
+            data = null;
+          }
+
+          setUser(data?.user ?? null);
         }
       } catch (err) {
         console.error("Credentials could not be fetched", err);
@@ -58,6 +67,7 @@ export function AuthProvider({ children }) {
 
   const login = (token, userData) => {
     localStorage.setItem('jwt', token);
+    localStorage.setItem('user', JSON.stringify(userData));
     setUser(userData);
   }
 

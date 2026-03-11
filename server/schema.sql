@@ -16,7 +16,7 @@ CREATE TABLE users (
 --
 CREATE TABLE roles (
   id SERIAL PRIMARY KEY,
-  role CHAR(30) UNIQUE NOT NULL
+  role TEXT UNIQUE NOT NULL
 );
 
 INSERT INTO roles (role)

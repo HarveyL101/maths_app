@@ -14,7 +14,8 @@ export default defineConfig({
       '/login': 'http://localhost:5000',
       '/register': 'http://localhost:5000/',      
       '/logout': 'http://localhost:5000/',
-      '/api': 'http://localhost:5000/'
+      '/api': 'http://localhost:5000/',
+      '/question-portal': 'http://localhost:5000/'
     }
   }
 })

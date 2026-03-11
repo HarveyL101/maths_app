@@ -47,7 +47,10 @@ router.post("/", async (req, res) => {
     await client.query("COMMIT");
 
     const token = jwt.sign(
-      { id: newUser.id },
+      { 
+        uuid: newUser.id,
+        roles
+      },
       process.env.JWT_SECRET,
       { expiresIn: "2h" }
     );

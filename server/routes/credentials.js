@@ -47,10 +47,7 @@ router.get("/", async (req, res) => {
 
     const roles = rolesQuery.rows.map(r => r.role);
 
-    res.json({
-      token, 
-      user: { id: user.id, email: user.email, roles }
-    });
+    res.json({ user: { id: user.id, email: user.email, roles } });
 
   } catch(error) {
     console.error("Error in /credentials:", error);

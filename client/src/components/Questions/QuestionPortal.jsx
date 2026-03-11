@@ -27,10 +27,6 @@ import {
 
 import { curriculum } from './curriculumConfig';
 import { useState } from "react";
-import { useContext } from 'react';
-import { AuthContext } from '../../auth/AuthContext.jsx';
-
-
 
 const QuestionPortal = () => {
     const [selectedYear, setSelectedYear] = useState('');
@@ -38,9 +34,11 @@ const QuestionPortal = () => {
     const [selectedSubTopic, setSelectedSubTopic] = useState('');
     const [formData, setFormData] = useState(null);
 
-    const { user } = useContext(AuthContext);
+    const storedUser = JSON.parse(localStorage.getItem('user'));
 
-    if (!user) {
+    console.log("Stored User", storedUser);
+
+    if (!storedUser) {
         alert("You must be logged in to create a question.");
         return;
     }
@@ -48,30 +46,41 @@ const QuestionPortal = () => {
     const handleFormSubmit = async (submittedData) => {
         console.log("Data received in parent:", submittedData);
 
-        const qTitle = submittedData.previewTitle.trim();
+        
+        const formattedTitle = submittedData.previewTitle.trim();
 
         const payload = {
-            creator: user.uuid, // Educator_uuid must go here
+            creator: storedUser.id,
             year: selectedYear,
             topic: selectedTopic,
             subtopic: selectedSubTopic,
-            title: qTitle,
-            params: submittedData.params
+            title: formattedTitle,
+            questionType: submittedData.questionType,
+            input: submittedData.params
         };
+
+        console.log("Payload: \n", payload);
+
+        console.log("User UUID: ", storedUser.uuid);
+
         // Checks QuestionPortal values
         if (!payload.year || !payload.topic || !payload.subtopic) {
             alert("Missing necessary tags (Year Group, Topic, Subtopic).");
             return;
         }
-        // Checks Child Component values
-        if (!payload.title || !payload.input.input1 || !payload.input.input2) {
-            alert("Missing necessary question parameters (Title, Input1, Input2");
+
+        // Checks that each field has a non-empty value
+        const hasAllValues = payload.input 
+        && Object.values(payload.input).every(field => field.value !== undefined && field.value !== "");
+
+        if (!payload.title || !hasAllValues) {
+            alert("Missing necessary question parameters (Title, Input Fields)");
             return;
         }
         console.log("Form Data: \n", payload);
 
         try {
-            const res = await fetch(`/questions`, {
+            const res = await fetch(`/question-portal`, {
                 method: "POST", 
                 headers: { 
                     "Content-Type": "application/json",
@@ -86,12 +95,12 @@ const QuestionPortal = () => {
                 alert("Question successfully created!");
                 setFormData(null); // Resets form
             } else {
-                alert("Server error occurre, please check your connection and try again");
+                alert(json?.error || "Server error occurred, please check your connection and try again");
                 return;
             }
         } catch(error) {
             console.log("Error: ", error);
-            return;
+            alert("Network error occurred, please try again");
         }
     }
 
@@ -120,33 +129,6 @@ const QuestionPortal = () => {
         'Number & Place Value': NumberPlaceValue,
         // Statistics
         'Statistics': Statistics
-    }
-
-    const QUESTION_SCHEMAS = {
-        addition: {
-            fields: ["a", "b"]
-        },
-        subtraction: {
-            fields: ["a", "b"]
-        },
-        multiplication: {
-            fields: ["a", "b"]
-        },
-        division: {
-            fields: ["a", "b"]
-        },
-        fraction_addition: {
-            fields: ["a", "b", "c", "d"]
-        },
-        fraction_subtraction: {
-            fields: ["a", "b", "c", "d"]
-        },
-        fraction_count_up: {
-            fields: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
-        },
-        count_up: {
-            fields: ["a", "b", "c", "d", "e"]
-        }
     }
 
     const SelectedPreset = selectedSubTopic && PRESET_COMPONENTS[selectedSubTopic?.trim()];

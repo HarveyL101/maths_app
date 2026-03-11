@@ -44,7 +44,10 @@ router.post("/", async (req, res) => {
     const roles = rolesQuery.rows.map(r => r.role);
 
     const token = jwt.sign(
-      { id: user.id }, 
+      { 
+        uuid: user.id,
+        roles
+      }, 
       process.env.JWT_SECRET, 
       { expiresIn: "2h" }
     );

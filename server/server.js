@@ -10,46 +10,37 @@ const pool = require("./db.js");
 // --- Middleware for JWT Authentication ---
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  if (!authHeader) return res.status(401).json({ error: "No token provided" });
-
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+    
   const token = authHeader.split(' ')[1];
-  if (!token) return res.status(401).json({ error: "Malformed token" });
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: payload.id }; // attach the user's id 
+
+    // attach the user's id and roles from the token
+    req.user = { 
+      uuid: payload.uuid,
+      roles: payload.roles || []
+    }; 
+
     next();
   } catch (err) {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
-}
+};
 
 // Defining role-based access control middleware
-const hasRole = (requireRole) => {
+const hasRole = (requiredRole) => {
   return async (req, res, next) => {
-    try {
-      const userId = req.user.id;
-
-      const result = await pool.query(
-        `
-        SELECT r.role
-        FROM user_roles ur
-        JOIN roles r ON ur.role_id = r.id
-        WHERE ur.user_uuid = $1
-        `, [userId]
-      );
-
-      const roles = result.rows.map(r => r.role);
-
-      if (!roles.includes(requiredRole)) {
-        return res.status(403).json({ error: "Forbidden: missing role" });
-      }
-
-      next();
-    } catch (err) {
-      console.error("Error in hasRole middleware:", err);
-      res.status(500).json({ error: "Server error during role check" });
+    console.log("req.user.roles:", req.user?.roles);
+    const roleNames = req.user?.roles?.map(r => r.role || r) || [];
+    if (!roleNames.includes(requiredRole)) {
+      return res.status(403).json({ error: "Forbidden: missing role" });
     }
+
+    next();
   };
 };
 
@@ -71,10 +62,18 @@ const teacherPortalRouter = require('./routes/teacherPortal.js');
 app.use('/credentials', credentialsRoute);
 app.use('/login', loginRoute);
 app.use('/questions', questionsRoute);
-app.use('/question-portal', questionPortalRoute);
+app.use(
+  '/question-portal',
+  questionPortalRoute(authenticateJWT, hasRole)
+);
 app.use('/register', registerRoute);
 app.use('/subtopics', subtopicRoute);
-app.use('/teacher-portal', teacherPortalRouter(authenticateJWT, hasRole));
+app.use(
+  '/teacher-portal', 
+  authenticateJWT, 
+  hasRole, 
+  teacherPortalRouter
+);
 
 // --- Change Email (Currently unused, will remain here while so) ---
 app.patch("/profile/:userId/change-email", async (req, res) => {

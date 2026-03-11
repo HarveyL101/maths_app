@@ -35,3 +35,5 @@ const getQuestionsBySubtopic = async (client, subtopicId) => {
 
     return result.rows; // Array of matching/ suitable questions
 }
+
+module.exports = router;

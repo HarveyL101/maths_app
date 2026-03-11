@@ -12,7 +12,10 @@ module.exports = (authenticateJWT, hasRole) => {
         try {
             await client.query("BEGIN");
 
-            const question = await createQuestion(req.body);
+            const question = await createQuestion(client, {
+                ...req.body,
+                creator: req.user.uuid
+            });
 
             await client.query("COMMIT");
 
@@ -20,6 +23,7 @@ module.exports = (authenticateJWT, hasRole) => {
 
         } catch(error) {
             await client.query("ROLLBACK");
+            console.log("Error creating question: ", error);
             res.status(500).json({ error: error.message });
         } finally {
             client.release();
@@ -28,8 +32,9 @@ module.exports = (authenticateJWT, hasRole) => {
 
     // -- Get Questions -- 
     // Will be used in the /Learn functionality
-    router("/", async (req, res) => {
-        return console.log("bean");
+    router.get("/", async (req, res) => {
+        console.log("bean");
+        res.json({ message: "ok" });
     });
 
 
@@ -39,19 +44,22 @@ module.exports = (authenticateJWT, hasRole) => {
     router.patch("/", async (req, res) => {
         const client = await pool.connect();
 
-        console.log("Question PATCH hit");
         try {
-            const question = await fetchQuestion(arg, arg, arg)
+            console.log("Question PATCH hit");
+            // const question = await fetchQuestion(arg, arg, arg)
+            res.json({ message: "PATCH endpoint WIP" });
         } catch (error) {
-
+            res.status(500).json({ error: error.message });
         } finally {
             client.release();
         }
     });
+
+    return router;
 }
 
 
-const createQuestion = async (data) => {
+const createQuestion = async (client, data) => {
     const { creator, year, topic, subtopic, questionType, title, input } = data;
 
     // Verifies that the user trying to create questions has the necessary role
@@ -90,20 +98,31 @@ const checkEducator = async (client, userId) => {
 };
 
 const checkQuestionType = async (client, questionType) => {
-    const result = await client.query(`
-        SELECT id 
-        FROM question_type
-        WHERE name = $1    
+    const insertResult = await client.query(`
+        INSERT INTO question_type (name) 
+        VALUES ($1)
+        ON CONFLICT (name) DO NOTHING
+        RETURNING id
     `, [questionType]);
 
-    if (result.rowCount === 0) {
-        throw new Error("Invalid question type");
+    if (insertResult.rowCount > 0) {
+        return insertResult.rows[0].id;
     }
 
-    return result.rows[0].id;
+    const selectResult = await client.query(`
+        SELECT id 
+        FROM question_type
+        WHERE name = $1
+    `, [questionType]);
+
+    if (selectResult.rowCount === 0) {
+        throw new Error("Failed to fetch or create question type");
+    }
+
+    return selectResult.rows[0].id;
 }
 
-const getTopicId = async (topic, year) => {
+const getTopicId = async (client, topic, year) => {
     const result = await client.query(`
         INSERT INTO topic(name, year_group)
         VALUES ($1, $2)
@@ -115,7 +134,7 @@ const getTopicId = async (topic, year) => {
     return result.rows[0].id;
 };
 
-const getSubtopicId = async (topicId, subtopic) => {
+const getSubtopicId = async (client, topicId, subtopic) => {
     const result = await client.query(`
         INSERT INTO subtopic (topic_id, name) 
         VALUES ($1, $2)
@@ -127,12 +146,13 @@ const getSubtopicId = async (topicId, subtopic) => {
     return result.rows[0].id;
 };
 
-const insertQuestion = async ({ subtopicId, creator, questionTypeId, title, input }) => {
+const insertQuestion = async (client, { subtopicId, creator, questionTypeId, title, input }) => {
+    // Ensure input is a JSON object for safe DB storage
     const result = await client.query(`
         INSERT INTO questions (subtopic_id, educator_uuid, question_type_id, title, input)
-        VALUES ($1, $2, $3, $4, $5) 
+        VALUES ($1, $2, $3, $4, $5::jsonb) 
         RETURNING *   
-    `, [subtopicId, creator, questionTypeId, title, input]);
+    `, [subtopicId, creator, questionTypeId, title, JSON.stringify(input)]);
 
     return result.rows[0];
 };
@@ -172,9 +192,4 @@ const validateInput = (type, input) => {
             }
             break;
     }
-}
-
-// -- WIP --
-const fetchQuestion = async (req, res) => {
-    return;
 }

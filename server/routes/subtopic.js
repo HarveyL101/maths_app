@@ -32,3 +32,5 @@ const getSubtopics = async (client, year, topic) => {
 
     return result.rows[0]; // Array of chosen subtopics
 };
+
+module.exports = router;

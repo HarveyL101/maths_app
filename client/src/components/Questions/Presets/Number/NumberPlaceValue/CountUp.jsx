@@ -1,130 +1,45 @@
-import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
-import { BlockMath } from 'react-katex';
+import BaseQuestionForm from "../../../BaseQuestionForm";
 
-const CountUp = () => {
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [previewBody, setPreviewBody] = useState("");
-  // Will represent an array of fractions in KaTeX format e.g. [1, 2, 3, 4, 5]
-  // Trialling an idea of using an array of values instead of 10 separate variables
-  const [numbers, setNumbers] = useState([
-    { value: '', hidden: false },
-    { value: '', hidden: false },
-    { value: '', hidden: false },
-    { value: '', hidden: false },
-    { value: '', hidden: false }
-  ]);
+const createKatex = (params) => {
+  // Protects against crashing on load
+  if (!params) return "";
 
-  useEffect(() => {
-    const katexStr = numbers
-      .map(n => n.hidden ? '\\_' : n.value || '?')
-      .join(', \\; '); // padding between each value
-    setPreviewBody(katexStr);
-  }, [numbers]);
+  const numbers = Array.from({ length: 5}, (_, i) => {
+    const entry = params[`num${i}`] || {};
+    const value = entry.value ?? "?";     // default to ? if no value is present
+    const hidden = entry.hidden ?? false; // default to false if hidden is undefined
 
-  const handleNumberChange = (index, value) => {
-    const newNumbers = [...numbers];
-    newNumbers[index].value = value;
-    setNumbers(newNumbers);
+    return hidden ? "\\_" : value;
+  });
+
+  // Check all visible numbers
+  const visibleNumbers = numbers.filter((n) => n !== "\\_" && n !== "?");
+  if (!visibleNumbers.every(n => /^\d+$/.test(n))) {
+    return `
+      \\begin{array}{c}
+        \\text{Please enter positive whole numbers only}
+      \\end{array}
+    `;
   }
 
-  const handleToggle = (index) => {
-    const newNumbers = [...numbers];
-    newNumbers[index].hidden = !newNumbers[index].hidden;
-    setNumbers(newNumbers);
-  }
-
-  const handleReset = () => {
-    setPreviewTitle('');
-    setNumbers(numbers.map(n => ({ value: '', hidden: false })));
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const allFilled = numbers.every(n => n.value !== '');
-    if (!previewTitle || !allFilled) {
-      alert("Please fill in all fields before submission :)");
-      return;
-    }
-
-    const formData = {previewTitle, numbers };
-    onSubmit(formData);
-    handleReset();
-  }
-
+  return numbers.join(", \\; ");
+}
+const CountUp = ({ onSubmit }) => {
   return(
-    <div className="q-container">
-      <div className="qform-container">
-        <div className="qform-title">
-          <h1>Number & Place Value Template</h1>
-        </div>
-
-          <form onSubmit={handleSubmit}>
-            <input 
-              className="qform-input"
-              type="text" 
-              value={previewTitle}
-              onChange={(e) => setPreviewTitle(e.target.value)}
-              placeholder="Question Title..."
-            />
-
-            <div className="toggle-row">
-              {numbers.map((n, i) => (
-                <label key={i} style={{ marginRight: 10 }}>
-                  <input 
-                    type="checkbox"
-                    checked={n.hidden}
-                    onChange={() => handleToggle(i)}
-                  />
-                  Hide
-                </label>
-              ))}
-            </div>
-
-            <div className="input-row">
-              {numbers.map((n, i) => (
-                <input 
-                  key={i}
-                  className="qform-input"
-                  type="text" 
-                  value={n.value}
-                  onChange={(e) => handleNumberChange(i, e.target.value)}
-                  placeholder={`Number ${i + 1}`}
-                />
-              ))}
-            </div>
-
-            <div className="qform-button-container">
-              <button className="qform-button" type="reset" onClick={handleReset}>Reset</button>
-              <button className="qform-button" type="submit">Submit</button>
-            </div>
-          </form>
-      </div>
-
-      <div className="preview-container">
-        <div className="preview-title">
-          <h1>{previewTitle || "Question Title Here"}</h1>
-        </div>
-
-        <div className="preview-body">
-          {previewBody ? (
-            <div className={"text-3xl"}>
-              <BlockMath math={previewBody} />
-            </div>
-              
-          ) : (
-            <p>A complete calculation will appear here.</p>
-          )}
-        </div>
-
-        <input className="qform-input" type="text" placeholder="Answer will go here..." disabled/>
-          
-        <div className="preview-button-container ">
-          <button className="preview-button" type="reset" disabled>Reset</button>
-          <button className="preview-button" type="submit" disabled>Submit</button>
-        </div>
-      </div>
-    </div>
+    <BaseQuestionForm
+      title="Counting Up Template"
+      createKatex={createKatex}
+      questionType="number_count_up"
+      fields={[
+        { name: "num0", placeholder: "First Number", hasHidden: true },
+        { name: "num1", placeholder: "Second Number", hasHidden: true },
+        { name: "num2", placeholder: "Third Number", hasHidden: true },
+        { name: "num3", placeholder: "Fourth Number", hasHidden: true },
+        { name: "num4", placeholder: "Fifth Number", hasHidden: true },
+      ]}
+      onSubmit={onSubmit}
+    />
   );
 }
 

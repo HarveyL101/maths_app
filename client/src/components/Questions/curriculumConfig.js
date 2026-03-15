@@ -1,7 +1,6 @@
 export const curriculum = {
   3: {
     Number: [
-      'Number & Place Value',
       'Addition',
       'Subtraction',
       'Multiplication',
@@ -22,7 +21,6 @@ export const curriculum = {
   },
   4: {
     Number: [
-      'Number & Place Value',
       'Addition',
       'Subtraction',
       'Multiplication',
@@ -44,7 +42,6 @@ export const curriculum = {
   },
   5: {
     Number: [
-      'Number & Place Value',
       'Addition',
       'Subtraction',
       'Multiplication',
@@ -66,7 +63,6 @@ export const curriculum = {
   },
   6: {
     Number: [
-      'Number & Place Value',
       'Addition, Subtraction, Multiplication & Division',
     ],
     Fractions: [

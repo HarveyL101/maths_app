@@ -1,80 +1,45 @@
-import { curriculum } from '../components/Questions/curriculumConfig.js';
-import { useState } from 'react';
+import { useState } from "react";
 
-const SearchBar = () => {
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedTopic, setSelectedTopic] = useState('');
-  const [selectedSubTopic, setSelectedSubTopic] = useState('');
-  const [formData, setFormData] = useState(null);
-  const [tags, setTags] = useState({
-    Year: "",
-    Topic: "",
-    SubTopic: ""
-  });
+const SearchBar = ({ onSearch }) => {
+  const [query, setQuery] = useState("");
 
-  const handleFormSubmit = (submittedData) => {
-    console.log("Data received in parent:", submittedData);
-    setFormData(submittedData);
-  }
-
-  const handleYearChange = (e) => {
-    setSelectedYear(e.target.value);
-    setSelectedTopic('');
-    setSelectedSubTopic('');
-  }
-
-  const handleTopicChange = (e) => {
-    setSelectedTopic(e.target.value);
-    setSelectedSubTopic('');
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Searching...");
+    onSearch(query);
+  };
 
   const handleReset = () => {
-    setSelectedYear("");
-    setSelectedTopic("");
-    setSelectedSubTopic("");
-  }
-
+    setQuery("");
+  };
 
   return (
     <div>
       <div> {/** This will hold the search bar portion */}
-        <form 
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log("Searching...");
-          }}
-        >
-          
-
+        <form onSubmit={handleSubmit}>
           <input
             type='search'
-            placeholder='Search questions...'
+            placeholder='Search for a subtopic...'
             className='search-input'
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
 
           <button 
             type='reset'
             className='reset-btn'
-            onClick={() => {handleReset()}}
+            onClick={handleReset}
           >
-            Reset
+            Clear
           </button>
 
-          <button type='submit' className='search-btn'>
+          <button 
+            type='submit' 
+            className='search-btn'
+          >
             Search
           </button>
         </form>
-
-        
-
-      </div>
-
-      {/* Results Area */}
-      <div className='results-area'>
-        <h2>Results</h2>
-        <div className='results-box'>
-          No results yet.
-        </div>
       </div>
     </div>
   );

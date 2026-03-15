@@ -22,6 +22,7 @@ const BaseQuestionForm = ({ title, tooltipText, fields, createKatex, onSubmit, q
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit({ previewTitle, params, questionType });
+        handleReset();
     };
 
     const handleReset = () => {

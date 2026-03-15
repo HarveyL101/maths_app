@@ -1,0 +1,30 @@
+@layer components {
+  .question-id {
+    @apply text-gray-600 text-sm pt-3 pl-3;
+  }
+
+  .item-container {
+    @apply bg-white rounded-xl shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all border border-gray-200 overflow-hidden;
+  }
+
+  .item-body {
+    @apply flex items-center justify-between px-5 py-4;
+  }
+  .item-title {
+    @apply text-gray-800 text-2xl font-medium;
+  }
+  .item-button {
+    @apply bg-violet-5 text-white text-3xl px-4 py-1.5 rounded-lg hover:bg-violet-7 cursor-pointer transition;
+  }
+
+  .item-footer {
+    @apply flex items-center bg-violet-2 border-t border-gray-200 px-4 py-2 text-sm text-gray-600;
+  }
+  .item-footer > * {
+    @apply relative flex-1 text-center font-medium;
+  }
+  .item-year-group::after {
+    content: '';
+    @apply absolute top-0 bottom-0 right-0 border-r border-dashed border-violet-4;
+  }
+}

@@ -1,38 +1,61 @@
 import { useState } from "react";
 
-function AccordionItem({ item, level = 0 }) {
+function AccordionItem({ item, level = 0, onSelect }) {
   const [open, setOpen] = useState(false);
 
+  const violetShades = [
+    "bg-violet-1",
+    "bg-violet-2",
+    "bg-violet-3",
+    "bg-violet-4",
+    "bg-violet-5",
+    "bg-violet-5",
+    "bg-violet-6",
+    "bg-violet-7",
+    "bg-violet-8",
+    "bg-violet-9",
+    "bg-violet-10"
+  ];
+
+  const isLeaf = !item.children;
+
+  const handleClick = () => {
+    if (!item.children && onSelect) {
+      onSelect(item);
+    } else {
+      setOpen(!open);
+    }
+  };
+
   return (
-    <div className={`flex flex-col`}>
+    <div className="flex flex-col">
       <button
-        className={`flex justify-between items-center w-full py-2 px-${level * 4} font-medium text-left hover:bg-gray-50 transition-colors`}
-        onClick={() => setOpen(!open)}
+        style={{ paddingLeft: `${level * 16}px` }}
+        className={`flex justify-between items-center w-full py-2 ${violetShades[3 - level]} font-medium text-left hover:bg-gray-50 transition-colors cursor-pointer`}
+        onClick={handleClick}
       >
         {item.title}
-        <span className="ml-2">{open ? "v" : ">"}</span>
+        {!isLeaf && <span className="ml-2">{open ? "▾" : "▸"}</span>}
       </button>
 
-      {open && item.content && (
-        <div className={`pl-${level*4} py-2 text-gray-700`}>
-          {item.content}
-        </div>
-      )}
-
-      {open &&
-        item.children &&
+      {open && item.children && 
         item.children.map((child, idx) => (
-          <AccordionItem key={idx} item={child} level={level + 1} />
+          <AccordionItem
+            key={idx}
+            item={child}
+            level={level + 1}
+            onSelect={onSelect}
+          />
         ))}
     </div>
   );
 }
 
-export default function Accordion({ data }) {
+export default function Accordion({ data, onSelect }) {
   return (
     <div className="flex flex-col w-full border border-gray-200 rounded-md">
       {data.map((item, idx) => (
-        <AccordionItem key={idx} item={item} />
+        <AccordionItem key={idx} item={item} onSelect={onSelect} />
       ))}
     </div>
   )

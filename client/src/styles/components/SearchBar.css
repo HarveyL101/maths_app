@@ -33,6 +33,6 @@
   }
 
   .results-box {
-    @apply min-h-40 p-6 bg-white border border-gray-200 rounded-xl shadow-sm;
+    @apply relative min-h-40 p-6 bg-white border border-gray-200 rounded-xl shadow-sm space-y-3;
   }
 }

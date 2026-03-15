@@ -2,8 +2,8 @@ import 'katex/dist/katex.min.css';
 import BaseQuestionForm from '../../BaseQuestionForm';
 
 const createKatex = (params) => {
-  const a = params.num0?.value;
-  const b = params.num1?.value;
+  let a = params.num0?.value;
+  let b = params.num1?.value;
   // protects against crashing on load
   if (!a || !b) return "";
 

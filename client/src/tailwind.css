@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import './styles/base.css';
+@import './styles/components/Learn.css';
 @import './styles/components/LoginRegister.css';
 @import './styles/components/Profile.css';
 @import './styles/components/QuestionPortal.css';
@@ -20,4 +21,19 @@
   .card-footer {
     @apply text-gray-700
   }
+}
+
+@theme {
+  --color-violet-*: initial; /* Disabling original violet shades*/
+  --color-violet-1: #F2E9FB;
+  --color-violet-2: #DAC2F5;
+  --color-violet-3: #C39BEE;
+  --color-violet-4: #AB73E7;
+  --color-violet-5: #944CE1;
+  --color-violet-5: #7C25DA;
+  --color-violet-6: #6C20BD;
+  --color-violet-7: #50188C;
+  --color-violet-8: #391164;
+  --color-violet-9: #230A3D;
+  --color-violet-10: #0C0416;
 }

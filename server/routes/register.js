@@ -13,9 +13,9 @@ router.post("/", async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const { name, email, password, role } = req.body;
+    const { name, surname,  email, password, role } = req.body;
 
-    if (!name || !email || !password || !role) {
+    if (!name || !surname || !email || !password || !role) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -25,11 +25,11 @@ router.post("/", async (req, res) => {
 
     const insertUser = await client.query(
       `
-      INSERT INTO users (id, name, email, password_hash)
-      VALUES (gen_random_uuid(), $1, $2, $3)
-      RETURNING id, name, email
+      INSERT INTO users (id, name, surname, email, password_hash)
+      VALUES (gen_random_uuid(), $1, $2, $3, $4)
+      RETURNING id, name, surname, email
       `,
-      [name, email, hashed]
+      [name, surname, email, hashed]
     );
 
     const newUser = insertUser.rows[0];
@@ -49,7 +49,8 @@ router.post("/", async (req, res) => {
     const token = jwt.sign(
       { 
         uuid: newUser.id,
-        roles
+        surname: newUser.surname,
+        role
       },
       process.env.JWT_SECRET,
       { expiresIn: "2h" }

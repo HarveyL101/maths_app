@@ -1,6 +1,5 @@
 # Todo Next
-- [ ] Install dnd-kit/react library
-- [ ] Install reactjs-popup library
+- [ ] Enforce accordion rules of only having one open at a time
   
 ## Lesson Structure
 

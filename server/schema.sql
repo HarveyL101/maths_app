@@ -6,6 +6,7 @@
 CREATE TABLE users (
   id UUID PRIMARY KEY,
   name VARCHAR(20),
+  surname VARCHAR(20),
   email VARCHAR(50) UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   created_at TIMESTAMP DEFAULT NOW()
@@ -28,7 +29,7 @@ VALUES
 -- User_Roles Declaration 
 --
 CREATE TABLE user_roles (
-  user_uuid UUID NOT NULL REFERENCES users(id),
+  user_uuid UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   role_id INT NOT NULL REFERENCES roles(id),
   PRIMARY KEY (user_uuid, role_id)
 );
@@ -181,3 +182,22 @@ FROM
   attempts
 GROUP BY 
   user_uuid, question_id;
+
+CREATE OR REPLACE VIEW question_details AS 
+SELECT
+  q.id AS question_id,
+  yg.id AS year_group,
+  t.name AS topic_name,
+  st.name AS subtopic_name, 
+  q.title AS question_title,
+  q.input AS question_input,
+  u.surname AS creator_surname
+FROM questions q 
+JOIN subtopic st
+  ON q.subtopic_id = st.id
+JOIN topic t
+  ON st.topic_id = t.id
+JOIN year_group yg
+  ON t.year_group = yg.id
+LEFT JOIN users u
+  ON q.educator_uuid = u.id;

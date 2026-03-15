@@ -59,21 +59,24 @@ const registerRoute = require('./routes/register.js');
 const subtopicRoute = require('./routes/subtopic.js');
 const teacherPortalRouter = require('./routes/teacherPortal.js');
 
-app.use('/credentials', credentialsRoute);
-app.use('/login', loginRoute);
-app.use('/questions', questionsRoute);
+// API Routes
+app.use('/api/credentials', credentialsRoute);
+app.use('/api/login', loginRoute);
+app.use('/api/questions', questionsRoute);
+app.use('/api/register', registerRoute);
+app.use('/api/subtopics', subtopicRoute);
+// Guarded Routes
 app.use(
-  '/question-portal',
+  '/api/question-portal',
   questionPortalRoute(authenticateJWT, hasRole)
 );
-app.use('/register', registerRoute);
-app.use('/subtopics', subtopicRoute);
 app.use(
-  '/teacher-portal', 
+  '/api/teacher-portal', 
   authenticateJWT, 
   hasRole, 
   teacherPortalRouter
 );
+
 
 // --- Change Email (Currently unused, will remain here while so) ---
 app.patch("/profile/:userId/change-email", async (req, res) => {

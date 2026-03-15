@@ -10,12 +10,12 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/credentials': 'http://localhost:5000',
-      '/login': 'http://localhost:5000',
-      '/register': 'http://localhost:5000/',      
+      '/api/credentials': 'http://localhost:5000',
+      '/api/login': 'http://localhost:5000',
+      '/api/register': 'http://localhost:5000/',      
       '/logout': 'http://localhost:5000/',
       '/api': 'http://localhost:5000/',
-      '/question-portal': 'http://localhost:5000/'
+      '/api/api/question-portal': 'http://localhost:5000/'
     }
   }
 })

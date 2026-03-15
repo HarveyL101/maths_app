@@ -80,7 +80,7 @@ const QuestionPortal = () => {
         console.log("Form Data: \n", payload);
 
         try {
-            const res = await fetch(`/question-portal`, {
+            const res = await fetch(`/api/question-portal`, {
                 method: "POST", 
                 headers: { 
                     "Content-Type": "application/json",

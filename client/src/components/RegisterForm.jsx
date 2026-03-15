@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-
+import { useAuth } from "../auth/useAuth";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
   const [role, setRole] = useState(null);
+  const { login } = useAuth();
 
 
   const handleRegister = async (e) => {
@@ -16,12 +16,13 @@ const RegisterForm = () => {
 
     const data = {
       name: formData.get("userName"),
+      surname: formData.get("surname"),
       email: formData.get("userEmail"),
       password: formData.get("userPassword"),
       role: role
     };
     // --- Client-Side Validation ---
-    if (!data.name || !data.email || !data.password) {
+    if (!data.name || !data.surname || !data.email || !data.password) {
       setErrorMessage("Please fill out all fields before submitting.");
       return;
     }
@@ -35,7 +36,7 @@ const RegisterForm = () => {
     }
 
     try {
-      const res = await fetch(`/register`, {
+      const res = await fetch(`/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -45,12 +46,13 @@ const RegisterForm = () => {
       
       // --- Server Side Error Handling ---
       if (res.ok) {
+        login(json.token, json.user);
         navigate("/home");
       } else {
         setErrorMessage(json.error || "Server error occurred, please check your connection and try again.");
       }
-    } catch (err) {
-      console.log("error: ", err);
+    } catch (error) {
+      console.log("error: ", error);
     }
   };
 
@@ -69,7 +71,17 @@ const RegisterForm = () => {
               type="text" 
               name="userName" 
               id="name" 
-              placeholder="E.g 'Harvey' or 'Ella'."
+              placeholder="E.g 'John' or 'Jane'."
+            />
+          </label>
+
+          <label htmlFor="name" className="form-label">Surname:
+            <input 
+              className="form-input" 
+              type="text" 
+              name="surname" 
+              id="name" 
+              placeholder="E.g 'Smith' or 'Doe'."
             />
           </label>
         

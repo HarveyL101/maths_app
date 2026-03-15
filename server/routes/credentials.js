@@ -50,7 +50,7 @@ router.get("/", async (req, res) => {
     res.json({ user: { id: user.id, email: user.email, roles } });
 
   } catch(error) {
-    console.error("Error in /credentials:", error);
+    console.error("Error in /api/credentials:", error);
     res.status(500).json({ error: "Server error" });
   }
 });

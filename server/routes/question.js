@@ -9,7 +9,9 @@ router.get("/", async (req, res) => {
         const { year, topic, subtopic } = req.query;
 
         let query = `
-            SELECT *
+            SELECT 
+                creator_id,
+                json_agg(question_details) as questions
             FROM question_details
             WHERE 1=1
         `;
@@ -33,7 +35,10 @@ router.get("/", async (req, res) => {
             values.push(subtopic);
         }
         
-        query += ` ORDER BY year_group, topic_name, subtopic_name`;
+        query += ` 
+            GROUP BY creator_id
+            ORDER BY creator_id
+        `;
 
         const result = await client.query(query, values);
 

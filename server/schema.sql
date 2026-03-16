@@ -170,6 +170,7 @@ CREATE INDEX idx_attempts_question ON attempts(question_id);
 CREATE INDEX idx_attempts_user_question
 ON attempts(user_uuid, question_id);
 
+CREATE INDEX idx_questions_creator ON questions(educator_uuid);
 -- 
 -- Views
 -- 
@@ -186,18 +187,16 @@ GROUP BY
 CREATE OR REPLACE VIEW question_details AS 
 SELECT
   q.id AS question_id,
+  u.id AS creator_id,
+  u.surname AS creator_surname,
   yg.id AS year_group,
   t.name AS topic_name,
   st.name AS subtopic_name, 
   q.title AS question_title,
   q.input AS question_input,
-  u.surname AS creator_surname
+  
 FROM questions q 
-JOIN subtopic st
-  ON q.subtopic_id = st.id
-JOIN topic t
-  ON st.topic_id = t.id
-JOIN year_group yg
-  ON t.year_group = yg.id
-LEFT JOIN users u
-  ON q.educator_uuid = u.id;
+JOIN subtopic st ON q.subtopic_id = st.id
+JOIN topic t ON st.topic_id = t.id
+JOIN year_group yg ON t.year_group = yg.id
+LEFT JOIN users u ON q.educator_uuid = u.id;

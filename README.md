@@ -1,5 +1,5 @@
 # Todo Next
-- [ ] Enforce accordion rules of only having one open at a time
+- [x] Enforce accordion rules of only having one open at a time
   
 ## Lesson Structure
 

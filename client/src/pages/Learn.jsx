@@ -24,32 +24,99 @@ const Learn = () => {
   }
 
   const formatQuestions = (data) => {
-    // values to be mapped 
-    /**
-     * Year Group q.year_group
-     * Topic q.topic
-     * Subtopic q.subtopic
-     * Question Title q.title
-     * Creator q.surname
-     */
-    const formattedData = data.map((q) => (
-      <div key={q.question_id} className='item-container'> 
-        <div>
-          <p className='question-id'>Question Id: {q.question_id}</p>
-        </div>
-        <div className='item-body'>
-          <p className='item-title'>{q.subtopic_name} by {q.creator_surname}</p>
-          <button className='item-button'>▸</button>
-        </div>
+    return data.map((creator) => {
+      const firstQuestion = creator.questions[0];
 
-        <div className='item-footer'>
-          <h3 className='item-year-group'>Year {q.year_group}</h3>
-          <h3 className='item-topic'>{q.topic_name}</h3>
+      return (
+        <div
+          key={creator.creator_id}
+          className="creator-card"
+        >
+          {/* Body */}
+          <div className="item-body">
+            <p className="item-title">
+              {firstQuestion.subtopic_name} by {firstQuestion.creator_surname}
+            </p>
+            <button className="item-button">
+              ▸
+            </button>
+          </div>
+
+          {/* Footer */}
+          <div className="item-footer">
+            <div className="item-year-group">
+              Year {firstQuestion.year_group}
+            </div>
+            <div className="item-topic">
+              {firstQuestion.topic_name}
+            </div>
+            <div className="item-subtopic">
+              {firstQuestion.subtopic_name}
+            </div>
+          </div>
         </div>
+      );
+    })
+  };
+      
+
+      // <CreatorCard key={creator.creator_id} creator={creator} />
+      // <div key={creator.creator_id} className="creator-section mb-6">
+        
+      //   {/* Educator Header */}
+      //   <h2 className="text-xl font-bold mb-4">
+      //     {creator.questions[0].creator_surname}'s Questions
+      //   </h2>
+
+      //   {/* Questions listed under the educator */}
+      //   {creator.questions.map((q) => (
+      //     <div key={q.question_id} className='item-container mb-4'> 
+      //       <div>
+      //         <p className='question-id'>Question Id: {q.question_id}</p>
+      //       </div>
+
+      //       <div className='item-body'>
+      //         <p className='item-title'>
+      //           {q.subtopic_name} {/* no need to repeat "by X" */}
+      //         </p>
+      //         <button className='item-button'>▸</button>
+      //       </div>
+
+      //       <div className='item-footer'>
+      //         <h3 className='item-year-group'>Year {q.year_group}</h3>
+      //         <h3 className='item-topic'>{q.topic_name}</h3>
+      //       </div>
+      //     </div>
+      //   ))}
+      // </div>
+
+  const CreatorCard = ({ creator }) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div className="creator-card rounded-lg shadow-md bg-white mb-4">
+        {/* Header */}
+        <button
+          className="w-full flex justify-between items-center px-4 py-3 text-left font-bold hover:bg-gray-100 transition-colors"
+          onClick={() => setOpen(!open)}
+        >
+          Educator {creator.questions[0].creator_surname}'s Questions
+          <span>{open ? "▾" : "▸"}</span>
+        </button>
+
+        {/* Dropdown content */}
+        {open && (
+          <div className="px-4 py-2 border-t border-gray-200 space-y-2">
+            {creator.questions.map((q) => (
+              <div key={q.question_id} className="p-2 bg-violet-50 rounded flex justify-between items-center">
+                <span className="font-medium">{q.subtopic_name}</span>
+                <span className="text-sm text-gray-500">Year {q.year_group}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    ))
-    
-    return formattedData;
+    );
   }
   
   const buildAccordionData = (curriculum) => {
@@ -93,10 +160,10 @@ const Learn = () => {
         </div>
 
         <div className='flex-1 p-4'>
-          <h1 className='text-2xl font-bold mb-4'>This is the current page for /Learn</h1>
+          {/* <h1 className='text-2xl font-bold mb-4'>This is the current page for /Learn</h1> */}
 
           <div> {/** This will hold the search bar portion */}
-            <SearchBar onSearch={(query) => fetchQuestions({ search: query })} />
+            {/* <SearchBar onSearch={(query) => fetchQuestions({ search: query })} /> */}
           </div>
 
           <div className='portal-body'>

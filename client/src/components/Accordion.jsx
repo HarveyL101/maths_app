@@ -1,7 +1,8 @@
 import { useState } from "react";
 
-function AccordionItem({ item, level = 0, onSelect }) {
-  const [open, setOpen] = useState(false);
+function AccordionItem({ item, level = 0, openByLevel, setOpenByLevel, id, onSelect }) {
+  const open = openByLevel[level] === id;
+  const isLeaf = !item.children;
 
   const violetShades = [
     "bg-violet-1",
@@ -17,45 +18,63 @@ function AccordionItem({ item, level = 0, onSelect }) {
     "bg-violet-10"
   ];
 
-  const isLeaf = !item.children;
 
   const handleClick = () => {
     if (!item.children && onSelect) {
-      onSelect(item);
-    } else {
-      setOpen(!open);
-    }
+      onSelect?.(item);
+      return;
+    } 
+    
+    setOpenByLevel(prev => ({
+      ...prev, 
+      [level]: open ? null : id
+    }));
   };
 
   return (
     <div className="flex flex-col">
       <button
         style={{ paddingLeft: `${level * 16}px` }}
-        className={`flex justify-between items-center w-full py-2 ${violetShades[3 - level]} font-medium text-left hover:bg-gray-50 transition-colors cursor-pointer`}
+        className={`accordion-button ${violetShades[3 - level]}`}
         onClick={handleClick}
       >
         {item.title}
         {!isLeaf && <span className="ml-2">{open ? "▾" : "▸"}</span>}
       </button>
 
-      {open && item.children && 
-        item.children.map((child, idx) => (
-          <AccordionItem
-            key={idx}
-            item={child}
-            level={level + 1}
-            onSelect={onSelect}
+      {item.children && (
+        <div className={`accordion-panel ${open ? "open" : ""}`}>
+          {item.children.map((child, idx) => (
+            <AccordionItem
+              key={idx}
+              id={`${id}-${idx}`}
+              item={child}
+              level={level + 1}
+              openByLevel={openByLevel}
+              setOpenByLevel={setOpenByLevel}
+              onSelect={onSelect}
           />
-        ))}
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function Accordion({ data, onSelect }) {
+  const [openByLevel, setOpenByLevel] = useState({});
+
   return (
-    <div className="flex flex-col w-full border border-gray-200 rounded-md">
+    <div className="accordion-container">
       {data.map((item, idx) => (
-        <AccordionItem key={idx} item={item} onSelect={onSelect} />
+        <AccordionItem 
+          key={idx} 
+          id={String(idx)}
+          item={item} 
+          openByLevel={openByLevel}
+          setOpenByLevel={setOpenByLevel}
+          onSelect={onSelect} 
+        />
       ))}
     </div>
   )

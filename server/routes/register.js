@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../db");
 
-const saltRounds = 10;
+const saltRounds = process.env.SALT_ROUNDS || 10;
 
 // --- Register User ---
 router.post("/", async (req, res) => {

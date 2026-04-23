@@ -1,20 +1,41 @@
-import { ChangeEmail, TitleBar } from '../utils/index';
+import { ChangeEmail, ChangeName, ChangePassword, TitleBar } from '../utils/index';
 
 const Profile = () => {
+  // contains user.id, user.name, user.email, user.roles
+  const user = JSON.parse(localStorage.getItem("user"));
 
   return (
     <div>
       <TitleBar/>
-      <h1>This is the current page for /profile</h1>
 
-      <ul>
-        <li>This will include information about the lessons/ topics that have been completed</li>
-        <li>As well as the ability to change the name, email and password associated with your account</li>
-        <li>A non functional feature could include an accessibility tab for things like text/ button size, as well as a dark-mode capability</li>
-      </ul>
-      <p></p>
+      <div className="account-details-container">
+      <h2 className="account-details-header">Account Details</h2>
+      
+      <table className="border-separate border-spacing-2 border border-gray-400 light:border-gray-500">
+        <thead>
+          <tr>
+            <th className="border border-gray-600">User ID</th>
+            <th className="border border-gray-600">User Name</th>
+            <th className="border border-gray-600">User Email</th>
+            <th className="border border-gray-600">User Roles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td className="border border-gray-700">{ user.id }</td>
+            <td className="border border-gray-700">{ user.name }</td>
+            <td className="border border-gray-700">{ user.email }</td>
+            <td className="border border-gray-700">{ user.roles.join(", ") }</td>
+          </tr>
+        </tbody>
+      </table>   
+    </div>
 
       <ChangeEmail />
+
+      <ChangeName />
+
+      <ChangePassword />
 
       <details>
         <summary>Change Your Password</summary>

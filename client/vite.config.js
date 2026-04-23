@@ -9,13 +9,8 @@ export default defineConfig({
     tailwindcss()
   ],
   server: {
-    proxy: {
-      '/api/credentials': 'http://localhost:5000',
-      '/api/login': 'http://localhost:5000',
-      '/api/register': 'http://localhost:5000/',      
-      '/logout': 'http://localhost:5000/',
+    proxy: {     
       '/api': 'http://localhost:5000/',
-      '/api/api/question-portal': 'http://localhost:5000/'
     }
   }
 })

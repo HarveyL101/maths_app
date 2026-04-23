@@ -58,64 +58,36 @@ const questionPortalRoute = require('./routes/questionPortal.js');
 const registerRoute = require('./routes/register.js');
 const subtopicRoute = require('./routes/subtopic.js');
 const teacherPortalRouter = require('./routes/teacherPortal.js');
+// Account Routes
+const changeEmailRoute = require('./routes/account/changeEmail.js');
+const changeNameRoute = require('./routes/account/changeName.js');
+const changePasswordRoute = require('./routes/account/changePassword.js');
 
 // API Routes
-app.use('/api/credentials', credentialsRoute);
+app.use(
+  '/api/credentials', credentialsRoute);
 app.use('/api/login', loginRoute);
 app.use('/api/questions', questionsRoute);
 app.use('/api/register', registerRoute);
 app.use('/api/subtopics', subtopicRoute);
+// Account Routes
+app.use('/api/change-email', authenticateJWT, changeEmailRoute);
+app.use('/api/change-name', authenticateJWT, changeNameRoute);
+app.use('/api/change-password', authenticateJWT, changePasswordRoute);
+
 // Guarded Routes
 app.use(
   '/api/question-portal',
-  questionPortalRoute(authenticateJWT, hasRole)
+  authenticateJWT,
+  hasRole('educator'), // Only educators can access the question portal
+  questionPortalRoute
 );
 app.use(
   '/api/teacher-portal', 
   authenticateJWT, 
-  hasRole, 
+  hasRole('educator'), // Only educators can access the teacher portal
   teacherPortalRouter
 );
-
-
-// --- Change Email (Currently unused, will remain here while so) ---
-app.patch("/profile/:userId/change-email", async (req, res) => {
-  const { userId } = req.params;
-  const { newEmail } = req.body;
-  const authUserId = req.user.id;
-
-  if (userId !== authUserId) {
-    return res.status(403).json({ error: "Forbidden" });
-  }
-
-  const client = await pool.connect();
-
-  try {
-    await client.query("BEGIN");
-
-    await client.query(
-      `
-      UPDATE
-        users
-      SET 
-        email = $1
-      WHERE 
-        id = $2
-      `, [newEmail, authUserId]
-    );
-
-    await client.query("COMMIT")
-
-    res.json({ message: "Email updated" });
-  } catch(error) {
-    await client.query("ROLLBACK");
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error during /change-email"});
-  } finally {
-    client.release();
-  }
-});
-
 
 // --- Listener ---
 app.listen(PORT, () => {

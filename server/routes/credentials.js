@@ -20,7 +20,7 @@ router.get("/", async (req, res) => {
       return res.status(401).json({ error: "Invalid or expired token" });
     }
 
-    const userId = payload.id; // Extract userID from token payload
+    const userId = payload.uuid; // Extract userID from token payload
 
     // Fetch user from DB
     const userQuery = await pool.query(
@@ -47,7 +47,7 @@ router.get("/", async (req, res) => {
 
     const roles = rolesQuery.rows.map(r => r.role);
 
-    res.json({ user: { id: user.id, email: user.email, roles } });
+    res.json({ user: { id: user.uuid, email: user.email, roles } });
 
   } catch(error) {
     console.error("Error in /api/credentials:", error);

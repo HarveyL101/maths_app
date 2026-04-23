@@ -7,40 +7,36 @@ export function AuthProvider({ children }) {
 
 
   useEffect(() => {
+    const token = localStorage.getItem('jwt');
+    const storedUser = localStorage.getItem('user');
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Restores previously existing users
+    }
+
+    if (!token) {
+      // If a token is not present, the user is not logged in
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+
     async function loadUser() {
-      const token = localStorage.getItem('jwt');
-
-      if (!token) {
-        // If a token is not present, the user is not logged in
-        setUser(null);
-        setIsLoading(false);
-        return;
-      }
-
       try {
         const res = await fetch('http://localhost:5000/api/credentials', {
           headers: { Authorization: `Bearer ${token}` }
         });
 
         if (res.status === 401) {
-          logout(); // Invalid token
-          setIsLoading(false);
+          localStorage.removeItem('jwt');
+          localStorage.removeItem('user');
+          setUser(null);
           return;
         }
 
-        if (!res.ok) {
-          setUser(null);
-        } else {
-          let data = null;
-
-          try {
-            data = await res.json();
-          } catch {
-            data = null;
-          }
-
-          setUser(data?.user ?? null);
-        }
+        const data = await res.json();
+        setUser(data?.user ?? null);
+        console.log("Auth Provider mounted");
       } catch (err) {
         console.error("Credentials could not be fetched", err);
         setUser(null);
@@ -72,7 +68,8 @@ export function AuthProvider({ children }) {
   }
 
   const logout = async () => {
-    localStorage.removeItem('jwt')
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('user');
     setUser(null);
   };
 

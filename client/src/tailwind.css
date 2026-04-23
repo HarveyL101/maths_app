@@ -14,13 +14,13 @@
     @apply border rounded-xl text-center;
   }
   .card-header {
-    @apply font-bold text-3xl
+    @apply font-bold text-3xl;
   }
   .card-content {
-    @apply text-gray-700
+    @apply text-gray-700;
   }
   .card-footer {
-    @apply text-gray-700
+    @apply text-gray-700;
   }
 }
 
@@ -31,10 +31,16 @@
   --color-violet-3: #C39BEE;
   --color-violet-4: #AB73E7;
   --color-violet-5: #944CE1;
-  --color-violet-5: #7C25DA;
   --color-violet-6: #6C20BD;
   --color-violet-7: #50188C;
   --color-violet-8: #391164;
   --color-violet-9: #230A3D;
   --color-violet-10: #0C0416;
+
+  --color-black-*: initial; /* Disabling original black shades*/
+  --color-black: #000000;
+  --color-deep-purple: #53096E;
+  --color-light-purple: #9912CB;
+  --color-turquoise: #1A919F;
+  --color-off-white: #EDEDED;
 }

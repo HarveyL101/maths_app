@@ -1,6 +1,85 @@
 /* --- TITLE BAR --- */
 @layer components {
+  /* Upper Bar Elements */
+  .titlebar-wrapper {
+    @apply w-full
+  }
+
+  .upper-container {
+    @apply
+    flex 
+    items-center 
+    justify-between 
+    w-full 
+    px-4 py-2
+    bg-white
+  }
+  /* Left hand icon */
+  .home-icon > img {
+    @apply
+    w-25 
+    h-auto
+    border border-off-grey
+    rounded-full 
+    p-1 
+    shadow-lg 
+
+    hover:shadow-2xl
+    transition-shadow duration-200
+    cursor-pointer;
+  }
+
+  .app-title {
+    @apply
+    text-2xl font-bold flex-1;
+  }
+
+  /* Right hand icon */
+  .profile-icon > img {
+    @apply
+    w-25
+    h-auto
+    border border-off-grey 
+    rounded-full 
+    p-1 
+    shadow-lg 
+    
+    hover:shadow-2xl 
+    transition-shadow 
+    duration-200 
+    cursor-pointer
+  }
+
+  /* Nav Bar CSS */
+  .nav-container {
+    @apply
+    w-full 
+    border-t;
+  }
+
+  .nav-list {
+    @apply
+    flex 
+    justify-center 
+    gap-4 
+    text-lg;
+  }
+
+  .nav-list-item {
+    @apply
+    whitespace-nowrap
+    font-medium
+    px-8 py-5
+    rounded-b-lg
+    cursor-pointer
+  }
+
   .nav-item {
-    @apply whitespace-nowrap px-8 py-5 rounded-b-lg cursor-pointer font-medium;
+    @apply 
+    whitespace-nowrap 
+    px-8 py-5 
+    rounded-b-lg 
+    cursor-pointer 
+    font-medium;
   }
 }

@@ -5,18 +5,26 @@ import { useAuth } from "../auth/useAuth";
 const LoginForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useAuth();
+
+  const handleReset = () => {
+    setErrorMessage(null);
+    setEmail("");
+    setPassword("");
+    return;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setErrorMessage(null);
 
-    const formData = new FormData(e.target);
     
     const data = {
-      email: formData.get("userEmail"),
-      password: formData.get("userPassword"),
+      email: email,
+      password: password,
     }
 
     if (!data.email || !data.password) {
@@ -49,48 +57,55 @@ const LoginForm = () => {
   };
 
   return(
-    <div className="form-container">
-      <form 
-      onSubmit={handleSubmit}
-      className="form-card"
-    >
-        <div>
+    <div className="form-wrapper">
+      <form className="form-container" onSubmit={handleSubmit}>
+        <div className="form-header-container">
           <h1 className="form-title">Login</h1>
-
-          <label htmlFor="email" className="form-label">
-            Email:
-            <input 
-              className="form-input"
-              type="email" 
-              name="userEmail" 
-              id="email"
-              placeholder="E.g johnsmith@gmail.com"
-            />
-          </label>
-
-          <label htmlFor="password" className="form-label">
-            Password:
-            <input 
-              className="form-input"
-              type="password" 
-              name="userPassword" 
-              id="password"
-              placeholder="Don't share your password with others!"
-            />
-          </label>
-
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </div>
 
+        <div className="form-input-container">
+          <div className="form-input-row">
+            <label htmlFor="email" className="form-input-label">Email:
+              <input className="form-input"
+                type="email" 
+                name="userEmail" 
+                id="email"
+                placeholder="E.g johnsmith@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+          </div>
+
+          <div className="form-input-row">
+            <label htmlFor="password" className="form-input-label">Password:
+              <input 
+                className="form-input"
+                type="password" 
+                name="userPassword" 
+                id="password"
+                placeholder="Don't share your password!"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </div>
+        </div>
+
+        {errorMessage && <p className="form-error-message">{errorMessage}</p>}
+
         <div className="form-button-container">
-          <button type="reset" className="form-button bg-orange-500">Reset</button>
-          <button type="submit" className="form-button bg-blue-600">Submit</button>
+          <button type="reset" className="form-reset-button" onClick={handleReset}>Reset</button>
+          <button type="submit" className="form-submit-button">Submit</button>
         </div>
         
         <Link to='/register' className="form-link">Don't have an account? Register Here!</Link>
       </form>
     </div>
-  )
+
+
+      
+  );
 };
 
 export default LoginForm;

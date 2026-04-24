@@ -65,28 +65,35 @@ const ChangeName = () => {
     }
   }
   return (
-      <div className="profile-container">
-        <form className="profile-form-card" onSubmit={handleSubmit}>
-          <h1 className="profile-form-title">Change Account Name</h1>
-          <p>You will need to re-login upon a successful change.</p>
-          
-          <div className="flex-col">
-            <label className="profile-form-label"> New Alias:
-              <input className="profile-input" 
-                type="text" 
-                name="newName" 
-                placeholder="New Name..."
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </label>
+      <div className="form-wrapper">
+        <form className="form-container" onSubmit={handleSubmit}>
+          <div className="form-header-container">
+            <h1 className="form-header">Change Account Name</h1>
+            
+            <p className="form-subheader">You will need to re-login upon a successful change.</p>
           </div>
 
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          <div className="form-input-container">
+            <div className="form-input-row">
+              <label className="form-input-label"> New Alias:
+                <input className="form-input" 
+                  type="text" 
+                  name="newName" 
+                  placeholder="New Name..."
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </label>
+            </div>
+          </div>
           
-          <div className="profile-button-container">
+          
+
+          {errorMessage && <p className="form-error-message">{errorMessage}</p>}
+          
+          <div className="form-button-container">
             <button 
-              className="profile-button bg-orange-400" 
+              className="form-reset-button" 
               type="reset"
               onClick={handleReset}
             >
@@ -94,7 +101,7 @@ const ChangeName = () => {
             </button>
 
             <button 
-              className="profile-button bg-blue-600" 
+              className="form-submit-button" 
               type="submit"
             >
               Submit

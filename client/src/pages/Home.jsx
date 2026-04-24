@@ -1,8 +1,9 @@
 import { SideBar, TitleBar } from '../utils/index';
+import Footer from '../components/Footer';
 
 const Home = () => {
   return (
-    <div>
+    <div className='page-wrapper'>
       <TitleBar />
 
       <div className='pt-4 pl-3 pr-3'>
@@ -59,6 +60,8 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   )
 }

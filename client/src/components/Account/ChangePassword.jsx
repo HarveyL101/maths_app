@@ -80,52 +80,57 @@ const ChangePassword = () => {
     }
   }
   return (
-      <div className="profile-container">
-        <form className="profile-form-card" onSubmit={handleSubmit}>
-          <h1 className="profile-form-title">Change Account Password</h1>
-          <p>You will need to re-login upon a successful change.</p>
+      <div className="form-wrapper">
+        <form className="form-container" onSubmit={handleSubmit}>
+          <div className="form-header-container">
+            <h1 className="form-header">Change Account Password</h1>
+            <p className="form-subheader">You will need to re-login upon a successful change.</p>
+          </div>
+                    
+          <div className="form-input-container">
+            <div className="form-input-row">
+              <label className="form-input-label"> Current Password:
+                <input className="form-input" 
+                  type="password" 
+                  name="currentPassword" 
+                  placeholder="Current Password..."
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                />
+              </label>
+            </div>
+
+            <div className="form-input-row">
+              <label className="form-input-label"> New Password:
+                <input className="form-input" 
+                  type="password" 
+                  name="newPassword" 
+                  placeholder="New Password..."
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </label>
+            </div>
+
+            <div className="form-input-row">
+              <label className="form-input-label"> Confirm Password:
+                <input className="form-input" 
+                  type="password" 
+                  name="newConfirmPassword" 
+                  placeholder="Please Re-enter New Password..."
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                />
+              </label>
+            </div>
+          </div>
           
-          <div className="flex-col">
-            <label className="profile-form-label"> Current Password:
-              <input className="profile-input" 
-                type="password" 
-                name="currentPassword" 
-                placeholder="Current Password..."
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-              />
-            </label>
-          </div>
 
-          <div className="flex-col">
-            <label className="profile-form-label"> New Password:
-              <input className="profile-input" 
-                type="password" 
-                name="newPassword" 
-                placeholder="New Password..."
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-            </label>
-          </div>
-
-          <div className="flex-col">
-            <label className="profile-form-label"> Confirm Password:
-              <input className="profile-input" 
-                type="password" 
-                name="newConfirmPassword" 
-                placeholder="Please Re-enter New Password..."
-                value={confirmNewPassword}
-                onChange={(e) => setConfirmNewPassword(e.target.value)}
-              />
-            </label>
-          </div>
-
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          {errorMessage && <p className="form-error-message">{errorMessage}</p>}
           
-          <div className="profile-button-container">
+          <div className="form-button-container">
             <button 
-              className="profile-button bg-orange-400" 
+              className="form-reset-button" 
               type="reset"
               onClick={handleReset}
             >
@@ -133,7 +138,7 @@ const ChangePassword = () => {
             </button>
 
             <button 
-              className="profile-button bg-blue-600" 
+              className="form-submit-button" 
               type="submit"
             >
               Submit

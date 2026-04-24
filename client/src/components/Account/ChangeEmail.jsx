@@ -76,42 +76,52 @@ const ChangeEmail = () => {
     }
   }
   return (
-      <div className="profile-container">
-        <form className="profile-form-card" onSubmit={handleSubmit}>
-          <h1 className="profile-form-title">Change Account Email</h1>
-          <p>You will need to re-login upon a successful change.</p>
-          
-          <div className="flex-col">
-            <label className="profile-form-label"> Current Email:
-              <input className="profile-input" 
-                type="email" name="currentEmail" 
-                placeholder="Current Email..." 
-                value={oldEmail}
-                onChange={(e) => setOldEmail(e.target.value)}
-              />
-            </label>
-            <label className="profile-form-label"> New Email:
-              <input className="profile-input" 
-                type="email" 
-                name="newEmail" 
-                placeholder="New Email..." 
-                value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
-              />
-            </label>
+      <div className="form-wrapper">
+        <form className="form-container" onSubmit={handleSubmit}>
+          <div className="form-header-container">
+            <h1 className="form-header">Change Account Email</h1>
+
+            <p className="form-subheader">You will need to re-login upon a successful change.</p>
           </div>
 
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          <div className="form-input-container">
+            <div className="form-input-row">
+              <label className="form-input-label"> Current Email:
+                <input className="form-input" 
+                  type="email" name="currentEmail" 
+                  placeholder="Current Email..." 
+                  value={oldEmail}
+                  onChange={(e) => setOldEmail(e.target.value)}
+                />
+              </label>
+            </div>
+
+            <div className="form-input-row">
+              <label className="form-input-label"> New Email:
+                <input className="form-input" 
+                  type="email" 
+                  name="newEmail" 
+                  placeholder="New Email..." 
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                />
+              </label>
+            </div>
+            
+            
+          </div>
+
+          {errorMessage && <p className="form-error-message">{errorMessage}</p>}
           
-          <div className="profile-button-container">
-            <button className="profile-button bg-orange-400" 
+          <div className="form-button-container">
+            <button className="form-reset-button" 
               type="reset" 
               onClick={handleReset}
             >
               Reset
             </button>
 
-            <button className="profile-button bg-blue-600" 
+            <button className="form-submit-button" 
               type="submit"
             >
               Submit

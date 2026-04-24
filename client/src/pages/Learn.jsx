@@ -3,6 +3,7 @@ import SearchBar from '../components/SearchBar.jsx';
 import Accordion from '../components/Accordion.jsx';
 import { curriculum } from '../components/Questions/curriculumConfig.js';
 import { useState } from 'react';
+import Footer from '../components/Footer.jsx';
 
 const Learn = () => {
   const [questions, setQuestions] = useState([]);
@@ -196,6 +197,8 @@ const Learn = () => {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

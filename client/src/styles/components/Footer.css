@@ -1,0 +1,53 @@
+@layer components {
+  .footer-container {
+  background: #454545;
+  padding: 1.75rem 2rem 1.5rem;
+  width: 100%;
+  }
+
+  .footer-header {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #9E9E9E;
+    margin-bottom: 0.6rem;
+  }
+
+  .link-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .link-item {
+    font-size: 13px;
+    color: #C8C8C8;
+    text-decoration: none;
+    padding: 3px 12px;
+    position: relative;
+    transition: color 0.15s;
+  }
+
+  .link-item:hover { color: #EDEDED; }
+
+  .link-item + .link-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 12px;
+    background: #666;
+  }
+
+  .footer-date {
+    font-size: 11px;
+    color: #6B6B6B;
+  }
+}
+
+

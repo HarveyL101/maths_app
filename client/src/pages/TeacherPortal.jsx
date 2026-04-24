@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import { QuestionPortal, TitleBar } from "../utils";
 
 const TeacherPortal = () => {
@@ -5,6 +6,8 @@ const TeacherPortal = () => {
     <div>
       <TitleBar />
       <QuestionPortal />
+
+      <Footer />
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import Footer from "../components/Footer";
+
 const Help = () => {
   return (
     <div>
@@ -6,7 +8,8 @@ const Help = () => {
       <ul>
         <li>This page will contain both technical FAQ's (how to use the app) as well as maths focused tips readable by subject area</li>
       </ul>
-      <p></p>
+      
+      <Footer />
     </div>
   );
 };

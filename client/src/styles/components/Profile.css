@@ -1,24 +1,94 @@
 /* Profile Form Fields */
 @layer components {
-  .profile-container {
-    @apply min-h-60 shrink-0 flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 p-6;
+  .profile-wrapper {
+    @apply bg-off-white;
   }
-  .profile-form-card {
-    @apply bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-2/5 border border-purple-100;
+  /* Table CSS */
+  .table-container {
+    @apply 
+    w-full 
+    max-w-5xl 
+    mx-auto 
+    mt-8 
+    mb-10 
+    bg-white 
+    rounded-2xl 
+    border-[1.5px] 
+    border-light-purple 
+    p-6 
+    flex flex-col 
+    gap-4;
   }
-  .profile-form-title {
-    @apply text-gray-700 text-3xl flex justify-center my-2;
+
+  .table-header {
+    @apply 
+    text-[20px] 
+    font-medium 
+    text-deep-purple 
+    tracking-[-0.01em] 
+    border-b-2 border-turquoise pb-3;
   }
-  .profile-form-label {
-    @apply flex flex-col text-lg font-bold;
+
+  .table-frame {
+    @apply 
+    w-full 
+    border-collapse 
+    overflow-hidden 
+    rounded-xl;
   }
-  .profile-input {
-    @apply mt-1 p-3 rounded-lg border border-gray-300 hover:border-green-700 hover:shadow-lg outline-none transition;
+
+  .table-head {
+    @apply bg-off-white;
   }
-  .profile-button-container {
-    @apply flex justify-center gap-6 w-full pt-2;
+
+  .table-row {
+    @apply border-b border-off-white;
   }
-  .profile-button {
-    @apply px-6 py-3 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
+
+  .table-head-item {
+    @apply text-left 
+    text-[12px] 
+    uppercase 
+    tracking-[0.06em] 
+    font-semibold 
+    text-deep-purple 
+    px-4 py-3;
+  }
+
+  .table-body-item {
+    @apply text-[14px] 
+    text-black 
+    px-4 py-3;
+  }
+
+  .table-body tr {
+    @apply transition-colors duration-150;
+  }
+
+  .table-body tr:hover {
+    @apply bg-[#f5f5f5];
+  }
+
+  /* Form Container CSS */
+  .profile-form-wrapper {
+    @apply 
+    w-full 
+    max-w-5xl 
+    mx-auto 
+    mt-10 
+    mb-12 
+    flex flex-col 
+    gap-8
+  }
+
+  .profile-form-wrapper > * {
+    @apply 
+    grow-0
+    shrink-0;
+  }
+  
+  .table-container,
+  .profile-form-wrapper > * {
+    @apply shadow-sm;
   }
 }

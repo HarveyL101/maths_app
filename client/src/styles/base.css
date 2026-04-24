@@ -8,52 +8,165 @@
     --bg: dark;
     --text: light;
   }
+
+  
+  .form-wrapper {
+    @apply
+    flex
+    justify-center
+    items-start
+    px-8 py-4
+    h-auto
+    max-h-fit;
+  }
+
   .form-container {
-    @apply text-turquoise;
+    @apply
+    bg-white
+    rounded-2xl
+    border-2 border-light-purple
+    px-4 py-4
+    w-full
+    max-w-md
+    flex flex-col
+    gap-7
+    h-auto
+    shrink-0
+    mx-auto;
   }
 
-  .form-card {
-    @apply text-turquoise;
+  .form-header-container {
+    @apply
+    flex flex-col
+    items-center
+    gap-1
+    pb-5
+    border-b-2 border-turquoise;
   }
 
-  .form-title {
-    @apply text-turquoise;
+  .form-header {
+    @apply
+    text-4xl
+    font-medium
+    text-deep-purple
+    tracking-[-0.01em];
   }
 
-  .form-label {
-    @apply text-turquoise;
+  .form-subheader {
+    @apply
+    text-sm
+    text-off-grey
+    leading-6;
+  }
+
+  .form-input-container {
+    @apply
+    flex flex-col
+    gap-4;
+  }
+
+  .form-input-row {
+    @apply
+    flex flex-col
+    h-auto;
+  }
+
+  .form-input-label {
+    @apply
+    flex flex-col
+    gap-1.5
+    text-sm text-deep-purple
+    font-medium
+    tracking-normal
+    uppercase;
   }
 
   .form-input {
-    @apply text-turquoise;
+    @apply
+    text-xl text-black
+    bg-off-white
+    border-6 border-light-purple
+    rounded-lg
+    px-[0.6rem] py-3.5
+    outline-none
+    transition-colors duration-150
+    w-auto
+    h-auto;
+  }
+
+  .form-input::placeholder {
+    @apply text-off-grey;
+  }
+
+  .form-input:focus {
+    @apply 
+    border-turquoise
+    shadow-2xl
+    bg-white;
+  }
+
+  .form-error-message {
+    @apply
+    text-lg text-[#7A1C1C]
+    font-medium
+    bg-[#FDEAEA]
+    border-[1.5px] border-[#E88080]
+    rounded-lg
+    px-2 py-3.5;
   }
 
   .form-button-container {
-    @apply text-turquoise;
+    @apply
+    flex justify-end
+    gap-3;
   }
-  
-  .form-button {
-    @apply text-turquoise;
+
+  .form-reset-button, .form-submit-button {
+    @apply
+    flex justify-center
+    items-center
+    w-20
+    h-10;
+  }
+
+  .form-reset-button {
+    @apply
+    text-sm text-deep-purple
+    font-medium
+    bg-transparent
+    border-2 border-light-purple
+    rounded-lg
+    px-2 py-5
+    cursor-pointer
+    transition-colors duration-150;
+  }
+
+  .form-reset-button:hover {
+    @apply
+    bg-off-white
+    border-light-purple
+    text-black;
+  }
+
+  .form-submit-button {
+    @apply
+    text-sm text-white
+    font-medium
+    bg-light-purple
+    border-3 border-light-purple
+    rounded-lg
+    px-2 py-5
+    cursor-pointer
+    transition-colors duration-150;
+  }
+
+  .form-submit-button:hover {
+    @apply 
+    bg-deep-purple
+    border-deep-purple;
+  }
+
+  .form-submit-button:active {
+    @apply transform scale-95;
   }
 }
-.profile-container {
-    @apply min-h-60 shrink-0 flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 p-6;
-  }
-  .profile-form-card {
-    @apply bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-2/5 border border-purple-100;
-  }
-  .profile-form-title {
-    @apply text-gray-700 text-3xl flex justify-center my-2;
-  }
-  .profile-form-label {
-    @apply flex flex-col text-lg font-bold;
-  }
-  .profile-input {
-    @apply mt-1 p-3 rounded-lg border border-gray-300 hover:border-green-700 hover:shadow-lg outline-none transition;
-  }
-  .profile-button-container {
-    @apply flex justify-center gap-6 w-full pt-2;
-  }
-  .profile-button {
-    @apply px-6 py-3 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
-  }

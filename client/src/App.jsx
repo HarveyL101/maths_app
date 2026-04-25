@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { Login, Register, Home, Profile, Practice, Learn, Help, TeacherPortal } from './utils/index';
+import { Login, Register, Home, Profile, Practice, Learn, Help, TeacherPortal, Quiz } from './utils/index';
 import RequireAuth from './auth/guards/RequireAuth';
 import RequireRole from './auth/guards/RequireRole';
 
@@ -50,6 +50,14 @@ const App = () => {
               <Help />
             </RequireAuth>
           } 
+        />
+        <Route
+          path='/quiz/:subtopicId'
+          element={
+            <RequireAuth>
+              <Quiz />
+            </RequireAuth>
+          }
         />
 
         {/* Routes protected by Role */}

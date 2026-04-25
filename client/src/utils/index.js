@@ -22,6 +22,7 @@ export {default as Learn} from '../pages/Learn.jsx';
 export {default as Login} from '../pages/Login.jsx';
 export {default as Practice} from '../pages/Practice.jsx';
 export {default as Profile} from '../pages/Profile.jsx';
+export {default as Quiz} from '../pages/Quiz.jsx';
 export {default as Register} from '../pages/Register.jsx';
 export {default as TeacherPortal} from '../pages/TeacherPortal.jsx';
 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 
-
+// Performs a simple fetch and retrieval of desired questions
 router.get("/", async (req, res) => {
     const client = await pool.connect();
     try {

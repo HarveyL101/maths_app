@@ -1,50 +1,40 @@
 @layer components {
-  .accordion-container {
-    /* @apply flex flex-col w-full border border-gray-200 rounded-md; */
-    @apply flex flex-col w-full 
-           rounded-2xl 
-           bg-white
-           border border-gray-200/70 
-           shadow-sm 
-           overflow-hidden 
-           backdrop-blur
-           transition-shadow duration-300;
-  }
-  .accordion-container:hover {
-    @apply shadow-xl;
-  }
-
   .accordion-button {
-    /* @apply flex justify-between items-center w-full py-2 font-medium text-left hover:bg-gray-50 transition-colors cursor-pointer; */
-    @apply flex justify-between items-center 
-           w-full
-           px-4 py-3
-           font-medium text-left
-           text-gray-700
-           transition-all duration-200 ease-out
-           cursor-pointer
-           border-b border-gray-100
-           hover:bg-violet-5/70
-           hover:text-violet-7
-           active:scale-[0.99];
-  }
-  .accordion-button span {
-    @apply transition-transform duration-200 text-gray-400;
-  }
-  .accordion-button:hover span {
-    @apply text-violet-6;
-  }
+    @apply
+    w-full
+    text-left text-deep-purple text-sm
+    py-1.5 pr-2
+    border-none
+    rounded-lg
+    flex items-center justify-between
+    bg-transparent
+    cursor-pointer
 
+    transition-colors duration-150;
+  }
+  .accordion-button:hover { @apply bg-off-white; }
+  .accordion-button.open { @apply bg-[#f5e6fb] text-deep-purple; }
+  .accordion-button[data-level="0"] { @apply font-medium text-xl; }
+  .accordion-button[data-level="1"] { @apply font-normal text-lg text-deep-purple; }
+  .accordion-button[data-level="2"] { @apply font-normal text-sm text-light-purple; }
+
+  .accordion-button.accordion-leaf { @apply text-off-grey; }
+  .accordion-button.accordion-leaf:hover { @apply bg-off-white text-deep-purple; }
+  .accordion-button.accordion-leaf.open,
+  .accordion-button.accordion-leaf:active { @apply bg-[#f5e6fb] text-light-purple font-medium; }
+  
   .accordion-panel {
     @apply overflow-hidden
-           max-h-0
-           opacity-0
-           transition-all
-           duration-300
-           ease-in-out;
+    max-h-0
+    transition ease-in;
   }
-  .accordion-panel.open {
-    @apply max-h-[1000px]
-           opacity-100;
+  .accordion-panel.open { @apply max-h-150; }
+
+  .accordion-icon {
+    @apply
+    text-light-purple/50 text-lg
+    transition-transform duration-150
+    ml-auto;
   }
+  .accordion-button.open > .accordion-icon { @apply rotate-90; }
 }

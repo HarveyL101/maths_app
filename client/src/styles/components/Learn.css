@@ -1,45 +1,157 @@
 @layer components {
-  .question-id {
-    @apply text-gray-600 text-sm pt-3 pl-3;
+  /* Accordion Related */
+  .sidebar {
+    @apply 
+    w-fit 
+    bg-white
+    border-r border-light-purple/20
+    px-3 py-5
+    flex flex-col
+    gap-0.5
+    shrink-0;
+  }
+  .sidebar-header-container {
+    @apply
+    bg-green-300
+    
   }
 
+  .sidebar-header {
+    @apply 
+    flex justify-center
+    bg-white
+    border-2 border-off-white
+    rounded-lg
+    text-xl text-off-grey
+    font-medium
+    uppercase
+    tracking-widest
+    px-2
+    mb-2
+    shadow-2xl;
+  }
+  
+  /* Portal Body */
+  .portal-body { @apply flex flex-col flex-1; }
+
+  .results-area { @apply flex flex-col gap-3; }
+
+  /* Results Box */
+  .results-box {
+    @apply
+    flex flex-col gap-3
+    bg-white
+    border border-light-purple/20 rounded-xl
+    relative
+    p-5
+    min-h-48;
+  }
+
+  .results-clear-btn {
+    @apply
+    flex items-center justify-center
+    absolute top-3 right-3
+    w-7 h-7
+    text-base text-off-grey
+    bg-transparent
+    border border-light-purple/20
+    rounded-lg
+    cursor-pointer
+    transition-colors duration-150
+    hover:bg-off-white hover:text-deep-purple;
+  }
+
+  .results-grid {
+    @apply
+    grid gap-2.5 pt-1;
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  /* Card CSS */
   .creator-card {
-    @apply bg-white rounded-xl shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all border border-gray-200 overflow-hidden mb-4;
+    @apply
+      flex flex-row items-stretch
+      bg-white
+      border border-light-purple/20
+      rounded-xl
+      overflow-hidden
+      transition-colors duration-150
+      hover:border-light-purple/60
+      hover:shadow-sm;
   }
 
-  /* Card body */
-  .item-body {
-    @apply flex items-center justify-between px-5 py-4;
-  }
-  .item-title {
-    @apply text-gray-800 text-2xl font-medium;
-  }
-  .item-button {
-    @apply bg-violet-5 text-white text-3xl px-4 py-1.5 rounded-lg hover:bg-violet-7 cursor-pointer transition;
+  .creator-card-body { 
+    @apply
+      flex flex-col justify-center flex-1
+      gap-1
+      px-4 py-3;
+   }
+
+  .creator-card-title {
+    @apply
+    text-sm text-deep-purple
+    font-medium
+    leading-snug;
   }
 
-  /* Footer */
-  .item-footer {
-    @apply flex items-center bg-violet-3 border-t border-gray-200 px-4 py-2 text-sm text-gray-600;
+  .creator-card-meta { @apply text-xs text-off-grey; }
+
+  /* Tags CSS */
+  .creator-card-footer { @apply flex flex-wrap justify-center items-center gap-1.5 mt-1.5 ; }
+
+  .creator-tag {
+    @apply
+    text-sm text-off-grey
+    px-2 py-0.5
+    bg-off-white
+    border border-light-purple/15
+    rounded-full;
   }
 
-  /* Footer children (Year / Topic) */
-  .item-footer > * {
-    @apply relative flex-1 text-center font-medium;
+  .creator-tag--year {
+    @apply
+    bg-[#f5e6fb]
+    text-deep-purple
+    border-light-purple/30;
   }
 
-  /* Dashed divider on Year */
-  .item-year-group::after {
-    content: '';
-    @apply absolute top-0 bottom-0 right-0 border-r border-dashed border-violet-5;
+  .creator-tag--topic {
+    @apply
+    bg-[#e2f5f6]
+    text-turquoise
+    border-turquoise/30;
   }
 
-  .item-topic::after {
-    content: '';
-    @apply absolute top-0 bottom-0 right-0 border-r border-dashed border-violet-5;
+  /* 'Start Learning' Card Button */
+  .creator-card-btn {
+    @apply
+      flex items-center justify-center
+      shrink-0
+      w-24
+      text-xs font-medium text-light-purple
+      bg-[#f5e6fb]
+      border-l border-light-purple/20
+      cursor-pointer
+      transition-colors duration-150
+      hover:bg-light-purple hover:text-white;
   }
 
-  .item-subtopic::after {
-    content: none;
+  /* Empty Results State */
+  .results-empty {
+    @apply
+    flex flex-col justify-center items-center
+    gap-2
+    py-16
+    text-center;
   }
+
+  .results-empty-msg { @apply text-sm font-medium text-off-grey; }
+  .results-empt-sub {
+    @apply
+    text-xs text-off-grey/70
+    max-w-[#220px] leading-relaxed;
+  }
+
+  /* Hint */
+  .results-hint { @apply text-xs text-off-grey/70 text-center; }
 }

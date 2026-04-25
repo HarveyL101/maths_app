@@ -143,16 +143,15 @@ CREATE TABLE questions (
 );
 
 --
--- Attempts Declaration
+-- Completions Declaration
 --
-CREATE TABLE attempts (
+CREATE TABLE completions (
   id SERIAL PRIMARY KEY,
-  user_uuid UUID NOT NULL REFERENCES users(id),
-  question_id INT NOT NULL REFERENCES questions(id),
-  user_answer JSONB,
+  user_uuid UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  question_id INT NOT NULL REFERENCES questions(id) ON DELETE CASCADE,
   is_correct BOOLEAN NOT NULL,
-  time_taken_seconds INT,
-  attempted_at TIMESTAMP DEFAULT NOW()
+  completed_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (user_uuid, question_id)
 );
 
 -- ****************************************************************** -- 
@@ -161,42 +160,42 @@ CREATE TABLE attempts (
 -- Indexes
 -- 
 CREATE INDEX idx_questions_subtopic ON questions(subtopic_id);
-
-CREATE INDEX idx_attempts_user ON attempts(user_uuid);
-
-CREATE INDEX idx_attempts_question ON attempts(question_id);
-
--- Composite index for any future analytics on user performance
-CREATE INDEX idx_attempts_user_question
-ON attempts(user_uuid, question_id);
-
 CREATE INDEX idx_questions_creator ON questions(educator_uuid);
+
+CREATE INDEX idx_completions_user ON completions(user_uuid);
+CREATE INDEX idx_completions_question ON completions(question_id);
 -- 
 -- Views
 -- 
-CREATE VIEW user_accuracy AS  
-SELECT 
-  user_uuid,
-  question_id,
-  AVG(CASE WHEN is_correct THEN 1 ELSE 0 END) AS accuracy
-FROM 
-  attempts
-GROUP BY 
-  user_uuid, question_id;
-
 CREATE OR REPLACE VIEW question_details AS 
 SELECT
   q.id AS question_id,
+  q.subtopic_id AS subtopic_id,
   u.id AS creator_id,
   u.surname AS creator_surname,
   yg.id AS year_group,
   t.name AS topic_name,
   st.name AS subtopic_name, 
   q.title AS question_title,
-  q.input AS question_input,
-  
+  q.input AS question_input
 FROM questions q 
 JOIN subtopic st ON q.subtopic_id = st.id
 JOIN topic t ON st.topic_id = t.id
 JOIN year_group yg ON t.year_group = yg.id
 LEFT JOIN users u ON q.educator_uuid = u.id;
+
+CREATE VIEW user_progress AS 
+SELECT
+  c.user_uuid,
+  q.subtopic_id,
+  st.name AS subtopic_name,
+  t.name AS topic_name,
+  yg.id AS year_group,
+  COUNT(*) AS questions_seen,
+  SUM(CASE WHEN c.is_correct THEN 1 ELSE 0 END) AS correct_count
+FROM completions c
+JOIN questions q ON c.question_id = q.id
+JOIN subtopic st ON q.subtopic_id = st.id
+JOIN topic t ON st.topic_id = t.id
+JOIN year_group yg ON t.year_group = yg.id
+GROUP BY c.user_uuid, q.subtopic_id, st.name, t.name, yg.id;

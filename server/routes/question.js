@@ -10,8 +10,15 @@ router.get("/", async (req, res) => {
 
         let query = `
             SELECT 
+                question_id,
+                subtopic_id,
                 creator_id,
-                json_agg(question_details) as questions
+                creator_surname,
+                year_group,
+                topic_name,
+                subtopic_name,
+                question_title,
+                question_input
             FROM question_details
             WHERE 1=1
         `;
@@ -34,14 +41,15 @@ router.get("/", async (req, res) => {
             query += ` AND subtopic_name = $${index++}`;
             values.push(subtopic);
         }
+
+        if (creator) {
+            query += `AND LOWER(creator_surname) = LOWER($${index++})`;
+            values.push(creator);
+        }
         
-        query += ` 
-            GROUP BY creator_id
-            ORDER BY creator_id
-        `;
+        query += `ORDER BY subtopic_name, creator_surname`;
 
         const result = await client.query(query, values);
-
         res.json(result.rows);
     } catch (error) {
         console.error(error);

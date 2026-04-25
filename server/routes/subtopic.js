@@ -30,7 +30,7 @@ const getSubtopics = async (client, year, topic) => {
         ORDER BY st.name ASC;
     `, [year, topic]);
 
-    return result.rows[0]; // Array of chosen subtopics
+    return result.rows; // Array of chosen subtopics
 };
 
 module.exports = router;

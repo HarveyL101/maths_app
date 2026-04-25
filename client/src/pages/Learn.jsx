@@ -9,68 +9,72 @@ import Footer from '../components/Footer.jsx';
 
 const Learn = () => {
   const [questions, setQuestions] = useState([]);
-
   const navigate = useNavigate();
 
   const fetchQuestions = async (params) => {
     try {
       const query = new URLSearchParams(params).toString();
-      const res = await fetch(`/api/questions?${query}`);
-      const data = await res.json();
-      setQuestions(data);
+      const token = localStorage.getItem("jwt");
 
+
+      console.log("Fetching:", `api/questions?${query}`);
+      const res = await fetch(`/api/questions?${query}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      console.log("Status:", res.status);
+      const data = await res.json();
+      console.log("Data:", data);
+
+      setQuestions(data);
     } catch(error) {
       console.error("Failed to fetch questions", error);
     }
   };
 
   const formatQuestions = (data) => {
-    return data.map((creator) => {
-      const firstQuestion = creator.questions[0];
-
-      console.log(firstQuestion);
-
-      return (
-        <div key={creator.creator_id} className="creator-card">
-          {/* Body */}
-          <div className="creator-card-body">
-            <p className="creator-card-title">
-              {firstQuestion.subtopic_name} 
-            </p>
-            <p className='creator-card-meta'>
-              by {firstQuestion.creator_surname}
-            </p>
-          </div>
-
-          {/* Footer */}
-          <div className="creator-card-footer">
-            <div className="creator-tag creator-tag--year">
-              Year {firstQuestion.year_group}
-            </div>
-            <div className="creator-tag creator-tag--topic">
-              {firstQuestion.topic_name}
-            </div>
-            <div className="creator-tag">
-              {firstQuestion.subtopic_name}
-            </div>
-          </div>
-
-          <button
-            className='creator-card-btn'
-            onClick={() => navigate(`/api/questions/${firstQuestion.subtopic_id}`, {
-              state: {
-                subtopicName: firstQuestion.subtopic_name,
-                topic: firstQuestion.topic_name,
-                year: firstQuestion.year_group,
-                creatorSurname: firstQuestion.creator_surname,
-              }
-            })}
-          >
-            {"Start ->"}
-          </button>
+    return data.map((question) => (
+      <div key={creator.creator_id} className="creator-card">
+        {/* Body */}
+        <div className="creator-card-body">
+          <p className="creator-card-title">
+            {question.subtopic_name} 
+          </p>
+          <p className='creator-card-meta'>
+            by {question.creator_surname}
+          </p>
         </div>
-      );
-    })
+
+        {/* Footer */}
+        <div className="creator-card-footer">
+          <div className="creator-tag creator-tag--year">
+            Year {question.year_group}
+          </div>
+          <div className="creator-tag creator-tag--topic">
+            {question.topic_name}
+          </div>
+          <div className="creator-tag">
+            {question.subtopic_name}
+          </div>
+        </div>
+
+        <button
+          className='creator-card-btn'
+          onClick={() => navigate(`/quiz/${question.subtopic_id}`, {
+            state: {
+              subtopicName: question.subtopic_name,
+              topic: question.topic_name,
+              year: question.year_group,
+              creatorSurname: question.creator_surname,
+            }
+          })}
+        >
+          {"Start ->"}
+        </button>
+      </div>
+    ));
   };
   
   const buildAccordionData = (curriculum) => {
@@ -90,9 +94,7 @@ const Learn = () => {
 
   const accordionData = buildAccordionData(curriculum);
 
-  const handleReset = () => {
-    setQuestions([]);
-  }
+  const handleReset = () => setQuestions([]);
 
   return (
     <div className='flex flex-col min-h-screen'>
@@ -101,18 +103,16 @@ const Learn = () => {
       <div className='flex flex-1'>
 
         <div className='sidebar'>
-          <div className='sidebard-header-container'>
+          <div className='sidebar-header-container'>
             <h2 className='sidebar-header'>Topic Catalogue</h2>
           </div>
           <Accordion 
             data={accordionData} 
-            onSelect={(item) => {
-              fetchQuestions({
-                year: item.year,
-                topic: item.topic,
-                subtopic: item.subtopic
-              });
-            }}
+            onSelect={(item) => fetchQuestions({
+              year: item.year,
+              topic: item.topic,
+              subtopic: item.subtopic
+            })}
           />
         </div>
 
@@ -133,7 +133,7 @@ const Learn = () => {
                   &times;
                 </button>
 
-                {questions && questions.length > 0 ? (
+                {questions.length > 0 ? (
                   <div className='results-grid'>
                     {formatQuestions(questions)} 
                   </div>

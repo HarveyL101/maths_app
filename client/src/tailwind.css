@@ -7,7 +7,6 @@
 @import './styles/components/Profile.css';
 @import './styles/components/QuestionPortal.css';
 @import './styles/components/SearchBar.css';
-@import './styles/components/SideBar.css';
 @import './styles/components/TitleBar.css';
 
 @layer pages {

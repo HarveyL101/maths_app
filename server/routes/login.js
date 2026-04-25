@@ -7,7 +7,7 @@ const pool = require("../db");
 // --- Login User ---
 router.post("/", async (req, res) => {
   try {
-    console.log("BODY RECEIVED: ", req.body);
+    // console.log("BODY RECEIVED: ", req.body);
 
     const { email, password } = req.body;
 

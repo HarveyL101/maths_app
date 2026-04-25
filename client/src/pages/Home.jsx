@@ -1,4 +1,4 @@
-import { SideBar, TitleBar } from '../utils/index';
+import { TitleBar } from '../utils/index';
 import Footer from '../components/Footer';
 
 const Home = () => {

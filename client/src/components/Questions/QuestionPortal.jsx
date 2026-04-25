@@ -36,7 +36,7 @@ const QuestionPortal = () => {
 
     const storedUser = JSON.parse(localStorage.getItem('user'));
 
-    console.log("Stored User", storedUser);
+    // console.log("Stored User", storedUser);
 
     if (!storedUser) {
         alert("You must be logged in to create a question.");

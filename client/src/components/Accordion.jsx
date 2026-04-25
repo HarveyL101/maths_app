@@ -1,27 +1,17 @@
 import { useState } from "react";
 
-function AccordionItem({ item, level = 0, openByLevel, setOpenByLevel, id, onSelect }) {
+function AccordionItem({ item, level = 0, openByLevel, setOpenByLevel, id, onSelect, selected }) {
   const open = openByLevel[level] === id;
   const isLeaf = !item.children;
 
-  const violetShades = [
-    "bg-violet-1",
-    "bg-violet-2",
-    "bg-violet-3",
-    "bg-violet-4",
-    "bg-violet-5",
-    "bg-violet-5",
-    "bg-violet-6",
-    "bg-violet-7",
-    "bg-violet-8",
-    "bg-violet-9",
-    "bg-violet-10"
-  ];
-
+  const isSelected = isLeaf 
+    && selected?.title === item.title
+    && selected?.year === item.year
+    && selected?.topic === item.topic;
 
   const handleClick = () => {
-    if (!item.children && onSelect) {
-      onSelect?.(item);
+    if (isLeaf && onSelect) {
+      onSelect(item);
       return;
     } 
     
@@ -34,12 +24,17 @@ function AccordionItem({ item, level = 0, openByLevel, setOpenByLevel, id, onSel
   return (
     <div className="flex flex-col">
       <button
-        style={{ paddingLeft: `${level * 16}px` }}
-        className={`accordion-button ${violetShades[3 - level]}`}
+        data-level={level}
+        style={{ "--indent": `${level * 16 + 8}px` }}
+        className={`accordion-button
+          ${isLeaf ? "accordion-leaf" : ""}
+          ${open ? "open" : ""}
+          ${isSelected ? "selected" : ""}
+        `}
         onClick={handleClick}
       >
         {item.title}
-        {!isLeaf && <span className="ml-2">{open ? "▾" : "▸"}</span>}
+        {!isLeaf && <span className="accordion-icon">▸</span>}
       </button>
 
       {item.children && (
@@ -53,6 +48,7 @@ function AccordionItem({ item, level = 0, openByLevel, setOpenByLevel, id, onSel
               openByLevel={openByLevel}
               setOpenByLevel={setOpenByLevel}
               onSelect={onSelect}
+              selected={selected}
           />
           ))}
         </div>
@@ -63,6 +59,12 @@ function AccordionItem({ item, level = 0, openByLevel, setOpenByLevel, id, onSel
 
 export default function Accordion({ data, onSelect }) {
   const [openByLevel, setOpenByLevel] = useState({});
+  const [selected, setSelected] = useState(null);
+
+  const handleSelect = (item) => {
+    setSelected(item);
+    onSelect?.(item);
+  };
 
   return (
     <div className="accordion-container">
@@ -73,9 +75,10 @@ export default function Accordion({ data, onSelect }) {
           item={item} 
           openByLevel={openByLevel}
           setOpenByLevel={setOpenByLevel}
-          onSelect={onSelect} 
+          onSelect={handleSelect}
+          selected={selected}
         />
       ))}
     </div>
-  )
+  );
 }

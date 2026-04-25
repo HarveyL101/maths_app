@@ -12,23 +12,21 @@
   }
   .sidebar-header-container {
     @apply
-    bg-green-300
-    
+    flex justify-center items-center   
+    bg-white
+    border-2 border-off-white
+    rounded-lg 
+    shadow-2xl;
   }
 
   .sidebar-header {
     @apply 
-    flex justify-center
-    bg-white
-    border-2 border-off-white
-    rounded-lg
     text-xl text-off-grey
     font-medium
     uppercase
     tracking-widest
     px-2
-    mb-2
-    shadow-2xl;
+    mb-2;
   }
   
   /* Portal Body */

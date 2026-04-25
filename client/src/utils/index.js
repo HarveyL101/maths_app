@@ -1,10 +1,14 @@
 // A standard barrel file to keep exports uniform.
 // --- Components directory ---
+export {default as Accordion} from '../components/Accordion.jsx';
+export {default as Footer} from '../components/Footer.jsx';
 export {default as Header} from '../components/Header.jsx';
 export {default as LoginForm} from '../components/LoginForm.jsx';
+export {default as QuestionCard } from '../components/QuestionCard.jsx';
 export {default as RegisterForm} from '../components/RegisterForm.jsx';
-export {default as SideBar} from '../components/SideBar.jsx';
+export {default as SearchBar} from '../components/SearchBar.jsx';
 export {default as TitleBar} from '../components/TitleBar.jsx';
+export {default as ToolTip} from '../components/ToolTip.jsx';
 
 // --- Components/Account directory ---
 export {default as ChangeEmail} from '../components/Account/ChangeEmail.jsx';

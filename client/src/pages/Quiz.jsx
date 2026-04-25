@@ -1,6 +1,7 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Footer from "../components/Footer";
+import { TitleBar } from "../utils";
+import { Footer } from "../utils";
 
 
 const Quiz = () => {
@@ -11,7 +12,6 @@ const Quiz = () => {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [score, setScore] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -42,17 +42,23 @@ const Quiz = () => {
           questionId: questions[currentIndex].question_id,
           answer,
         })
-      })
+      });
     } catch(error) {
       console.error("Failed to save progress", error);
     }
   };
+
+  const handleSubmit = async () => {
+    // Post final score
+    navigate(-1);
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
       <TitleBar />
 
       <div className="quiz-page">
+
         <div className="quiz-header">
           <button
             className="quiz-back-btn"
@@ -65,7 +71,7 @@ const Quiz = () => {
             <p className="quiz-title">{state?.subtopicName}</p>
             <div className="quiz-header-tags">
               <span className="creator-tag creator-tag--topic">
-                Year {state?.Year}
+                Year {state?.year}
               </span>
               <span className="creator-tag creator-tag--topic">
                 {state?.topic}
@@ -79,7 +85,7 @@ const Quiz = () => {
         </div>
 
         <div className="quiz-body">
-          {loading ? (
+          {isLoading ? (
             <p className="results-empty-msg">Loading questions...</p>
           ) : (
             <QuestionCard
@@ -114,7 +120,7 @@ const Quiz = () => {
           ) : (
             <button
               className="quiz-nav-btn quiz-nav-btn--submit"
-              onClick={() => {handleAnswer}}
+              onClick={handleSubmit}
             >
               Submit
             </button>

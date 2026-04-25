@@ -53,7 +53,6 @@ const PORT = process.env.PORT || 5000;
 // --- Route Definitions ---
 const credentialsRoute = require('./routes/credentials.js');
 const loginRoute = require('./routes/login.js');
-const questionsRoute = require('./routes/question.js');
 const questionPortalRoute = require('./routes/questionPortal.js');
 const registerRoute = require('./routes/register.js');
 const subtopicRoute = require('./routes/subtopic.js');
@@ -62,18 +61,25 @@ const teacherPortalRouter = require('./routes/teacherPortal.js');
 const changeEmailRoute = require('./routes/account/changeEmail.js');
 const changeNameRoute = require('./routes/account/changeName.js');
 const changePasswordRoute = require('./routes/account/changePassword.js');
+// Learn / Quiz Route(s)
+const questionRoute = require('./routes/question.js');
+const questionsRoute = require('./routes/questions.js');
+const progressRoute = require('./routes/progress.js');
 
 // API Routes
 app.use(
   '/api/credentials', credentialsRoute);
 app.use('/api/login', loginRoute);
-app.use('/api/questions', questionsRoute);
 app.use('/api/register', registerRoute);
 app.use('/api/subtopics', subtopicRoute);
 // Account Routes
 app.use('/api/change-email', authenticateJWT, changeEmailRoute);
 app.use('/api/change-name', authenticateJWT, changeNameRoute);
 app.use('/api/change-password', authenticateJWT, changePasswordRoute);
+// Learn / Quiz Route(s)
+app.use('/api/questions/subtopic', authenticateJWT, questionsRoute);
+app.use('/api/questions', authenticateJWT, questionRoute);
+app.use('/api/progress', authenticateJWT, progressRoute);
 
 // Guarded Routes
 app.use(

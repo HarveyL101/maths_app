@@ -1,31 +1,57 @@
 /* --- LOGIN/ REGISTER FORM --- */
 @layer components {
-  .form-title {
-    @apply text-gray-700 text-3xl flex justify-center my-2;
+  .dropdown-label {
+    @apply
+    flex flex-col
+    gap-1.5
+    text-sm text-deep-purple
+    font-medium
+    tracking-normal
+    uppercase;
   }
-  .form-container {
-    @apply min-h-screen shrink-0 flex items-center justify-center bg-linear-to-br from-blue-50 to-green-50 p-6;
+
+  .dropdown {
+    @apply
+    text-xl text-black
+    bg-off-white
+    border-6 border-light-purple
+    rounded-lg
+    px-[0.6rem] py-3.5
+    outline-none
+    transition-colors duration-150
+    w-full
+    h-auto
+    appearance-none
+    cursor-pointer
+    bg-no-repeat;
   }
-  .form-card {
-    @apply bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10 w-full max-w-2/5 border border-purple-100;
+
+  .dropdown-focus {
+    @apply
+    border-turquoise
+    shadow-2xl
+    bg-white;
   }
-  .form-label {
-    @apply flex flex-col text-lg font-bold;
+
+  .dropdown-option {
+    @apply
+    text-base text-black
+    bg-white;
   }
-  .form-input {
-    @apply mt-1 p-3 rounded-lg border border-gray-300 focus:border-purple-950 focus:ring-2 focus:ring-purple-300 outline-none transition;
-  }
-  .form-button-container {
-    @apply flex justify-center gap-6 w-full pt-2
-  }
-  .form-button {
-    @apply px-6 py-3 text-white font-semibold rounded-lg shadow hover:bg-blue-700 hover:shadow-lg hover:cursor-pointer transition;
-  }
+
   .form-link {
-    @apply flex items-center justify-center whitespace-nowrap text-sm text-blue-600 hover:text-blue-800 transition my-1.5;
+    @apply
+    text-sm text-light-purple text-center
+    font-medium
+    tracking-normal
+    transition-colors duration-150
+    underline-offset-2;
   }
-  .educator-checkbox {
-    @apply flex items-center justify-center text-gray-500 mx-2;
+
+  .form-link:hover {
+    @apply
+    text-deep-purple
+    underline;
   }
 }
  

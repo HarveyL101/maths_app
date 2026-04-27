@@ -1,5 +1,73 @@
 @layer components {
-/* Question Form Fields */
+  /* Portal Header Fields */
+  .portal-container {
+    @apply
+    flex flex-col
+    min-h-screen
+    bg-purple-50
+    mt-2;
+  }
+
+  .portal-header {
+    @apply
+    flex flex-wrap
+    items-center
+    gap-4
+    px-10 py-6
+    bg-white
+    border-b border-purple-300
+    shadow-sm;
+  }
+
+  .header-title {
+    @apply
+    w-full
+    text-sm text-light-purple/90
+    font-medium
+    tracking-wide
+    uppercase
+    pb-2
+    border-b border-turquoise/30;
+  }
+
+  .header-label {
+    @apply
+    flex flex-col
+    gap-1.5
+    text-xs text-purple-800
+    font-semibold
+    tracking-wide
+    uppercase;
+  }
+
+  .header-select {
+    @apply
+    text-sm text-black
+    bg-purple-50
+    border-2 border-purple-300
+    rounded-lg
+    px-3 py-2.5
+    outline-none
+    transition-colors duration-150
+    cursor-pointer
+    min-w-40
+    bg-no-repeat;
+  }
+  
+  .header-select:focus {
+    @apply
+    border-turquoise
+    bg-white
+    shadow-sm;
+  }
+
+  .header-select:disabled {
+    @apply
+    opacity-40
+    cursor-not-allowed;
+  }
+
+  /* Question Form Fields */
   .q-container {
     @apply flex flex-col lg:flex-row gap-10 p-10 min-h-screen bg-purple-50;
   }

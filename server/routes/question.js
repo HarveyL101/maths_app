@@ -41,13 +41,13 @@ router.get("/", async (req, res) => {
             query += ` AND subtopic_name = $${index++}`;
             values.push(subtopic);
         }
-
-        if (creator) {
-            query += `AND LOWER(creator_surname) = LOWER($${index++})`;
-            values.push(creator);
-        }
+        // To be used later in searching by author
+        // if (creator) {
+        //     query += ` AND LOWER(creator_surname) = LOWER($${index++})`;
+        //     values.push(creator);
+        // }
         
-        query += `ORDER BY subtopic_name, creator_surname`;
+        query += ` ORDER BY subtopic_name, creator_surname`;
 
         const result = await client.query(query, values);
         res.json(result.rows);

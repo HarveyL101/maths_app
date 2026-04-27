@@ -50,6 +50,7 @@ export const curriculum = {
     Fractions: [
       'Fraction Addition',
       'Fraction Subtraction',
+      'Fraction Multiplication',
       'Fraction Counting Up',
       'Fractions (Inc. Decimals & Percentages)',
     ],
@@ -68,6 +69,8 @@ export const curriculum = {
     Fractions: [
       'Fraction Addition',
       'Fraction Subtraction',
+      'Fraction Multiplication',
+      'Fraction Division',
       'Fraction Counting Up',
       'Fractions (Inc. Decimals & Percentages)',
     ],

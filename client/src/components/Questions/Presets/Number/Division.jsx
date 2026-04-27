@@ -91,7 +91,7 @@ const Division = ({ onSubmit }) => {
     <BaseQuestionForm
       title="Subtraction Template"
       createKatex={createKatex}
-      questionType="number_divison"
+      questionType="number_division"
       fields={[
         { name: "num0", placeholder: "Dividend" },
         { name: "num1", placeholder: "Divisor" }

@@ -11,20 +11,10 @@
 
 @layer pages {
   .page-wrapper {
-    @apply bg-off-white
-  }
-  /* previous code */
-  .card {
-    @apply border rounded-xl text-center;
-  }
-  .card-header {
-    @apply font-bold text-3xl;
-  }
-  .card-content {
-    @apply text-gray-700;
-  }
-  .card-footer {
-    @apply text-gray-700;
+    @apply 
+    flex flex-col
+    min-h-screen
+    bg-off-white;
   }
 }
 

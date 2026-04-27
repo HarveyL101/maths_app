@@ -14,8 +14,9 @@ import {
     // Number/Fractions
     FracAddition,
     FracSubtraction,
+    FracMultiplication,
+    FracDivision,
     FracCountUp,
-    Fractions,
     FractionsDec,
     FractionsDecPerc,
     // Number/NumberPlaceValue
@@ -44,7 +45,7 @@ const QuestionPortal = () => {
     }
 
     const handleFormSubmit = async (submittedData) => {
-        console.log("Data received in parent:", submittedData);
+        // console.log("Data received in parent:", submittedData);
 
         
         const formattedTitle = submittedData.previewTitle.trim();
@@ -61,7 +62,7 @@ const QuestionPortal = () => {
 
         console.log("Payload: \n", payload);
 
-        console.log("User UUID: ", storedUser.uuid);
+        // console.log("User UUID: ", storedUser.id);
 
         // Checks QuestionPortal values
         if (!payload.year || !payload.topic || !payload.subtopic) {
@@ -77,7 +78,7 @@ const QuestionPortal = () => {
             alert("Missing necessary question parameters (Title, Input Fields)");
             return;
         }
-        console.log("Form Data: \n", payload);
+        // console.log("Form Data: \n", payload);
 
         try {
             const res = await fetch(`/api/question-portal`, {
@@ -120,8 +121,9 @@ const QuestionPortal = () => {
         // Number/Fraction
         'Fraction Addition': FracAddition,
         'Fraction Subtraction': FracSubtraction,
+        'Fraction Multiplication': FracMultiplication,
+        'Fraction Division': FracDivision,
         'Fraction Counting Up': FracCountUp,
-        'Fractions': Fractions,
         'Fractions (Inc. Decimals)': FractionsDec,
         'Fractions (Inc. Decimals & Percentages)': FractionsDecPerc,
         // Number/NumberPlaceValue
@@ -146,72 +148,66 @@ const QuestionPortal = () => {
 
     return (
         <div className="portal-container">
-            <div className="portal-card">
-                <div className="portal-header">
-                    <h1>This is the header portion</h1>
+            <div className="portal-header">
+                <h1 className='header-title'>A template will appear once all tags are completed</h1>
 
-                    <label> {/** Displays the appropriate subgroup options based on the selected grouping (Hierarchy = YearGroup -> Topic -> SubTopic) */}
-                        Target Year Group:
-                        <select 
-                            value={selectedYear} 
-                            onChange={handleYearChange}
-                        >
-                            <option value="">Select year</option>
-                            {[3, 4, 5, 6].map((year) => (
-                                <option key={year} value={year}>
-                                    Year {year}
+                <label className='header-label'> {/** Displays the appropriate subgroup options based on the selected grouping (Hierarchy = YearGroup -> Topic -> SubTopic) */}
+                    Target Year Group:
+                    <select className='header-select' value={selectedYear} onChange={handleYearChange}>
+                        <option value="">Select year</option>
+                        {[3, 4, 5, 6].map((year) => (
+                            <option className='header-option' key={year} value={year}>
+                                Year {year}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+
+                <label className='header-label'>
+                    Topic:
+                    <select
+                        className='header-select'
+                        value={selectedTopic}
+                        onChange={handleTopicChange}
+                        disabled={!selectedYear}
+                    >
+                        <option className='header-option' value="">Select Topic</option>
+
+                        {selectedYear && 
+                            Object.keys(curriculum[selectedYear]).sort().map((topic) => (
+                                <option className='header-option' key={topic} value={topic}>
+                                    {topic}
                                 </option>
                             ))}
-                        </select>
-                    </label>
+                    </select>
+                </label>
 
-                    <label>
-                        Topic:
-                        <select
-                            value={selectedTopic}
-                            onChange={handleTopicChange}
-                            disabled={!selectedYear}
-                        >
-                            <option value="">Select Topic</option>
+                <label className='header-label'>
+                    Sub-Topic:
+                    <select
+                        className='header-select'
+                        value={selectedSubTopic}
+                        onChange={(e) => setSelectedSubTopic(e.target.value)}
+                        disabled={!selectedTopic}
+                    >
+                        <option className="header-option" value="">Select Sub-Topic</option>
 
-                            {selectedYear && 
-                                Object.keys(curriculum[selectedYear]).sort().map((topic) => (
-                                    <option key={topic} value={topic}>
-                                        {topic}
-                                    </option>
-                                ))}
-                        </select>
-                    </label>
-                    <label>
-                        Sub-Topic:
-                        <select
-                            value={selectedSubTopic}
-                            onChange={(e) => setSelectedSubTopic(e.target.value)}
-                            disabled={!selectedTopic}
-                        >
-                            <option value="">Select Sub-Topic</option>
+                        {selectedYear && 
+                            selectedTopic &&
+                            curriculum[selectedYear][selectedTopic].sort().map((subTopic) => (
+                                <option className='header-option' key={subTopic} value={subTopic}>
+                                    {subTopic}
+                                </option>
+                            ))}
+                    </select>
+                </label>
+            </div>
 
-                            {selectedYear && 
-                                selectedTopic &&
-                                curriculum[selectedYear][selectedTopic].sort().map((subTopic) => (
-                                    <option key={subTopic} value={subTopic}>
-                                        {subTopic}
-                                    </option>
-                                ))}
-                        </select>
-                    </label>
+            <div className="portal-body"> {/* Selected preset component must pass form values back to the parent layer for submission */}
+                <div> 
+                    {SelectedPreset && <SelectedPreset onSubmit={handleFormSubmit}/>}
                 </div>
 
-                <div className="portal-body"> {/* Selected preset component must pass form values back to the parent layer for submission */}
-                    <div> 
-                        {SelectedPreset && <SelectedPreset onSubmit={handleFormSubmit}/>}
-                    </div>
-
-                </div>
-
-                <div className="portal-footer">
-                    <p>this is the portal footer</p>
-                </div>
             </div>
         </div>
     );

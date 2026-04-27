@@ -1,8 +1,10 @@
 @layer components {
   .footer-container {
-  background: #454545;
-  padding: 1.75rem 2rem 1.5rem;
-  width: 100%;
+    @apply
+    bg-off-grey
+    pt-7
+    w-full
+    mt-auto;
   }
 
   .footer-header {

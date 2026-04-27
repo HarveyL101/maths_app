@@ -1,5 +1,4 @@
-import Footer from '../components/Footer.jsx';
-import { ChangeEmail, ChangeName, ChangePassword, TitleBar } from '../utils/index';
+import { ChangeEmail, ChangeName, ChangePassword, Footer, TitleBar } from '../utils/index';
 
 const Profile = () => {
   // contains user.id, user.name, user.email, user.roles

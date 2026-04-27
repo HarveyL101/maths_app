@@ -1,36 +1,36 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
+const { RESOLVER } = require("../../client/src/utils/questionResolver")
+// --- Post Questions ---
+router.post("/", async (req, res) => {
+    
+    console.log("BODY RECEIVED:", req.body);
 
-module.exports = (authenticateJWT, hasRole) => {
-    // --- Post Questions ---
-    router.post("/", authenticateJWT, hasRole("educator"), async (req, res) => {
-        console.log("BODY RECEIVED:", req.body);
+    const client = await pool.connect();
 
-        const client = await pool.connect();
+    try {
+        await client.query("BEGIN");
 
-        try {
-            await client.query("BEGIN");
+        const question = await createQuestion(client, {
+            ...req.body,
+            creator: req.user.uuid
+        });
 
-            const question = await createQuestion(client, {
-                ...req.body,
-                creator: req.user.uuid
-            });
+        await client.query("COMMIT");
 
-            await client.query("COMMIT");
+        res.status(201).json(question);
 
-            res.status(201).json(question);
+    } catch(error) {
+        await client.query("ROLLBACK");
+        console.log("Error creating question: ", error);
+        res.status(500).json({ error: error.message });
+    } finally {
+        client.release();
+    }
+});
 
-        } catch(error) {
-            await client.query("ROLLBACK");
-            console.log("Error creating question: ", error);
-            res.status(500).json({ error: error.message });
-        } finally {
-            client.release();
-        }
-    });
-
-    // -- Get Questions -- 
+// -- Get Questions -- 
     // Will be used in the /Learn functionality
     router.get("/", async (req, res) => {
         console.log("bean");
@@ -55,9 +55,6 @@ module.exports = (authenticateJWT, hasRole) => {
         }
     });
 
-    return router;
-}
-
 
 const createQuestion = async (client, data) => {
     const { creator, year, topic, subtopic, questionType, title, input } = data;
@@ -79,7 +76,8 @@ const createQuestion = async (client, data) => {
         creator,
         questionTypeId,
         title,
-        input
+        input,
+        questionType
     });
 };
 
@@ -146,50 +144,26 @@ const getSubtopicId = async (client, topicId, subtopic) => {
     return result.rows[0].id;
 };
 
-const insertQuestion = async (client, { subtopicId, creator, questionTypeId, title, input }) => {
+const insertQuestion = async (client, { subtopicId, creator, questionTypeId, title, input, questionType }) => {
     // Ensure input is a JSON object for safe DB storage
+
+    const resolver = RESOLVER[questionType];
+    // console.log("questionType received:", questionType);
+    // console.log("input type received:", input);
+    console.log("available types:", Object.keys(RESOLVER));
+
+    if (!resolver) throw new Error (`Unknown Question Type: ${questionType}`);
+    if(!resolver.validate(input)) throw new Error(`Invalid Input for Type: ${questionType}`);
+
+    const answer = resolver.solve(input);
+
     const result = await client.query(`
-        INSERT INTO questions (subtopic_id, educator_uuid, question_type_id, title, input)
-        VALUES ($1, $2, $3, $4, $5::jsonb) 
+        INSERT INTO questions (subtopic_id, educator_uuid, question_type_id, title, input, answer)
+        VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb) 
         RETURNING *   
-    `, [subtopicId, creator, questionTypeId, title, JSON.stringify(input)]);
+    `, [subtopicId, creator, questionTypeId, title, JSON.stringify(input), JSON.stringify(answer)]);
 
     return result.rows[0];
 };
 
-const validateInput = (type, input) => {
-    switch(type) {
-        case "addition":
-            if (
-                typeof input.a !== "number" ||
-                typeof input.b !== "number"
-            ) {
-                throw new Error("Addition questions require a and b");
-            }
-            break;
-        case "subtraction":
-            if (
-                typeof input.a !== "number" ||
-                typeof input.b !== "number"
-            ) {
-                throw new Error("Subtraction questions require a and b");
-            }
-            break;
-        case "multiplication":
-            if (
-                typeof input.a !== "number" ||
-                typeof input.b !== "number"
-            ) {
-                throw new Error("Multiplication questions require a and b");
-            }
-            break;
-        case "division":
-            if (
-                typeof input.a !== "number" ||
-                typeof input.b !== "number"
-            ) {
-                throw new Error("Division questions require a and b");
-            }
-            break;
-    }
-}
+module.exports = router;

@@ -2,82 +2,72 @@ import 'katex/dist/katex.min.css';
 import BaseQuestionForm from "../../../BaseQuestionForm";
 
 const createKatex = (params) => {
-  const { frac1, frac2 } = params;
-
+  const p1 = params.param1?.value;
+  const p2 = params.param2?.value;
+  const p3 = params.param3?.value;
+  const p4 = params.param4?.value;
+  
   // Protects against crashing on load
-  if (!frac1 || !frac2) return "";
+  if (!p1 || !p2 || !p3 || !p4) return "";
 
-  const numerator1 = frac1.n;
-  const denominator1 = frac1.d;
-  const numerator2 = frac2.n;
-  const denominator2 = frac2.d;
+  if (
+    !/^\d+$/.test(p1) ||
+    !/^\d+$/.test(p2) ||
+    !/^\d+$/.test(p3) ||
+    !/^\d+$/.test(p4)
+  ) return `\\text{Invalid input}`;
 
-  // Protects against crashing on load
-  if (!numerator1 || !denominator1 || !numerator2 || !denominator2) return "";
+  const n1 = Number(p1);
+  const d1 = Number(p2);
+  const n2 = Number(p3);
+  const d2 = Number(p4);
 
   // Protects against invalid fractions
-  if (denominator1 === "0" || denominator2 === "0") {
-    return `
-      \\text{Denominator cannot be zero}
-    `;
+  if (d1 === 0 || d2 === 0) {
+    return `\\text{Denominator cannot be zero}`;
   }
-
-  // Checks if either input does not contain only one or more digits
-  if (!/^\d+$/.test(numerator1) || !/^\d+$/.test(denominator1) || 
-      !/^\d+$/.test(numerator2) || !/^\d+$/.test(denominator2)) {
-    return `
-      \\frac{${numerator1}}{${denominator1}} + \\frac{${numerator2}}{${denominator2}} = 
-    `;
-  }
-
-  const a = Number(numerator1);
-  const b = Number(denominator1);
-  const c = Number(numerator2);
-  const d = Number(denominator2);
 
   // Check if the denominators are the same (Year 3/4)
-  if (b === d) {
-    const numerator = a + c;
+  if (d1 === d2) {
     return `
-      \\frac{${a}}{${b}} + \\frac{${c}}{${d}}
-      = \\frac{${numerator}}{${b}}
+      \\frac{${n1}}{${d1}} + \\frac{${n2}}{${d2}}
+      = \\frac{${n1 + n2}}{${d1}}
     `;
   }
 
   // Check if a denominator is a multiple of the other (Year 5 Skill)
-  if (b % d === 0 || d % b === 0) {
-    const commonDenom = Math.max(b, d);
+  if (d1 % d2 === 0 || d2 % d1 === 0) {
+    const commonDenom = Math.max(d1, d2);
 
-    const newA = a * (commonDenom / b);
-    const newC = c * (commonDenom / d);
+    const a = n1 * (commonDenom / d1);
+    const b = n2 * (commonDenom / d2);
 
-    const numerator = newA + newC;
+    const numerator = a + b;
 
     return `
-      \\frac{${a}}{${b}} + \\frac{${c}}{${d}}
+      \\frac{${n1}}{${d1}} + \\frac{${n2}}{${d2}}
       =
-      \\frac{${newA}}{${commonDenom}} + \\frac{${newC}}{${commonDenom}}
+      \\frac{${a}}{${commonDenom}} + \\frac{${b}}{${commonDenom}}
       =
       \\frac{${numerator}}{${commonDenom}}
     `;
   }
 
-  return `
-    \\text{Unsuitable denominators for KS2 fraction addition}
-  `;
+  return `\\text{Unsuitable denominators for KS2 fraction addition}`;
 }
 
-const FracAddition = () => {
+const FracAddition = ({ onSubmit }) => {
 
   return (
     <BaseQuestionForm
       title="Fraction Addition Template"
       createKatex={createKatex}
+      questionType="fraction_addition"
       fields={[
-        { name: "frac1.n", placeholder: "First Numerator" },
-        { name: "frac1.d", placeholder: "First Denominator" },
-        { name: "frac2.n", placeholder: "Second Numerator" },
-        { name: "frac2.d", placeholder: "Second Denominator" }
+        { name: "param1", placeholder: "First Numerator" },
+        { name: "param2", placeholder: "First Denominator" },
+        { name: "param3", placeholder: "Second Numerator" },
+        { name: "param4", placeholder: "Second Denominator" }
       ]}
       onSubmit={onSubmit}
     />

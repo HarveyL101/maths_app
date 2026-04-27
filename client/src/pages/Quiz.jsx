@@ -1,7 +1,6 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { TitleBar } from "../utils";
-import { Footer } from "../utils";
+import { Footer, TitleBar } from "../utils";
 
 
 const Quiz = () => {

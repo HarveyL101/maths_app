@@ -5,24 +5,36 @@ import { useAuth } from "../auth/useAuth";
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(null);
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState(null);
   const { login } = useAuth();
 
 
+  const handleReset = () => {
+    setErrorMessage(null);
+    setName("");
+    setSurname("");
+    setEmail("");
+    setPassword("");
+    setRole(null);
+    return;
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     
-    const formData = new FormData(e.target);
-
     const data = {
-      name: formData.get("userName"),
-      surname: formData.get("surname"),
-      email: formData.get("userEmail"),
-      password: formData.get("userPassword"),
+      name: name,
+      surname: surname,
+      email: email,
+      password: password,
       role: role
     };
     // --- Client-Side Validation ---
-    if (!data.name || !data.surname || !data.email || !data.password) {
+    if (!data.name || !data.surname || !data.email || !data.password || !data.role) {
       setErrorMessage("Please fill out all fields before submitting.");
       return;
     }
@@ -57,72 +69,93 @@ const RegisterForm = () => {
   };
 
   return(
-    <div className="form-container">
-      <form 
-        onSubmit={handleRegister} 
-        className="form-card"
-      >
-        <div>
-          <h1 className="form-title">Register</h1>
+    <div className="page-wrapper">
+      <div className="form-wrapper">
+        <form className="form-container" onSubmit={handleRegister}>
+          <div className="form-header-container">
+            <h1 className="form-header">Register</h1>
+          </div>
 
-          <label htmlFor="name" className="form-label">Name:
-            <input 
-              className="form-input" 
-              type="text" 
-              name="userName" 
-              id="name" 
-              placeholder="E.g 'John' or 'Jane'."
-            />
-          </label>
+          <div className="form-input-container">
+            <div className="form-input-row">
+              <label htmlFor="name" className="form-input-label">Name:
+                <input 
+                  className="form-input" 
+                  type="text" 
+                  name="userName" 
+                  id="name" 
+                  placeholder="E.g 'John' or 'Jane'."
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </label>
+            </div>
 
-          <label htmlFor="name" className="form-label">Surname:
-            <input 
-              className="form-input" 
-              type="text" 
-              name="surname" 
-              id="name" 
-              placeholder="E.g 'Smith' or 'Doe'."
-            />
-          </label>
-        
-          <label htmlFor="email" className="form-label">Email:
-            <input 
-              className="form-input" 
-              type="email" 
-              name="userEmail" 
-              id="email"
-              placeholder="E.g johnsmith@gmail.com" 
-            />
-          </label>
-        
-          <label htmlFor="password" className="form-label">Password:
-            <input 
-              className="form-input" 
-              type="password" 
-              name="userPassword" 
-              id="password" 
-              placeholder="Don't share your password with others!"
-            />
-          </label>
+            <div className="form-input-row">
+              <label htmlFor="name" className="form-input-label">Surname:
+                <input 
+                  className="form-input" 
+                  type="text" 
+                  name="surname" 
+                  id="surname" 
+                  placeholder="E.g 'Smith' or 'Doe'."
+                  value={surname}
+                  onChange={(e) => setSurname(e.target.value)}
+                />
+              </label>
+            </div>
 
-          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-        </div>
+            <div className="form-input-row">
+              <label htmlFor="email" className="form-input-label">Email:
+                <input 
+                  className="form-input" 
+                  type="email" 
+                  name="userEmail" 
+                  id="email"
+                  placeholder="E.g johnsmith@gmail.com" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </label>
+            </div>
 
-        <label>{role ? `Selected role ${role}` : "Please select a role"}</label>
-        <select name="role" onChange={(e) => setRole(e.target.value)}>
-          <option value="">Choose Here</option>  
-          <option value="student">Student</option>
-          <option value="educator">Educator</option>
-        </select>
+            <div className="form-input-row">
+              <label htmlFor="password" className="form-input-label">Password:
+                <input 
+                  className="form-input" 
+                  type="password" 
+                  name="userPassword" 
+                  id="password" 
+                  placeholder="Don't share your password with others!"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </label>
+            </div>
+          </div>
+          
+          {errorMessage && <p className="form-error-message">{errorMessage}</p>}
 
-        <div className="form-button-container">
-          <button type="reset" className="form-button bg-orange-500">Reset</button>
-          <button type="submit" className="form-button bg-blue-600">Submit</button>
-        </div>
+          <div className="form-input-row">
+            <label className="dropdown-label">{role ? `Selected role:` : "Please select a role"}
+              <select className="dropdown" name="role" onChange={(e) => setRole(e.target.value)}>
+                <option className="dropdown-option" value="">Choose Here</option>  
+                <option className="dropdown-option" value="student">Student</option>
+                <option className="dropdown-option" value="educator">Educator</option>
+              </select>
+            </label>
+          </div>
+          
 
-        <Link to='/' className="form-link">Already have an account? Log in Here!</Link>
-      </form>
-    </div>    
+          <div className="form-button-container">
+            <button type="reset" className="form-reset-button" onClick={handleReset}>Reset</button>
+            <button type="submit" className="form-submit-button">Submit</button>
+          </div>
+
+          <Link to='/' className="form-link">Already have an account? Log in Here!</Link>
+        </form>
+      </div>    
+    </div>
   );
 };
 

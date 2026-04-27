@@ -60,7 +60,7 @@ const LoginForm = () => {
     <div className="form-wrapper">
       <form className="form-container" onSubmit={handleSubmit}>
         <div className="form-header-container">
-          <h1 className="form-title">Login</h1>
+          <h1 className="form-header">Login</h1>
         </div>
 
         <div className="form-input-container">

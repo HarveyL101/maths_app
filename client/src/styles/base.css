@@ -8,7 +8,6 @@
     --bg: dark;
     --text: light;
   }
-
   
   .form-wrapper {
     @apply
@@ -85,7 +84,7 @@
     @apply
     text-xl text-black
     bg-off-white
-    border-6 border-light-purple
+    border-3 border-light-purple
     rounded-lg
     px-[0.6rem] py-3.5
     outline-none

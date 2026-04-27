@@ -1,10 +1,7 @@
-import TitleBar from '../components/TitleBar.jsx';
-import SearchBar from '../components/SearchBar.jsx';
-import Accordion from '../components/Accordion.jsx';
+import { Accordion, Footer, SearchBar, TitleBar } from '../utils/index.js';
 import { curriculum } from '../components/Questions/curriculumConfig.js';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Footer.jsx';
 
 
 const Learn = () => {

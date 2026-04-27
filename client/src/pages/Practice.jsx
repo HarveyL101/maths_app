@@ -1,8 +1,10 @@
-import Footer from "../components/Footer";
+import { Footer, TitleBar } from "../utils/index";
 
 const Practice = () => {
   return (
-    <div>
+    <div className="page-wrapper">
+      <TitleBar/>
+      
       <h1>This is the current page for /practice</h1>
 
       <ul>

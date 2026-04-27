@@ -1,11 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const corsOptions = { origin: ["http://localhost:5173"] }
-const dotenv = require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const pool = require("./db.js");
+require('dotenv').config();
 
-// 
 
 // --- Middleware for JWT Authentication ---
 const authenticateJWT = (req, res, next) => {

@@ -1,4 +1,5 @@
 import 'katex/dist/katex.min.css';
+import BaseQuestionForm from '../../BaseQuestionForm.jsx';
 
 const createKatex = (params) => {
   const a = params.num0?.value;

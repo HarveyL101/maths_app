@@ -1,10 +1,10 @@
-import Footer from "../components/Footer";
-import { QuestionPortal, TitleBar } from "../utils";
+import { Footer, QuestionPortal, TitleBar } from "../utils";
 
 const TeacherPortal = () => {
   return (
-    <div>
+    <div className="page-wrapper">
       <TitleBar />
+
       <QuestionPortal />
 
       <Footer />

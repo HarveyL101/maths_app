@@ -1,5 +1,4 @@
-import { TitleBar } from '../utils/index';
-import Footer from '../components/Footer';
+import { TitleBar, Footer } from '../utils/index';
 
 const Home = () => {
   return (

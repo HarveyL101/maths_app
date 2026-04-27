@@ -1,8 +1,10 @@
-import Footer from "../components/Footer";
+import { Footer, TitleBar } from "../utils/index";
 
 const Help = () => {
   return (
-    <div>
+    <div className="page-wrapper">
+      <TitleBar/>
+      
       <h1>This is the current page for /help</h1>
 
       <ul>

@@ -1,148 +1,50 @@
-import { useState, useEffect } from "react";
 import 'katex/dist/katex.min.css';
-import { BlockMath } from 'react-katex';
+import BaseQuestionForm from '../../../BaseQuestionForm';
 
-const FracCountUp = () => {
-    const [previewTitle, setPreviewTitle] = useState("");
-    const [previewBody, setPreviewBody] = useState("");
-    // Will represent an array of fractions in KaTeX format e.g. [1/5, 2/5, 3/5, 4/5, 5/5]
-    // Trialling an idea of using an array of values instead of 10 separate variables
-    const [numbers, setNumbers] = useState([
-        { value: '', hidden: false },
-        { value: '', hidden: false },
-        { value: '', hidden: false },
-        { value: '', hidden: false },
-        { value: '', hidden: false }
-    ]);
+const createKatex = (params) => {
+    const p1 = params.param1?.value; // Starting numerator
+    const p2 = params.param2?.value; // Starting denominator
+    const p3 = params.param3?.value; // Step numerator
+    const p4 = params.param4?.value; // Step denominator
+    const p5 = params.param5?.value; // Number of steps to show
 
-    useEffect(() => {
-        const katexStr = numbers
-            .map(n => {
-                if (n.hidden) return '\\_';
-                if (!n.value) return '?';
+    if (!p1 || !p2 || !p3 ||!p4 || !p5) return "";
 
-                const [numerator, denominator] = n.value.split('/');
-                return `\\frac{${numerator}}{${denominator}}`; // splits and assign given inputs x/y
-            })
-            .join(', \\; '); // padding between each value
+    if ([p1, p2, p3, p4, p5].some(p => !/^\d+$/.test(p))) return `\\text{Invalid input}`;
 
-        setPreviewBody(katexStr);
-    }, [numbers]);
+    const startN = Number(p1);
+    const startD = Number(p2);
+    const stepN = Number(p3);
+    const stepD = Number(p4);
+    const steps = Number(p5);
 
-    const handleNumberChange = (index, value) => {
-        // Allows only digits and one forward slash 
-        const validCharacters = /^[0-9/]*$/;
-        if (!validCharacters.test(value)) return;
+    if (startD === 0 || stepD === 0) return `\\text{Denominator cannot be zero}`;
+    if (steps < 2 || steps > 8) return `\\text{Steps must be between 2 and 8}`;
 
-        // Allow only one slash
-        const slashCount = (value.match(/\//g) || []).length;
-        if (slashCount > 1) return;
+    if (startD !== stepD) return `\\text{Start and step must share the same denominator}`;
 
-        const newNumbers = [...numbers];
-        newNumbers[index].value = value;
-        setNumbers(newNumbers);
+    const sequence = [];
+    for (let i = 0; i < steps; i++) {
+        sequence.push(`\\frac{${startN + stepN * i}}{${startD}}`);
     }
 
-    const handleToggle = (index) => {
-        const newNumbers = [...numbers];
-        newNumbers[index].hidden = !newNumbers[index].hidden;
-        setNumbers(newNumbers);
-    }
-
-    const handleReset = () => {
-        setPreviewTitle('');
-        setNumbers(numbers.map(n => ({ value: '', hidden: false })));
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const allFilled = numbers.every(n => n.value !== '');
-        if (!previewTitle || !allFilled) {
-            alert("Please fill in all fields before submission :)");
-            return;
-        }
-
-        const formData = {previewTitle, numbers };
-        onSubmit(formData);
-        handleReset();
-    }
-
+    return sequence.join(" \\rightarrow ") + "  \\rightarrow \\ldots";
+}
+const FracCountUp = ({ onSubmit }) => {
     return(
-        <div className="q-container">
-            <div className="qform-container">
-                <div className="qform-title">
-                <h1>Fractional Counting Up Template</h1>
-                <h4>Here you can create a question for counting up and down in fractions</h4>
-                </div>
-
-                <form onSubmit={handleSubmit}>
-                    <input 
-                        className="qform-input"
-                        type="text" 
-                        value={previewTitle}
-                        onChange={(e) => setPreviewTitle(e.target.value)}
-                        placeholder="Question Title..."
-                    />
-
-                    <div className="toggle-row">
-                        {numbers.map((n, i) => (
-                            <label key={i} style={{ marginRight: 10 }}>
-                                <input 
-                                    type="checkbox"
-                                    checked={n.hidden}
-                                    onChange={() => handleToggle(i)}
-                                />
-                                Hide
-                            </label>
-                        ))}
-                    </div>
-
-                    <div className="input-row">
-                        {numbers.map((n, i) => (
-                            <input 
-                                key={i}
-                                className="qform-input"
-                                type="text" 
-                                value={n.value}
-                                onChange={(e) => handleNumberChange(i, e.target.value)}
-                                placeholder={`Number ${i + 1}`}
-                                pattern="\d+\/\d+"
-                                title="Enter a fraction in the form a/b"
-                            />
-                        ))}
-                    </div>
-
-                    <div className="qform-button-container">
-                        <button className="qform-button" type="reset" onClick={handleReset}>Reset</button>
-                        <button className="qform-button" type="submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-
-            <div className="preview-container">
-                <div className="preview-title">
-                    <h1>{previewTitle || "Question Title Here"}</h1>
-                </div>
-
-                <div className="preview-body">
-                    {previewBody ? (
-                        <div className={"text-3xl"}>
-                            <BlockMath math={previewBody} />
-                        </div>
-                        
-                    ) : (
-                        <p>A complete calculation will appear here.</p>
-                    )}
-                </div>
-
-                <input className="qform-input" type="text" placeholder="Answer will go here..." disabled/>
-                
-                <div className="preview-button-container ">
-                    <button className="preview-button" type="reset" disabled>Reset</button>
-                    <button className="preview-button" type="submit" disabled>Submit</button>
-                </div>
-            </div>
-        </div>
+        <BaseQuestionForm
+            title={"Fraction Count Up Template"}
+            createKatex={createKatex}
+            questionType="fraction_count_up"
+            fields={[
+                { name: "param1", placeholder: "Start Numerator" },
+                { name: "param2", placeholder: "Start Denominator" },
+                { name: "param3", placeholder: "Step Numerator" },
+                { name: "param4", placeholder: "Step Denominator" },
+                { name: "param5", placeholder: "Number of Steps (2-8)" },
+            ]}
+            onSubmit={onSubmit}
+        />
     );
 }
 

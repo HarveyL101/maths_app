@@ -1,9 +1,8 @@
-import Footer from '../components/Footer.jsx';
-import { LoginForm } from '../utils/index.js'; 
+import { Footer, LoginForm } from '../utils/index.js'; 
 
 const Login = () => {
   return(
-    <div>
+    <div className='page-wrapper'>
       <LoginForm />
 
       <Footer />

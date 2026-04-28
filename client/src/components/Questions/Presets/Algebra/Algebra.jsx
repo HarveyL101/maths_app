@@ -23,10 +23,10 @@ const createKatex = (params) => {
   const result   = params.param4?.value; // Result
 
   if (!p1 || !operator || !p2 || !result) return "";
-
+  // Must be a whole number
   if (![p1, p2, result].every(n => /^\d+$/.test(n))) return `\\text{The operands and result must be whole numbers}`;
 
-  if (!OPERATORS[operator]) return `\\text{Operator must be one of: + - × ÷}`;
+  if (!OPERATORS[operator]) return `\\text{Operator must be one of: + - * /}`;
 
   const left    = params.param1?.hidden ? "\\square" : p1;
   const right   = params.param3?.hidden ? "\\square" : p2;
@@ -48,7 +48,7 @@ const Algebra = ({ onSubmit }) => {
       questionType="algebra_missing_number"
       fields={[
         { name: "param1", placeholder: "Left operand (e.g. 3)",    hasHidden: true },
-        { name: "param2", placeholder: "Operator ( + - × ÷ )" },
+        { name: "param2", placeholder: "Operator ( + - * / )" },
         { name: "param3", placeholder: "Right operand (e.g. 4)",   hasHidden: true },
         { name: "param4", placeholder: "Result (e.g. 7)",          hasHidden: true },
       ]}

@@ -1,4 +1,4 @@
-@layer components {
+@layer pages {
   /* Accordion Related */
   .sidebar {
     @apply 

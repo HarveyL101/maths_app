@@ -1,5 +1,5 @@
 /* --- LOGIN/ REGISTER FORM --- */
-@layer components {
+@layer pages {
   .dropdown-label {
     @apply
     flex flex-col

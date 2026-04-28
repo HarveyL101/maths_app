@@ -1,5 +1,5 @@
 /* Profile Form Fields */
-@layer components {
+@layer pages {
   .profile-wrapper {
     @apply bg-off-white;
   }

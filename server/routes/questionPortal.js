@@ -31,29 +31,31 @@ router.post("/", async (req, res) => {
 });
 
 // -- Get Questions -- 
-    // Will be used in the /Learn functionality
-    router.get("/", async (req, res) => {
-        console.log("bean");
-        res.json({ message: "ok" });
-    });
+// Will be used in the /Learn functionality
+router.get("/", async (req, res) => {
+    console.log("bean");
+    res.json({ message: "ok" });
+});
 
 
-    // -- Update Question (WIP) --
-    // Will be used by teachers to alter existing created questions (/TeacherPortal)
+// -- Update Question (WIP) --
+// Will be used by teachers to alter existing created questions (/TeacherPortal)
 
-    router.patch("/", async (req, res) => {
-        const client = await pool.connect();
+router.patch("/", async (req, res) => {
+    const client = await pool.connect();
 
-        try {
-            console.log("Question PATCH hit");
-            // const question = await fetchQuestion(arg, arg, arg)
-            res.json({ message: "PATCH endpoint WIP" });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        } finally {
-            client.release();
-        }
-    });
+    try {
+        console.log("Question PATCH hit");
+        // const question = await fetchQuestion(arg, arg, arg)
+        res.json({ message: "PATCH endpoint WIP" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    } finally {
+        client.release();
+    }
+});
+
+// ***************** Helper Functions *****************
 
 
 const createQuestion = async (client, data) => {

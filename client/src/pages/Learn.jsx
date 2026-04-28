@@ -3,9 +3,12 @@ import { curriculum } from '../components/Questions/curriculumConfig.js';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Max Quiz size variable
+const MAX_QUIZ_SIZE = 10;
 
 const Learn = () => {
   const [questions, setQuestions] = useState([]);
+  const [selectedLabel, setSelectedLabel] = useState('');
   const navigate = useNavigate();
 
   const fetchQuestions = async (params) => {
@@ -13,17 +16,11 @@ const Learn = () => {
       const query = new URLSearchParams(params).toString();
       const token = localStorage.getItem("jwt");
 
-
-      console.log("Fetching:", `api/questions?${query}`);
       const res = await fetch(`/api/questions?${query}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       });
 
-      console.log("Status:", res.status);
       const data = await res.json();
-      console.log("Data:", data);
 
       setQuestions(data);
     } catch(error) {
@@ -31,47 +28,75 @@ const Learn = () => {
     }
   };
 
-  const formatQuestions = (data) => {
-    return data.map((question) => (
-      <div key={creator.creator_id} className="creator-card">
-        {/* Body */}
-        <div className="creator-card-body">
-          <p className="creator-card-title">
-            {question.subtopic_name} 
-          </p>
-          <p className='creator-card-meta'>
-            by {question.creator_surname}
-          </p>
-        </div>
+  const createQuestionPool = (data) => {
+    const map = {};
 
-        {/* Footer */}
-        <div className="creator-card-footer">
-          <div className="creator-tag creator-tag--year">
-            Year {question.year_group}
-          </div>
-          <div className="creator-tag creator-tag--topic">
-            {question.topic_name}
-          </div>
-          <div className="creator-tag">
-            {question.subtopic_name}
-          </div>
-        </div>
+    // Groups the flat array into pools by their subtopic_id.
+    data.forEach((q) => {
+      if (!map[q.subtopic_id]) {
+        map[q.subtopic_id] = {
+          subtopic_id: q.subtopic_id,
+          subtopic_name: q.subtopic_name,
+          topic_name: q.topic_name,
+          year_group: q.year_group,
+          creator_surname: q.creator_surname,
+          questions: [],
+        };
+      }
+      map[q.subtopic_id].questions.push(q);
+    });
+    return Object.values(map);
+  };
 
-        <button
-          className='creator-card-btn'
-          onClick={() => navigate(`/quiz/${question.subtopic_id}`, {
-            state: {
-              subtopicName: question.subtopic_name,
-              topic: question.topic_name,
-              year: question.year_group,
-              creatorSurname: question.creator_surname,
-            }
-          })}
-        >
-          {"Start ->"}
-        </button>
-      </div>
-    ));
+  const startQuizHandler = (qPoolEntry) => {
+    const { questions, subtopic_id, subtopic_name, topic_name, year_group, creator_surname } = qPoolEntry;
+
+    // Shuffle question pool for randomness
+    const shuffled = [...questions].sort(() => Math.random() - 0.5);
+    // Slice a portion of questions off from the main pool
+    const slice = shuffled.slice(0, MAX_QUIZ_SIZE);
+
+    // Move data and user into the Quiz screen to complete questions
+    navigate(`/quiz/${subtopic_id}`, {
+      state: {
+        questions: slice,
+        subtopicName: subtopic_name,
+        topic: topic_name,
+        year: year_group,
+        creatorSurname: creator_surname,
+      }
+    });
+  };
+
+  const formatQuestionPools = (pools) => {
+    return pools.map((pool) => {
+      const questionCount = Math.min(pool.questions.length, MAX_QUIZ_SIZE);
+      const hasEnough = pool.questions.length >= MAX_QUIZ_SIZE;
+
+      return (
+        <div key={pool.subtopic_id} className='creator-card'>
+          <div className='creator-card-body'>
+            <p className='creator-card-title'>{pool.subtopic_name}</p>
+            <p className='creator-card-meta'>{pool.creator_surname}</p>
+            <p className='pool-count'>
+              {pool.questions.length} question{pool.questions.length !== 1 ? 's' : ''} available
+            </p>
+          </div>
+
+          <div className='creator-card-footer'>
+            <div className='creator-tag creator-tag--year'>Year {pool.year_group}</div>
+            <div className='creator-tag creator-tag--topic'>{pool.topic_name}</div>
+            <div className='creator-tag'>{pool.subtopic_name}</div>
+          </div>
+
+          <button className='creator-card-button'>
+            {hasEnough
+              ? `Start Quiz (${questionCount} Qs) ->`
+              : `Start Quiz (${questionCount} available) ->`}
+          </button>
+        </div>
+      );
+    });
   };
   
   const buildAccordionData = (curriculum) => {
@@ -81,28 +106,30 @@ const Learn = () => {
         title: topic,
         children: subtopics.map((subtopic) => ({
           title: subtopic,
-          year,
-          topic,
-          subtopic
+          year, topic, subtopic
         }))
       }))
     }));
   };
 
   const accordionData = buildAccordionData(curriculum);
+  const pools = createQuestionPool(questions);
 
-  const handleReset = () => setQuestions([]);
+  const handleReset = () => {
+    setQuestions([]);
+    setSelectedLabel('');
+  };
 
   return (
     <div className='flex flex-col min-h-screen'>
       <TitleBar />
       
       <div className='flex flex-1'>
-
         <div className='sidebar'>
           <div className='sidebar-header-container'>
             <h2 className='sidebar-header'>Topic Catalogue</h2>
           </div>
+
           <Accordion 
             data={accordionData} 
             onSelect={(item) => fetchQuestions({
@@ -111,6 +138,7 @@ const Learn = () => {
               subtopic: item.subtopic
             })}
           />
+
         </div>
 
         <div className='flex-1 p-4'>
@@ -122,33 +150,37 @@ const Learn = () => {
             <div className='results-area'>
 
               <div className='results-box'>
-                <button 
-                  className='results-clear-btn'
-                  onClick={handleReset}
-                  title='Clear Results :)'
-                >
+                <button  className='results-clear-btn' onClick={handleReset} title='Clear Results :)'>
                   &times;
                 </button>
 
                 {questions.length > 0 ? (
-                  <div className='results-grid'>
-                    {formatQuestions(questions)} 
-                  </div>
+                  <>
+                    <div className='results-header'>
+                      <p className='results-label'>{selectedLabel}</p>
+                      <p className='results-sub'>
+                        {pools.length} set{pools.length !== 1 ? 's' : ''} found -
+                        quizzes are {MAX_QUIZ_SIZE} questions drawn randomly from the pool
+                      </p>
+                    </div>
+                    <div className='results-grid'>{formatQuestionPools(pools)}</div>
+                  </>
                 ) : (
                   <div className='results-empty'>
                     <p className='results-empty-msg'>No results yet...😔</p>
-                    <p className='results-empty-sub'>Select a topic from the catalogue to see question sets.</p>
+                    <p className='results-empty-sub'>
+                      Select a topic from the catalogue to see question sets.
+                    </p>
                   </div>
                 )}
               </div>
-              <p className='results-hint'>
-                  Not seeing the result you want? Talk to your teacher or double check the name you are searching for :D
-              </p>
+                <p className='results-hint'>
+                    Not seeing the result you want? Talk to your teacher or double check the name you are searching for :D
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
       <Footer />
     </div>
   );

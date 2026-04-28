@@ -164,38 +164,43 @@ CREATE INDEX idx_questions_creator ON questions(educator_uuid);
 
 CREATE INDEX idx_completions_user ON completions(user_uuid);
 CREATE INDEX idx_completions_question ON completions(question_id);
+
+CREATE INDEX idx_questions_type ON questions(question_type_id);
 -- 
 -- Views
 -- 
 CREATE OR REPLACE VIEW question_details AS 
 SELECT
-  q.id AS question_id,
+  q.id          AS question_id,
   q.subtopic_id AS subtopic_id,
-  u.id AS creator_id,
-  u.surname AS creator_surname,
-  yg.id AS year_group,
-  t.name AS topic_name,
-  st.name AS subtopic_name, 
-  q.title AS question_title,
-  q.input AS question_input
+  u.id          AS creator_id,
+  u.surname     AS creator_surname,
+  yg.id         AS year_group,
+  t.name        AS topic_name,
+  st.name       AS subtopic_name, 
+  qt.name       AS question_type,
+  q.title       AS question_title,
+  q.input       AS question_input,
+  q.answer      AS question_answer
 FROM questions q 
-JOIN subtopic st ON q.subtopic_id = st.id
-JOIN topic t ON st.topic_id = t.id
-JOIN year_group yg ON t.year_group = yg.id
-LEFT JOIN users u ON q.educator_uuid = u.id;
+JOIN subtopic st      ON q.subtopic_id      = st.id
+JOIN topic t          ON st.topic_id        = t.id
+JOIN year_group yg    ON t.year_group       = yg.id
+JOIN question_type qt ON q.question_type_id = qt.id
+LEFT JOIN users u     ON q.educator_uuid    = u.id;
 
 CREATE VIEW user_progress AS 
 SELECT
   c.user_uuid,
   q.subtopic_id,
-  st.name AS subtopic_name,
-  t.name AS topic_name,
-  yg.id AS year_group,
+  st.name         AS subtopic_name,
+  t.name          AS topic_name,
+  yg.id           AS year_group,
   COUNT(*) AS questions_seen,
   SUM(CASE WHEN c.is_correct THEN 1 ELSE 0 END) AS correct_count
 FROM completions c
-JOIN questions q ON c.question_id = q.id
-JOIN subtopic st ON q.subtopic_id = st.id
-JOIN topic t ON st.topic_id = t.id
-JOIN year_group yg ON t.year_group = yg.id
+JOIN questions q   ON c.question_id = q.id
+JOIN subtopic st   ON q.subtopic_id = st.id
+JOIN topic t       ON st.topic_id   = t.id
+JOIN year_group yg ON t.year_group  = yg.id
 GROUP BY c.user_uuid, q.subtopic_id, st.name, t.name, yg.id;

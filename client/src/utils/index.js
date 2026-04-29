@@ -1,4 +1,7 @@
 // A standard barrel file to keep exports uniform.
+// Utils
+export {default as checkAnswer} from './checkAnswer.js';
+
 // --- Components directory ---
 export {default as Accordion} from '../components/Accordion.jsx';
 export {default as Footer} from '../components/Footer.jsx';

@@ -48,8 +48,8 @@ const Learn = () => {
     return Object.values(map);
   };
 
-  const startQuizHandler = (qPoolEntry) => {
-    const { questions, subtopic_id, subtopic_name, topic_name, year_group, creator_surname } = qPoolEntry;
+  const startQuizHandler = (poolEntry) => {
+    const { questions, subtopic_id, subtopic_name, topic_name, year_group, creator_surname } = poolEntry;
 
     // Shuffle question pool for randomness
     const shuffled = [...questions].sort(() => Math.random() - 0.5);
@@ -78,7 +78,7 @@ const Learn = () => {
           <div className='creator-card-body'>
             <p className='creator-card-title'>{pool.subtopic_name}</p>
             <p className='creator-card-meta'>{pool.creator_surname}</p>
-            <p className='pool-count'>
+            <p className='question-count'>
               {pool.questions.length} question{pool.questions.length !== 1 ? 's' : ''} available
             </p>
           </div>
@@ -88,8 +88,11 @@ const Learn = () => {
             <div className='creator-tag creator-tag--topic'>{pool.topic_name}</div>
             <div className='creator-tag'>{pool.subtopic_name}</div>
           </div>
-
-          <button className='creator-card-button'>
+          {/* Need to double check the startQuizHandler prop being passed */}
+          <button 
+            className='creator-card-button' 
+            onClick={() => startQuizHandler(pool)}
+          >
             {hasEnough
               ? `Start Quiz (${questionCount} Qs) ->`
               : `Start Quiz (${questionCount} available) ->`}
@@ -121,7 +124,7 @@ const Learn = () => {
   };
 
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='page-wrapper'>
       <TitleBar />
       
       <div className='flex flex-1'>

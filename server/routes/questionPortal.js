@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
-const { RESOLVER } = require("../../client/src/utils/questionResolver")
+const { RESOLVER } = require('../../client/src/utils/questionResolver.js');
+
 // --- Post Questions ---
 router.post("/", async (req, res) => {
     

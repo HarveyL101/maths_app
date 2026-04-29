@@ -37,6 +37,8 @@ const createKatex = (params) => {
   const computed = OPERATORS[operator](parseInt(p1), parseInt(p2));
   if (computed !== parseInt(result)) return `\\text{Equation is incorrect:} \\ ${p1} ${operator} ${p2} \\not= ${result}`;
 
+  console.log(left, katexOperator, right, answer);
+  
   return `${left} ${katexOperator} ${right} = ${answer}`;
 };
 

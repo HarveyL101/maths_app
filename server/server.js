@@ -60,7 +60,6 @@ const changeEmailRoute = require('./routes/account/changeEmail.js');
 const changeNameRoute = require('./routes/account/changeName.js');
 const changePasswordRoute = require('./routes/account/changePassword.js');
 // Learn / Quiz Route(s)
-const questionRoute = require('./routes/question.js');
 const questionsRoute = require('./routes/questions.js');
 const progressRoute = require('./routes/progress.js');
 
@@ -76,7 +75,7 @@ app.use('/api/change-name', authenticateJWT, changeNameRoute);
 app.use('/api/change-password', authenticateJWT, changePasswordRoute);
 // Learn / Quiz Route(s)
 app.use('/api/questions/subtopic', authenticateJWT, questionsRoute);
-app.use('/api/questions', authenticateJWT, questionRoute);
+app.use('/api/questions', authenticateJWT, questionsRoute);
 app.use('/api/progress', authenticateJWT, progressRoute);
 
 // Guarded Routes

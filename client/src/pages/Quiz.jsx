@@ -15,7 +15,7 @@ export const Quiz = () => {
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
-  const handleAnswer = async (answer) => {
+  const handleAnswer = (answer) => {
     setAnswers(prev => ({ ...prev, [currentIndex]: answer }));
   };
 
@@ -28,26 +28,33 @@ export const Quiz = () => {
       return { questionId: q.question_id, studentAnswer, is_correct };
     });
 
+    console.log(completions);
+
     const finalScore = completions.filter(c => c.is_correct).length;
     setScore(finalScore);
 
     try {
-      await Promise.all(
-        completions.map(({ questionId, is_correct }) =>
-          fetch(`/api/progress`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ subtopicId, questionId, is_correct }),
-          })
-        )
-      );
+      const res = await fetch('/api/progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          subtopicId,
+          completions
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error("Unable to save progress, please try again another time :(");
+
+      alert(data.message);
+      setSubmitted(true);
     } catch (error) {
       console.error("Failed to save progress: ", error);
     }
-    setSubmitted(true);
   };
 
   // ***************************** RESULTS SCREEN *****************************

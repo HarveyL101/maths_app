@@ -1,6 +1,6 @@
 import 'katex/dist/katex.min.css';
-import { useState } from 'react';
 import { BlockMath } from 'react-katex';
+import { checkAnswer } from '../utils/index';
 import { RESOLVER } from '../utils/questionResolver.js';
 
 const QuestionCard = ({ question, answer, onAnswer }) => {
@@ -13,41 +13,8 @@ const QuestionCard = ({ question, answer, onAnswer }) => {
 
   // Render the equation in appropriate Katex format (again depending on question_type)
   const stringAsKatex = resolver ? resolver.render(question_input) : null;
-
-  // Checks against a DB-stored precomputed value
-  const checkAnswer = (studentAnswer) => {
-    if (!question_answer) return null;
-
-    // Normalise simpler answer types (Reduce false negatives e.g. '  12' being incorrect)
-    if (typeof question_answer === 'number' || typeof question_answer === 'string') {
-      return String(studentAnswer).trim() === String(question_answer).trim();
-    }
-
-    // Normalise fractional answers (numerators + denominators)
-    if (question_answer.numerator !== undefined) {
-      const [studentNumerator, studentDenominator] = String(studentAnswer)
-        .split('/')
-        .map(s => s?.trim());
-
-      return (
-        parseInt(studentNumerator) === question_answer.numerator &&
-        parseInt(studentDenominator) === question_answer.denominator
-      );
-    }
-
-    // Normalising Division answers (quotients + remainders)
-    if (question_answer.numerator !== undefined) {
-      const [studentQuotient, studentRemainder] = String(studentAnswer).split('r').map(s => s?.trim());
-      return (
-        parseInt(studentQuotient) === question_answer.quotient &&
-        parseInt(studentRemainder) === question_answer.remainder
-      );
-    }
-
-    return null;
-  };
-
-  const isCorrect = answer !== undefined ? checkAnswer(answer) : null;
+  console.log("Question Answer: ", question_answer);
+  const isCorrect = answer !== undefined ? checkAnswer(question_answer, answer) : null;
 
   // Infer placeholder hint based on answer shape
   const findPlaceholder = () => {
@@ -63,7 +30,7 @@ const QuestionCard = ({ question, answer, onAnswer }) => {
 
       {/* KaTeX rendered question */}
       <div className="question-katex">
-        {katexString ? (
+        {stringAsKatex ? (
           <BlockMath math={stringAsKatex} />
         ) : (
           <p className="question-katex-fallback">
@@ -85,7 +52,7 @@ const QuestionCard = ({ question, answer, onAnswer }) => {
           onChange={(e) => onAnswer(e.target.value)}
         />
         {isCorrect === true  && <p className="question-feedback question-feedback--correct">Correct!</p>}
-        {isCorrect === false && <p className="question-feedback question-feedback--incorrect">Not quite — keep trying</p>}
+        {isCorrect === false && <p className="question-feedback question-feedback--incorrect">Not quite... Keep Trying!</p>}
       </div>
     </div>
   );

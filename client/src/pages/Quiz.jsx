@@ -1,7 +1,6 @@
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Footer, TitleBar, QuestionCard } from "../utils/index.js";
-import { RESOLVER } from "../utils/questionResolver.js";
+import { checkAnswer, Footer, TitleBar, QuestionCard } from "../utils/index.js";
 
 // Questions arrive to Quiz through the navigate() state, making fetches redundant.
 export const Quiz = () => {
@@ -19,31 +18,6 @@ export const Quiz = () => {
   const handleAnswer = async (answer) => {
     setAnswers(prev => ({ ...prev, [currentIndex]: answer }));
   };
-
-  // Sanitise values in the same way as QuestionCard.jsx
-  // Ensures that score calculations are consistent from component <-> page
-  const checkAnswer = (question_answer, studentAnswer) => {
-    if (!question_answer || studentAnswer === undefined) return false;
-
-    if (typeof question_answer === 'number' || typeof question_answer === 'string') {
-      return String(studentAnswer).trim() === String(question_answer).trim();
-    }
-    if (question_answer.numerator !== undefined) {
-      const [studentNumerator, studentDenominator] = String(studentAnswer).split('/').map(s => s?.trim());
-      return (
-        parseInt(studentNumerator) === question_answer.numerator &&
-        parseInt(studentDenominator) === question_answer.denominator
-      );
-    }
-    if (question_answer.quotient !== undefined) {
-      const [studentQuotient, studentRemainder] = String(studentAnswer).split('r').map(s => s?.trim());
-      return (
-        parseInt(studentQuotient) === question_answer.quotient &&
-        parseInt(studentRemainder) === question_answer.remainder
-      );
-    }
-    return false;    
-  }
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("jwt");
@@ -80,7 +54,7 @@ export const Quiz = () => {
   if (submitted) {
     const total = questions.length;
     const percentageCorrect = Math.round((score / total) * 100);
-
+    
     return (
       <div className="page-wrapper">
         <TitleBar />

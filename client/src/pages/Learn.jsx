@@ -78,9 +78,6 @@ const Learn = () => {
           <div className='creator-card-body'>
             <p className='creator-card-title'>{pool.subtopic_name}</p>
             <p className='creator-card-meta'>{pool.creator_surname}</p>
-            <p className='question-count'>
-              {pool.questions.length} question{pool.questions.length !== 1 ? 's' : ''} available
-            </p>
           </div>
 
           <div className='creator-card-footer'>

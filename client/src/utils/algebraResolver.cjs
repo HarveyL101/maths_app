@@ -32,7 +32,7 @@ const solveAlgebra = ({ param1, param2, param3, param4 }) => {
 
   // Evaluate the correct answer based on the hidden field's position
   let answer; 
-  if (param1.hidden)      answer = INVERSE_LEFT[operator] (parseInt(param4.value), parseInt(param3.value));
+  if      (param1.hidden) answer = INVERSE_LEFT[operator] (parseInt(param4.value), parseInt(param3.value));
   else if (param3.hidden) answer = INVERSE_RIGHT[operator](parseInt(param4.value), parseInt(param1.value));
   else if (param4.hidden) answer = FORWARD[operator]      (parseInt(param1.value), parseInt(param3.value));
 

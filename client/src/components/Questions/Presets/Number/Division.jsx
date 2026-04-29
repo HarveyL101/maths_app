@@ -8,83 +8,47 @@ const createKatex = (params) => {
   if (!a || !b) return "";
 
   // Checks if either input does not contain only one or more digits
-  if (!/^\d+$/.test(a) || !/^\d+$/.test(b)) {
-    return `
-    \\begin{array}{c}
-      \\text{Please use positive whole numbers only}
-    \\end{array}
-    `;
-  }
+  if (!/^\d+$/.test(a) || !/^\d+$/.test(b)) return `\\text{Please use positive whole numbers only}`;
 
-  // assigned due to repeated use
   a = Number(a);
   b = Number(b);
 
-  // Checking for bottom heavy divisions
-  if (b > a) {
-    return `
-    \\begin{array}{c}
-      \\text{The second input cannot be larger than the first}
-    \\end{array}
-    `;
-  }
-
   // Divide by zero protection
-  if (b === 0) {
-    return `
-    \\begin{array}{c}
-      \\text{Cannot divide by zero}
-    \\end{array}
-    `;
-  }
+  if (b === 0) return `\\text{Cannot divide by zero}`;
+  // Checking for bottom heavy divisions
+  if (b > a) return `\\text{The second input cannot be larger than the first}`;
 
   const quotient = Math.floor(a / b);
   const remainder = a % b;
 
+  const dividendDigits = String(a).split("");
+  const quotientDigits = String(quotient).split("");
+  const n = dividendDigits.length;
 
-  const num1 = a.split("");
-  const num2 = b.split("");
+  // Pad to the left to match column count of dividend
+  const paddedQuotient = Array(n - quotientDigits.length).fill("").concat(quotientDigits);
 
-  console.log(num1, num2);
+  // Top row: Blank divisor column, then quotient digits
+  const topRow = ["", ...paddedQuotient].join(" & ");
+  // Bottom row: Divisor with bracket and overline, then dividend digits
+  const bottomRow = [`${b})`, ...dividendDigits].join(" & ");
 
-  // Answer = Divide a by b, and pad the left-most column for alignment
-  const divideDigits = quotient
-    .toString()
-    .split("");
+  const remainderString = remainder !== 0 
+    ? `\\text{r. } ${remainder}`
+    : "";
 
-  const maxDigits = Math.max(a.length, divideDigits.length); // alows for dynamic inputs independant of length
-  const totalCols = maxDigits; // Extra column is not needed here since short division format is not columnal
+  const cols = "r" + "r".repeat(n);
 
-  // pads both numbers from the left to enforce H, T, U places
-  // Dividend -> the total number being divided
-  const paddedDividend = Array(maxDigits - a.length)
-    .fill("")
-    .concat(a.split(""));
-
-  // Quotient -> the resulting number after division
-  const paddedQuotient = Array(maxDigits - divideDigits.length)
-    .fill("")
-    .concat(divideDigits);
-
-  // Row1 clears first column before the start of num1
-  const row1 = ["", ...paddedDividend].join(" & ");
-  // Row2 preceds num2 with the relevant operator (/)
-  // Use KaTeX's own operators instead of symbols like / or %
-  const row2 = ["\\div", ...Array(maxDigits).fill("")].join(" & ");
-  const answer = ["", ...paddedQuotient].join(" & ");
-
-  // `\\!` = negative thinspace
-  const topLine = remainder === 0 ? `${quotient}` : `${quotient} & \\!\\!\\!\\! \\text{r. }${remainder}`;
-  
-  const template = 
-  `
-  \\begin{array}{${"r" + "c".repeat(totalCols - 1)}}
-      ${topLine} \\\\
-      ${b}\\overline{\\smash{)}${a}}
-  \\end{array}
-  `;
-
-  return template; 
+  return `
+    \\begin{array}{ll}
+      \\begin{array}{${cols}}
+        ${topRow} \\\\
+        \\hline
+        ${bottomRow}
+      \\end{array}
+      & \\begin{array}{l} ${remainderString} \\\\ \\phantom{0} \\end{array}
+    \\end{array}
+  `; 
 }
 const Division = ({ onSubmit }) => {
   return (

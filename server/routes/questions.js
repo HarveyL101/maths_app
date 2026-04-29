@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 const { RESOLVER } = require('../../client/src/utils/questionResolver.js');
+const { solveAlgebra } = require('../../client/src/utils/algebraResolver.cjs');
 
 // POST /api/questions
 // Creates a new question (Locked unless an educator)
@@ -30,7 +31,9 @@ router.post("/", async (req, res) => {
 // Returns the full grouping of questions (pooling) for use in /Learn searching
 router.get("/", async (req, res) => {
   const { year, topic, subtopic } = req.query;
-  const client = await pool.connect;
+  const client = await pool.connect();
+
+  console.log("GET /questions params:", { year, topic, subtopic });
 
   try {
     const result = await client.query(`
@@ -42,8 +45,10 @@ router.get("/", async (req, res) => {
         topic_name,
         subtopic_name,
         subtopic_id,
+        question_type,
         question_title,
-        question_input
+        question_input,
+        question_answer
       FROM question_details
       WHERE
         ($1::text IS NULL OR year_group::text = $1)
@@ -51,6 +56,8 @@ router.get("/", async (req, res) => {
         AND ($3::text IS NULL OR subtopic_name ILIKE $3)
       ORDER BY question_id ASC  
     `, [year || null, topic || null, subtopic || null]);
+
+    console.log("GET /questions result:", JSON.stringify(result.rows[0], null, 2));
 
     res.json(result.rows);
   } catch (error) {
@@ -167,10 +174,16 @@ const getSubtopicId = async (client, topicId, subtopic) => {
 
 const insertQuestion = async (client, { subtopicId, creator, questionTypeId, title, input, questionType }) => {
   const resolver = RESOLVER[questionType];
+
+  console.log("Input received by insertQuestions: ", JSON.stringify(input, null, 2));
+
   if (!resolver) throw new Error(`Unknown question type: ${questionType}`);
   if (!resolver.validate(input)) throw new Error(`Invalid input for type: ${questionType}`);
 
-  const answer = resolver.solve(input);
+  const answer = questionType === 'algebra_missing_number'
+    ? solveAlgebra(input)
+    : resolver.solve(input);
+  console.log("Answer produced by solve: ", JSON.stringify(answer, null, 2));
 
   const result = await client.query(`
     INSERT INTO questions (subtopic_id, educator_uuid, question_type_id, title, input, answer)

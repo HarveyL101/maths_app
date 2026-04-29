@@ -1,3 +1,6 @@
+// A RESOLVER object containing the logic to validate, 
+// solve and render each question_type of the application
+console.log("QuestionResolver Loaded");
 // Checks if the value passed contains only numbers
 const isValidNumber = (v) => v?.value && /^\d+$/.test(v.value.trim());
 
@@ -8,7 +11,7 @@ const gcd = (x,y) => y ? gcd(y, x % y) : x;
 const lcm = (x,y) => (x * y) / gcd(x,y);
 
 export const RESOLVER = {
-  // NUMBER
+  // ******************* NUMBER *******************
   number_addition: {
     validate: ({ num0, num1 }) => [num0, num1].every(isValidNumber),
     solve: ({ num0, num1 }) => 
@@ -50,7 +53,7 @@ export const RESOLVER = {
   },
   // ********************************************************************************* //
 
-  // NUMBER -> FRACTIONS
+  // ******************* NUMBER -> FRACTIONS *******************
   fraction_addition: {
     validate: ({ param1, param2, param3, param4 }) =>
       [param1, param2, param3, param4].every(isValidNumber)
@@ -246,6 +249,7 @@ export const RESOLVER = {
       `\\frac{${param1.value}}{${param2.value}} = ${param3.value} = ${param4.value}\\%`
   },
 
+  // ******************* Algebra *******************
   algebra_missing_number: {
     validate: ({ param1, param2, param3, param4 }) => {
       if (![param1, param3, param4].every(isValidNumber)) return false;
@@ -258,19 +262,69 @@ export const RESOLVER = {
     },
 
     solve: ({ param1, param2, param3, param4 }) => {
-      const hidden = [param1, param2, param3, param4]
-        .map((p, i) => ({ index: i, hidden: p?.hidden }))
-        .filter(p => p.hidden)
-        .map(p => ['param1', 'param3', 'param4'][p.index]);
-      
+      // Invert the equation to solve for the missing operand(left)
+      const INVERSE_LEFT = { 
+        '+': (r, b) => r - b, 
+        '-': (r, b) => r + b, 
+        '*': (r, b) => r / b, 
+        '/': (r, b) => r / b, 
+      };
+      // Invert the equation to solve for the missing operand (right)
+      const INVERSE_RIGHT = { 
+        '+': (r, a) => r - a, 
+        '-': (r, a) => a - r, 
+        '*': (r, a) => r / a, 
+        '/': (r, a) => a / r, 
+      };
+
+      // Conventional equation (answer is after the '=', (result))
+      const FORWARD = { 
+        '+': (a, b) => a + b, 
+        '-': (a, b) => a - b, 
+        '*': (a, b) => a * b, 
+        '/': (a, b) => a / b,
+      };
+      // E.g. ? + 10 = 15 === 15 - 10 = 5
+      // E.g. 5 + ?  = 15 === 15 - 5  = 10
+      // E.g. 5 + 10 = ?  === 5  + 10 = 15
+
+      const operator = param2.value;
+
+      // Evaluate the correct answer based on the hidden field's position
+      let answer; 
+      if (param1.hidden)      answer = INVERSE_LEFT[operator] (parseInt(param4.value), parseInt(param3.value));
+      else if (param3.hidden) answer = INVERSE_RIGHT[operator](parseInt(param4.value), parseInt(param1.value));
+      else if (param4.hidden) answer = FORWARD[operator]      (parseInt(param1.value), parseInt(param3.value));
+
       return {
-        answer: parseInt(param4.value),
-        missingField: hidden[0] ?? null
+        answer,
+        missingField: param1.hidden ? 'param1' : param3.hidden ? 'param3' : 'param4'
       };
     },
 
-    render: ({ param1, param2, param3, param4 }) =>
-      `${param1.value} ${param2.value} ${param3.value} = ${param4.value}`
+    render: ({ param1, param2, param3, param4 }) => {
+      let operator;
+      
+      switch (param2.value) {
+        case '+':
+          operator = '+';
+          break;
+        case '-':
+          operator = '-';
+          break;
+        case '*':
+          operator = `\\times`
+          break;
+        case '/':
+          operator = `\\div`
+          break;
+        default:
+          break;
+      }
+
+      return `${param1.hidden ? `\\square` : param1.value} ${operator} ${param3.hidden ? `\\square` : param3.value} = ${param4.hidden ? `\\square` : param4.value}`;
+    }
   }
 };
 
+export default RESOLVER;

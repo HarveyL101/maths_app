@@ -17,7 +17,7 @@ CREATE TABLE users (
 --
 CREATE TABLE roles (
   id SERIAL PRIMARY KEY,
-  role TEXT UNIQUE NOT NULL
+  role CHAR(20) UNIQUE NOT NULL
 );
 
 INSERT INTO roles (role)
@@ -57,7 +57,7 @@ VALUES
 --
 CREATE TABLE topic (
   id SERIAL PRIMARY KEY,
-  name TEXT NOT NULL,
+  name VARCHAR(50) NOT NULL,
   year_group SMALLINT REFERENCES year_group(id),
   UNIQUE (name, year_group)
 );
@@ -102,7 +102,7 @@ VALUES
 CREATE TABLE subtopic (
   id SERIAL PRIMARY KEY,
   topic_id INT REFERENCES topic(id) ON DELETE CASCADE,
-  name TEXT NOT NULL,
+  name VARCHAR(50) NOT NULL,
   UNIQUE (topic_id, name)
 );
 
@@ -111,7 +111,7 @@ CREATE TABLE subtopic (
 -- 
 CREATE TABLE question_type (
   id SERIAL PRIMARY KEY,
-  name TEXT UNIQUE NOT NULL
+  name VARCHAR(50) UNIQUE NOT NULL
 );
 
 INSERT INTO question_type (name)
@@ -159,13 +159,14 @@ CREATE TABLE completions (
 -- 
 -- Indexes
 -- 
+-- questions indexes
 CREATE INDEX idx_questions_subtopic ON questions(subtopic_id);
 CREATE INDEX idx_questions_creator ON questions(educator_uuid);
-
+CREATE INDEX idx_questions_type ON questions(question_type_id);
+-- completions indexes
 CREATE INDEX idx_completions_user ON completions(user_uuid);
 CREATE INDEX idx_completions_question ON completions(question_id);
-
-CREATE INDEX idx_questions_type ON questions(question_type_id);
+-- 
 -- 
 -- Views
 -- 

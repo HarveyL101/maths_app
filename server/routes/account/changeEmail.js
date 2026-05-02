@@ -6,6 +6,8 @@ router.patch("/:userId", async (req, res) => {
   const { userId } = req.params;
   const { newEmail } = req.body;
 
+  if (!userId || !newEmail) return res.status(400).json({ error: "Missing required values" })
+
   const authUserId = req.user.uuid;
 
   if (String(userId) !== String(authUserId)) {

@@ -9,7 +9,9 @@ router.patch("/:userId", async (req, res) => {
   const { userId } = req.params;
   const { currentPassword, newPassword } = req.body;
 
+  if (!userId || !currentPassword || !newPassword) return res.status(400).json({ error: "Missing required fields" })
   const authUserId = req.user?.uuid;
+
   if (!authUserId) return res.status(401).json({ error: "Unauthorised" });
 
   if (!currentPassword || !newPassword) {

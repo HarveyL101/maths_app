@@ -6,6 +6,8 @@ router.patch("/:userId", async (req, res) => {
   const { userId } = req.params;
   const { newName } = req.body;
 
+  if (!userId || !newName) return res.status(400).json({ error: "Missing required fields" })
+  
   const authUserId = req.user.uuid;
 
   if (String(userId) !== String(authUserId)) {

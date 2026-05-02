@@ -14,20 +14,20 @@ export const RESOLVER = {
   // ******************* NUMBER *******************
   number_addition: {
     validate: ({ num0, num1 }) => [num0, num1].every(isValidNumber),
-    solve: ({ num0, num1 }) => 
-      parseInt(num0.value) + parseInt(num1.value),
-    render: ({ num0, num1 }) => 
-      `${num0.value} + ${num1.value}`
+
+    solve: ({ num0, num1 }) => parseInt(num0.value) + parseInt(num1.value),
+
+    render: ({ num0, num1 }) => `${num0.value} + ${num1.value}`
   },
 
   number_subtraction: {
     validate: ({ num0, num1 }) => 
       [num0, num1].every(isValidNumber)
       && parseInt(num0.value) >= parseInt(num1.value),
-    solve: ({ num0, num1 }) => 
-      parseInt(num0.value) - parseInt(num1.value),
-    render: ({ num0, num1 }) => 
-      `${num0.value} - ${num1.value}`
+
+    solve: ({ num0, num1 }) => parseInt(num0.value) - parseInt(num1.value),
+
+    render: ({ num0, num1 }) => `${num0.value} - ${num1.value}`
   },
 
   number_multiplication: {

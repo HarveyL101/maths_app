@@ -1,7 +1,7 @@
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import { checkAnswer } from '../utils/index';
-import { RESOLVER } from '../utils/questionResolver.js';
+import { QUESTION_RENDERER } from '../utils/questionRenderer.js'; 
 
 const QuestionCard = ({ question, answer, onAnswer }) => {
   if (!question) return null;
@@ -9,11 +9,14 @@ const QuestionCard = ({ question, answer, onAnswer }) => {
   const { question_type, question_input, question_answer, question_title } = question;
 
   // Interprets JSON inputs according to their question_type (maths logic)
-  const resolver = RESOLVER[question_type];
+  const renderer = QUESTION_RENDERER[question_type];
 
   // Render the equation in appropriate Katex format (again depending on question_type)
-  const stringAsKatex = resolver ? resolver.render(question_input) : null;
-  const isCorrect = answer !== undefined ? checkAnswer(question_answer, answer) : null;
+  const stringAsKatex = renderer ? renderer(question_input) : null;
+
+
+  const isCorrect = 
+    answer !== undefined ? checkAnswer(question_type, question_answer, answer) : null;
 
   // Infer placeholder hint based on answer shape
   const findPlaceholder = () => {

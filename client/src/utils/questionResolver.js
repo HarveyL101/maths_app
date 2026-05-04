@@ -9,14 +9,14 @@ const gcd = (x,y) => y ? gcd(y, x % y) : x;
 // Lowest Common Multiple util (LCM) 
 const lcm = (x,y) => (x * y) / gcd(x,y);
 
+// Algebra related prerequisites
+
 export const RESOLVER = {
   // ******************* NUMBER *******************
   number_addition: {
     validate: ({ num0, num1 }) => [num0, num1].every(isValidNumber),
 
     solve: ({ num0, num1 }) => parseInt(num0.value) + parseInt(num1.value),
-
-    render: ({ num0, num1 }) => `${num0.value} + ${num1.value}`
   },
 
   number_subtraction: {
@@ -25,17 +25,12 @@ export const RESOLVER = {
       && parseInt(num0.value) >= parseInt(num1.value),
 
     solve: ({ num0, num1 }) => parseInt(num0.value) - parseInt(num1.value),
-
-    render: ({ num0, num1 }) => `${num0.value} - ${num1.value}`
   },
 
   number_multiplication: {
-    validate: ({ num0, num1 }) =>
-      [num0, num1].every(isValidNumber),
-    solve: ({ num0, num1 }) =>
-      parseInt(num0.value) * parseInt(num1.value),
-    render: ({ num0, num1 }) =>
-      `${num0.value} \\times ${num1.value}`
+    validate: ({ num0, num1 }) => [num0, num1].every(isValidNumber),
+
+    solve: ({ num0, num1 }) => parseInt(num0.value) * parseInt(num1.value),
   },
 
   number_division: {
@@ -43,12 +38,11 @@ export const RESOLVER = {
       [num0, num1].every(isValidNumber)
       && parseInt(num1.value) !== 0
       && parseInt(num0.value) >= parseInt(num1.value),
+
     solve: ({ num0, num1 }) => ({
       quotient: Math.floor(parseInt(num0.value) / parseInt(num1.value)),
       remainder: parseInt(num0.value) % parseInt(num1.value)
     }),
-    render: ({ num0, num1 }) =>
-      `${num0.value} \\div ${num1.value}`
   },
   // ********************************************************************************* //
 
@@ -76,10 +70,7 @@ export const RESOLVER = {
         denominator: common / divisor
       }
     },
-
-    render: ({ param1, param2, param3, param4 }) => 
-      `\\frac{${param1.value}}{${param2.value}} + \\frac{${param3.value}}{${param4.value}}`
-  },
+},
 
   fraction_subtraction: {
     validate: ({ param1, param2, param3, param4 }) =>
@@ -104,10 +95,7 @@ export const RESOLVER = {
         denominator: common / divisor
       }
     },
-
-    render: ({ param1, param2, param3, param4 }) => 
-      `\\frac{${param1.value}}{${param2.value}} - \\frac{${param3.value}}{${param4.value}}`
-  },
+},
 
   fraction_multiplication: {
     validate: ({ param1, param2, param3, param4 }) =>
@@ -133,9 +121,6 @@ export const RESOLVER = {
         denominator: denominator / divisor
       };
     },
-
-    render: ({ param1, param2, param3, param4 }) => 
-      `\\frac{${param1.value}}{${param2.value}} \\times \\frac{${param3.value}}{${param4.value}}`
   },
 
   fraction_division: {
@@ -163,9 +148,6 @@ export const RESOLVER = {
         denominator: denominator / divisor
       };
     },
-
-    render: ({ param1, param2, param3, param4 }) =>
-      `\\frac{${param1.value}}{${param2.value}} \\div \\frac{${param3.value}}{${param4.value}}`
   },
 
   fraction_count_up: {
@@ -197,9 +179,6 @@ export const RESOLVER = {
       }
       return { sequence, stepNumerator: stepN, stepDenominator: stepD };
     },
-
-    render: ({ param1, param2, param3, param4 }) =>
-    `\\frac{${param1.value}}{${param2.value}}, \\frac{${param3.value}}{${param4.value}}, \\ldots`
   },
 
   fraction_decimals: {
@@ -216,9 +195,6 @@ export const RESOLVER = {
       fraction: { numerator: parseInt(param1.value), denominator: parseInt(param2.value) },
       decimal: parseFloat(param3.value)
     }),
-
-    render: ({ param1, param2, param3 }) =>
-      `\\frac{${param1.value}}{${param2.value}} = ${param3.value}`
   },
 
   fraction_decimals_percentages: {
@@ -237,87 +213,7 @@ export const RESOLVER = {
       decimal: parseFloat(param3.value),
       percentage: parseInt(param4.value)
     }),
-
-    render: ({ param1, param2, param3, param4 }) =>
-      `\\frac{${param1.value}}{${param2.value}} = ${param3.value} = ${param4.value}\\%`
   },
-
-  // ******************* Algebra *******************
-  algebra_missing_number: {
-    validate: ({ param1, param2, param3, param4 }) => {
-      if (![param1, param3, param4].every(isValidNumber)) return false;
-      const validOperators = ['+', '-', '*', '/'];
-      if (!validOperators.includes(param2?.value)) return false;
-
-      const operators = { '+': (a,b) => a+b, '-': (a,b) => a-b, '*': (a,b) => a*b, '/': (a,b) => a/b };
-      const computed = operators[param2.value](parseInt(param1.value), parseInt(param3.value));
-      return computed === parseInt(param4.value);
-    },
-
-    solve: ({ param1, param2, param3, param4 }) => {
-      // Invert the equation to solve for the missing operand(left)
-      const INVERSE_LEFT = { 
-        '+': (r, b) => r - b, 
-        '-': (r, b) => r + b, 
-        '*': (r, b) => r / b, 
-        '/': (r, b) => r / b, 
-      };
-      // Invert the equation to solve for the missing operand (right)
-      const INVERSE_RIGHT = { 
-        '+': (r, a) => r - a, 
-        '-': (r, a) => a - r, 
-        '*': (r, a) => r / a, 
-        '/': (r, a) => a / r, 
-      };
-
-      // Conventional equation (answer is after the '=', (result))
-      const FORWARD = { 
-        '+': (a, b) => a + b, 
-        '-': (a, b) => a - b, 
-        '*': (a, b) => a * b, 
-        '/': (a, b) => a / b,
-      };
-      // E.g. ? + 10 = 15 === 15 - 10 = 5
-      // E.g. 5 + ?  = 15 === 15 - 5  = 10
-      // E.g. 5 + 10 = ?  === 5  + 10 = 15
-
-      const operator = param2.value;
-
-      // Evaluate the correct answer based on the hidden field's position
-      let answer; 
-      if (param1.hidden)      answer = INVERSE_LEFT[operator] (parseInt(param4.value), parseInt(param3.value));
-      else if (param3.hidden) answer = INVERSE_RIGHT[operator](parseInt(param4.value), parseInt(param1.value));
-      else if (param4.hidden) answer = FORWARD[operator]      (parseInt(param1.value), parseInt(param3.value));
-
-      return {
-        answer,
-        missingField: param1.hidden ? 'param1' : param3.hidden ? 'param3' : 'param4'
-      };
-    },
-
-    render: ({ param1, param2, param3, param4 }) => {
-      let operator;
-      
-      switch (param2.value) {
-        case '+':
-          operator = '+';
-          break;
-        case '-':
-          operator = '-';
-          break;
-        case '*':
-          operator = `\\times`
-          break;
-        case '/':
-          operator = `\\div`
-          break;
-        default:
-          break;
-      }
-
-      return `${param1.hidden ? `\\square` : param1.value} ${operator} ${param3.hidden ? `\\square` : param3.value} = ${param4.hidden ? `\\square` : param4.value}`;
-    }
-  }
 };
 
 export default RESOLVER;

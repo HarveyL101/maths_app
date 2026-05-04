@@ -72,7 +72,6 @@ app.use('/api/change-email', authenticateJWT, changeEmailRoute);
 app.use('/api/change-name', authenticateJWT, changeNameRoute);
 app.use('/api/change-password', authenticateJWT, changePasswordRoute);
 // Learn / Quiz Route(s)
-app.use('/api/questions/subtopic', authenticateJWT, questionsRoute);
 app.use('/api/questions', authenticateJWT, questionsRoute);
 app.use('/api/progress', authenticateJWT, progressRoute);
 

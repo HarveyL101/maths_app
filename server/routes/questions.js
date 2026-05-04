@@ -4,28 +4,6 @@ const pool = require("../db");
 const { RESOLVER } = require('../../client/src/utils/questionResolver.js');
 const { solveAlgebra } = require('../../client/src/utils/algebraResolver.cjs');
 
-// POST /api/questions
-router.post("/", async (req, res) => {
-  const client = await pool.connect();
-
-  try {
-    await client.query("BEGIN");
-    const question = await createQuestion(client, {
-      ...req.body,
-      creator: req.user.uuid
-    });
-    await client.query("COMMIT");
-    
-    res.status(201).json(question);
-  } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("Error inserting question: ", error);
-    res.status(500).json({ error: error.message });
-  } finally {
-    client.release();
-  }
-});
-
 // GET /api/questions
 router.get("/", async (req, res) => {
   const { year, topic, subtopic } = req.query;
@@ -56,6 +34,92 @@ router.get("/", async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error("API: Failed to fetch a question pool", error);
+    res.status(500).json({ error: error.message });
+  } finally {
+    client.release();
+  }
+});
+
+// GET /api/questions/creator/:creatorId
+router.get('/creator/:creatorId', async (req, res) => {
+  const { creatorId } = req.params;
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(`
+      SELECT
+        question_id,
+        creator_id,
+        creator_surname,
+        year_group,
+        topic_name,
+        subtopic_name,
+        subtopic_id,
+        question_type,
+        question_title,
+        question_input,
+        question_answer
+      FROM question_details
+      WHERE creator_id = $1
+      ORDER BY question_id ASC 
+    `, [creatorId]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Failed to fetch the creator's questions", error);
+    res.status(500).json({ error: error.message });
+  } finally {
+    client.release();
+  }
+});
+
+// GET /api/questions/:subtopicId
+// Keep this route last to avoid stealing from more specific roots (above)
+router.get('/:subtopicId', async (req, res) => {
+  const { subtopicId } = req.params;
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(`
+      SELECT
+        question_id,
+        creator_id,
+        creator_surname,
+        year_group,
+        topic_name,
+        subtopic_name,
+        question_title,
+        question_input
+      FROM question_details
+      WHERE subtopic_id = $1
+      ORDER BY question_id ASC  
+    `, [subtopicId]);
+    
+    res.json(result.rows);
+  } catch (error) {
+    console.log("Failed to fetch desired results");
+    res.status(500).json({ error: error.message });
+  } finally {
+    client.release();
+  }
+});
+
+// POST /api/questions
+router.post("/", async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+    const question = await createQuestion(client, {
+      ...req.body,
+      creator: req.user.uuid
+    });
+    await client.query("COMMIT");
+    
+    res.status(201).json(question);
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Error inserting question: ", error);
     res.status(500).json({ error: error.message });
   } finally {
     client.release();
@@ -102,39 +166,6 @@ router.patch("/:questionId", async (req, res) => {
   }
 });
 
-// GET /api/questions/creator/:creatorId
-router.get('/creator/:creatorId', async (req, res) => {
-  const { creatorId } = req.params;
-  const client = await pool.connect();
-
-  try {
-    const result = await client.query(`
-      SELECT
-        question_id,
-        creator_id,
-        creator_surname,
-        year_group,
-        topic_name,
-        subtopic_name,
-        subtopic_id,
-        question_type,
-        question_title,
-        question_input,
-        question_answer
-      FROM question_details
-      WHERE creator_id = $1
-      ORDER BY question_id ASC 
-    `, [creatorId]);
-
-    res.json(result.rows);
-  } catch (error) {
-    console.error("Failed to fetch the creator's questions", error);
-    res.status(500).json({ error: error.message });
-  } finally {
-    client.release();
-  }
-});
-
 // DELETE /api/question/:questionId
 router.delete('/:questionId', async (req, res) => {
   const { questionId } = req.params;
@@ -160,37 +191,6 @@ router.delete('/:questionId', async (req, res) => {
   } catch (error) {
     await client.query("ROLLBACK");
     console.error("Failed to delete question", error);
-    res.status(500).json({ error: error.message });
-  } finally {
-    client.release();
-  }
-});
-
-// GET /api/questions/:subtopicId
-// Keep this route last to avoid stealing from more specific roots (above)
-router.get('/:subtopicId', async (req, res) => {
-  const { subtopicId } = req.params;
-  const client = await pool.connect();
-
-  try {
-    const result = await client.query(`
-      SELECT
-        question_id,
-        creator_id,
-        creator_surname,
-        year_group,
-        topic_name,
-        subtopic_name,
-        question_title,
-        question_input
-      FROM question_details
-      WHERE subtopic_id = $1
-      ORDER BY question_id ASC  
-    `, [subtopicId]);
-    
-    res.json(result.rows);
-  } catch (error) {
-    console.log("Failed to fetch desired results");
     res.status(500).json({ error: error.message });
   } finally {
     client.release();

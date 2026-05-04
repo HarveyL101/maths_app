@@ -9,6 +9,7 @@ export const Quiz = () => {
   const navigate = useNavigate();
 
   const questions = state?.questions ?? [];
+  const returnTo = state?.returnTo || '/learn';
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -24,7 +25,7 @@ export const Quiz = () => {
 
     const completions = questions.map((q, idx) => {
       const studentAnswer = answers[idx];
-      const is_correct = checkAnswer(q.question_answer, studentAnswer);
+      const is_correct = checkAnswer(q.question_type, q.question_answer, studentAnswer);
       return { questionId: q.question_id, studentAnswer, is_correct };
     });
 
@@ -75,8 +76,8 @@ export const Quiz = () => {
 
           <div className="quiz-results-actions">
             <button className="quiz-nav-button quiz-nav-button--primary"
-              onClick={() => navigate('/learn')}>
-              Back To Learn
+              onClick={() => navigate(returnTo)}>
+              Back To Previous Page
             </button>
             <button className="quiz-nav-button"
               onClick={() => {
@@ -102,8 +103,8 @@ export const Quiz = () => {
         <div className="quiz-page">
           <div className="results-empty">
             <p className="results-empty-message">No questions found.</p>
-            <button className="quiz-nav-button" onClick={() => navigate('/learn')}>
-              Back To Learn
+            <button className="quiz-nav-button" onClick={() => navigate(returnTo)}>
+              Back To Previous Page
             </button>
           </div>
         </div>
@@ -120,7 +121,7 @@ export const Quiz = () => {
       <div className="quiz-page">
         {/* Header Space */}
         <div className="quiz-header">
-          <button className="quiz-back-button" onClick={() => navigate('/learn')}>
+          <button className="quiz-back-button" onClick={() => navigate(returnTo)}>
             {"<- Back"}
           </button>
 

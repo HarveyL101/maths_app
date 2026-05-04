@@ -64,6 +64,7 @@ const Learn = () => {
         topic: topic_name,
         year: year_group,
         creatorSurname: creator_surname,
+        returnTo: '/learn'
       }
     });
   };
@@ -115,11 +116,6 @@ const Learn = () => {
   const accordionData = buildAccordionData(curriculum);
   const pools = createQuestionPool(questions);
 
-  const handleReset = () => {
-    setQuestions([]);
-    setSelectedLabel('');
-  };
-
   return (
     <div className='page-wrapper'>
       <TitleBar />
@@ -127,7 +123,7 @@ const Learn = () => {
       <div className='flex flex-1'>
         <div className='sidebar'>
           <div className='sidebar-header-container'>
-            <h2 className='sidebar-header'>Topic Catalogue</h2>
+            <h2 className='sidebar-header'>Learn Mode</h2>
           </div>
 
           <Accordion 
@@ -150,21 +146,8 @@ const Learn = () => {
             <div className='results-area'>
 
               <div className='results-box'>
-                <button  className='results-clear-btn' onClick={handleReset} title='Clear Results :)'>
-                  &times;
-                </button>
-
                 {questions.length > 0 ? (
-                  <>
-                    <div className='results-header'>
-                      <p className='results-label'>{selectedLabel}</p>
-                      <p className='results-sub'>
-                        {pools.length} set{pools.length !== 1 ? 's' : ''} found -
-                        quizzes are {MAX_QUIZ_SIZE} questions drawn randomly from the pool
-                      </p>
-                    </div>
-                    <div className='results-grid'>{formatQuestionPools(pools)}</div>
-                  </>
+                  <div className='results-grid'>{formatQuestionPools(pools)}</div>
                 ) : (
                   <div className='results-empty'>
                     <p className='results-empty-msg'>No results yet...😔</p>
@@ -175,7 +158,7 @@ const Learn = () => {
                 )}
               </div>
                 <p className='results-hint'>
-                    Not seeing the result you want? Talk to your teacher or double check the name you are searching for :D
+                  Not seeing the result you want? Talk to your teacher or double check the name you are searching for :D
                 </p>
               </div>
             </div>

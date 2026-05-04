@@ -1,5 +1,8 @@
--- TABLE DECLARATION --
+-- This is an example file of the schema hosted externally on Supabase, 
+-- this file is not explicitly used in the program and only serves as a 
+-- viewpoint into what the database structure resembles
 
+-- TABLE DECLARATION --
 --
 -- Users Declaration
 --

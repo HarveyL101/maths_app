@@ -30,9 +30,9 @@
   }
   
   /* Portal Body */
-  .portal-body { @apply flex flex-col flex-1; }
+  .portal-body { @apply flex flex-col flex-1 w-full; }
 
-  .results-area { @apply flex flex-col gap-3; }
+  .results-area { @apply flex flex-col gap-3 w-full; }
 
   /* Results Box */
   .results-box {
@@ -60,15 +60,14 @@
   }
 
   .results-grid {
-    @apply
-    grid gap-2.5 pt-1;
-    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+    @apply flex flex-col gap-2.5 pt-1;
   }
 
   /* Card CSS */
   .creator-card {
     @apply
-      flex flex-row items-stretch
+      flex flex-row
+      w-full
       bg-white
       border border-light-purple/20
       rounded-xl
@@ -95,7 +94,7 @@
   .creator-card-meta { @apply text-xs text-off-grey; }
 
   /* Tags CSS */
-  .creator-card-footer { @apply flex flex-wrap justify-center items-center gap-1.5 mt-1.5 ; }
+  .creator-card-footer { @apply flex flex-wrap justify-center items-center gap-1.5 px-4 pb-3; }
 
   .creator-tag {
     @apply
@@ -125,7 +124,8 @@
     @apply
       flex items-center justify-center
       shrink-0
-      w-24
+      w-auto
+      px-3
       text-xs font-medium text-light-purple
       bg-[#f5e6fb]
       border-l border-light-purple/20

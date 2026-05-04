@@ -7,6 +7,8 @@ This is my dissertation project for the final year of my Software Engineering (B
 ### KS2 Maths Learning Platform
 The aim of this project is to increase the maths skills of children in [Key Stage 2](https://en.wikipedia.org/wiki/Key_Stage_2) (UK Years 3-6). By doing this we may be able to raise the rate of attainment for KS2 students closer in line with the governments plan of [reaching 90% attainment by 2030](https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment/2022-23#dataBlock-1f7b731e-71a5-47b9-a7db-a346f44cb51e-charts).
 
+Because I intend to work on this outside of my studies, the version handed in is found in the 'Dissertation' branch. See it using `git checkout Dissertation` in the terminal.
+
 ## Technologies used
 
 ### Frontend (Client):

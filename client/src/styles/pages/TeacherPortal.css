@@ -1,0 +1,65 @@
+@layer pages {
+  .tp-header-container {
+    @apply
+    flex flex-col
+    gap-6
+    px-6 py-6
+    max-w-5xl
+    mx-auto
+    w-full;
+  }
+  .tp-header {
+    @apply
+    flex flex-col items-center justify-between
+    pt-4 pb-4
+    border-b-2 border-light-purple/20;
+  }
+
+  .tp-title { @apply text-3xl font-medium text-deep-purple; }
+  .tp-subtitle { @apply text-sm text-off-grey; }
+
+  /* Actions */
+  .tp-actions { @apply flex gap-3; }
+
+  .tp-button {
+    @apply
+    text-sm font-medium
+    rounded-lg
+    px-4 py-2.5
+    border-2
+    cursor-pointer
+    transition-colors duration-150;
+  }
+
+  .tp-button--primary { @apply text-white bg-light-purple border-light-purple; }
+  .tp-button--primary:hover { @apply bg-deep-purple border-deep-purple; }
+
+  .tp-button--secondary { @apply text-deep-purple bg-white border-light-purple/30; }
+  .tp-button--secondary:hover { @apply bg-off-white; }
+
+  /* Grid CSS */
+  .tp-grid { @apply flex flex-col items-center gap-4; }
+
+  .tp-card {
+    @apply
+    flex flex-col items-center justify-center
+    gap-2
+    bg-white
+    border-2 border-light-purple/20
+    rounded-2xl
+    px-5 py-5
+    min-w-150
+    max-w-200
+    transition-all duration-150;
+  }
+
+  .tp-card:hover {
+    @apply
+    border-light-purple/50
+    shadow-sm
+    cursor-pointer;
+  }
+
+  .tp-card-title { @apply text-lg text-deep-purple font-medium; }
+  .tp-card-subtitle { @apply text-sm text-off-grey; }
+}

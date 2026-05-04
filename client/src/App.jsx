@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { Login, Register, Home, Profile, Practice, Learn, Help, TeacherPortal, Quiz } from './utils/index';
+import { Login, Register, Home, Profile, Practice, Learn, Help, TeacherPortal, ViewQuestions, Quiz, QuestionPortal } from './utils/index';
 import RequireAuth from './auth/guards/RequireAuth';
 import RequireRole from './auth/guards/RequireRole';
 
@@ -11,48 +11,42 @@ const App = () => {
         <Route path='/register' element={<Register />} />
 
         {/* Routes protected by Authorisation */}
-        <Route 
-          path='/learn' 
+        <Route path='/learn' 
           element={
             <RequireAuth>
               <Learn />
             </RequireAuth>
           } 
         />
-        <Route 
-          path='/home' 
+        <Route path='/home' 
           element={
             <RequireAuth>
               <Home />
             </RequireAuth>
           } 
         />
-        <Route 
-          path='/profile' 
+        <Route path='/profile' 
           element={
             <RequireAuth>
               <Profile />
             </RequireAuth>
           } 
         />
-        <Route 
-          path='/practice' 
+        <Route path='/practice' 
           element={
             <RequireAuth>
               <Practice />
             </RequireAuth>
           } 
         />
-        <Route 
-          path='/help' 
+        <Route path='/help' 
           element={
             <RequireAuth>
               <Help />
             </RequireAuth>
           } 
         />
-        <Route
-          path='/quiz/:subtopicId'
+        <Route path='/quiz/:subtopicId'
           element={
             <RequireAuth>
               <Quiz />
@@ -61,13 +55,28 @@ const App = () => {
         />
 
         {/* Routes protected by Role */}
-        <Route 
-          path='/teacher-portal' 
+        <Route path='/teacher-portal' 
           element={
             <RequireRole role="educator">
               <TeacherPortal />
             </RequireRole>
           } 
+        />
+
+        <Route path='/question-portal'
+          element={
+            <RequireRole role="educator">
+              <QuestionPortal />
+            </RequireRole>
+          }
+        />
+
+        <Route path='/view-questions'
+          element={
+            <RequireRole role="educator">
+              <ViewQuestions />
+            </RequireRole>
+          }
         />
       </Routes>
     </>

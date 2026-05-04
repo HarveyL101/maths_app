@@ -12,6 +12,7 @@
 @import './styles/pages/LoginRegister.css';
 @import './styles/pages/Profile.css';
 @import './styles/pages/Quiz.css';
+@import './styles/pages/TeacherPortal.css';
 
 @layer pages {
   .page-wrapper {

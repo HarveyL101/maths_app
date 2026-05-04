@@ -32,7 +32,6 @@ const authenticateJWT = (req, res, next) => {
 // Defining role-based access control middleware
 const hasRole = (requiredRole) => {
   return async (req, res, next) => {
-    console.log("req.user.roles:", req.user?.roles);
     const roleNames = req.user?.roles?.map(r => r.role || r) || [];
     if (!roleNames.includes(requiredRole)) {
       return res.status(403).json({ error: "Forbidden: missing role" });
@@ -51,7 +50,6 @@ const PORT = process.env.PORT || 5000;
 // --- Route Definitions ---
 const credentialsRoute = require('./routes/credentials.js');
 const loginRoute = require('./routes/login.js');
-const questionPortalRoute = require('./routes/questionPortal.js');
 const registerRoute = require('./routes/register.js');
 const subtopicRoute = require('./routes/subtopic.js');
 const teacherPortalRouter = require('./routes/teacherPortal.js');
@@ -79,12 +77,6 @@ app.use('/api/questions', authenticateJWT, questionsRoute);
 app.use('/api/progress', authenticateJWT, progressRoute);
 
 // Guarded Routes
-app.use(
-  '/api/question-portal',
-  authenticateJWT,
-  hasRole('educator'), // Only educators can access the question portal
-  questionPortalRoute
-);
 app.use(
   '/api/teacher-portal', 
   authenticateJWT, 

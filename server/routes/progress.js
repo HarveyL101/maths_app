@@ -7,8 +7,6 @@ router.post("/", async (req, res) => {
   // completions table requires { id, user_uuid, question_id, is_correct, completed_at }
   const {  subtopicId, completions } = req.body;
 
-  console.log(req.body);
-
   if (!Array.isArray(completions)) return res.status(400).json({ error: "Missing completions"});
 
   let client;

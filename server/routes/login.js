@@ -11,7 +11,6 @@ router.post("/", async (req, res) => {
   const client = await pool.connect();
 
   try {
-    // console.log("BODY RECEIVED: ", req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {

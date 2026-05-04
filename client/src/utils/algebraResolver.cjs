@@ -24,10 +24,7 @@ const FORWARD = {
 // E.g. 5 + ?  = 15 === 15 - 5  = 10
 // E.g. 5 + 10 = ?  === 5  + 10 = 15
 
-console.log("solveAlgebra Loaded.");
-
 const solveAlgebra = ({ param1, param2, param3, param4 }) => {
-  console.log("Values given to solveAlgebra", param1, param2, param3, param4);
   const operator = param2.value;
 
   // Evaluate the correct answer based on the hidden field's position

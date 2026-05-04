@@ -9,7 +9,6 @@ const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
 
 // --- Register User ---
 router.post("/", async (req, res) => {
-  // console.log("BODY RECEIVED:", req.body);
 
   const client = await pool.connect();
 

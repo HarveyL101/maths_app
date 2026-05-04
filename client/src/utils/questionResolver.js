@@ -1,6 +1,5 @@
 // A RESOLVER object containing the logic to validate, 
 // solve and render each question_type of the application
-console.log("QuestionResolver Loaded");
 // Checks if the value passed contains only numbers
 const isValidNumber = (v) => v?.value && /^\d+$/.test(v.value.trim());
 
@@ -61,12 +60,6 @@ export const RESOLVER = {
       && parseInt(param4.value) !== 0,
 
     solve: ({ param1, param2, param3, param4 }) => {
-      // console.log("params received:", {
-      //   param1: param1?.value,
-      //   param2: param2?.value,
-      //   param3: param3?.value,
-      //   param4: param4?.value
-      // });
       const n1 = parseInt(param1.value.trim());
       const d1 = parseInt(param2.value.trim());
       const n2 = parseInt(param3.value.trim());

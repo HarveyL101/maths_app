@@ -5,9 +5,7 @@ const { RESOLVER } = require('../../client/src/utils/questionResolver.js');
 const { solveAlgebra } = require('../../client/src/utils/algebraResolver.cjs');
 
 // POST /api/questions
-// Creates a new question (Locked unless an educator)
 router.post("/", async (req, res) => {
-  console.log("BODY RECEIVED: ", req.body);
   const client = await pool.connect();
 
   try {
@@ -28,12 +26,10 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Returns the full grouping of questions (pooling) for use in /Learn searching
+// GET /api/questions
 router.get("/", async (req, res) => {
   const { year, topic, subtopic } = req.query;
   const client = await pool.connect();
-
-  console.log("GET /questions params:", { year, topic, subtopic });
 
   try {
     const result = await client.query(`
@@ -57,8 +53,6 @@ router.get("/", async (req, res) => {
       ORDER BY question_id ASC  
     `, [year || null, topic || null, subtopic || null]);
 
-    console.log("GET /questions result:", JSON.stringify(result.rows[0], null, 2));
-
     res.json(result.rows);
   } catch (error) {
     console.error("API: Failed to fetch a question pool", error);
@@ -68,28 +62,112 @@ router.get("/", async (req, res) => {
   }
 });
 
-// PATCH /api/questions
-// WIP for updating an existing question
-router.patch("/", async (req, res) => {
+// PATCH /api/questions/:questionId
+router.patch("/:questionId", async (req, res) => {
+  const { questionId } = req.params;
+  const { title } = req.body;
+  const client = await pool.connect();
+
+  if (!title || !title.trim()) {
+    return res.status(400).json({ error: "Title cannot be empty" });
+  }
+
+  try {
+    await client.query("BEGIN");
+
+    const ownership = await client.query(
+      `SELECT educator_uuid FROM questions WHERE id = $1`,
+      [questionId]
+    );
+
+    if (ownership.rowCount === 0)
+      return res.status(404).json({ error: "Question not found" });
+
+    if (ownership.rows[0].educator_uuid !== req.user.uuid)
+      return res.status(403).json({ error: "Not authorised to edit this question" });
+
+    const result = await client.query(
+      `UPDATE questions SET title = $1 WHERE id = $2 RETURNING id, title`,
+      [title.trim(), questionId]
+    );
+
+    await client.query("COMMIT");
+    res.json({ message: "Question updated successfully", question: result.rows[0] });
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Failed to update question", error);
+    res.status(500).json({ error: error.message });
+  } finally {
+    client.release();
+  }
+});
+
+// GET /api/questions/creator/:creatorId
+router.get('/creator/:creatorId', async (req, res) => {
+  const { creatorId } = req.params;
+  const client = await pool.connect();
+
+  try {
+    const result = await client.query(`
+      SELECT
+        question_id,
+        creator_id,
+        creator_surname,
+        year_group,
+        topic_name,
+        subtopic_name,
+        subtopic_id,
+        question_type,
+        question_title,
+        question_input,
+        question_answer
+      FROM question_details
+      WHERE creator_id = $1
+      ORDER BY question_id ASC 
+    `, [creatorId]);
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Failed to fetch the creator's questions", error);
+    res.status(500).json({ error: error.message });
+  } finally {
+    client.release();
+  }
+});
+
+// DELETE /api/question/:questionId
+router.delete('/:questionId', async (req, res) => {
+  const { questionId } = req.params;
   const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
-    // Update columns here
+    const ownership = await client.query(`
+      SELECT educator_uuid FROM questions WHERE id = $1
+    `, [questionId]);
 
+    if (ownership.rowCount === 0) return res.status(404).json({ error: "No owned questions found" });
+
+    if (ownership.rows[0].educator_uuid !== req.user.uuid) {
+      return res.status(403).json({ error: "Not authorised to delete this question" });
+    }
+
+    await client.query(`DELETE FROM questions WHERE id = $1`, [questionId]);
+    
     await client.query("COMMIT");
-
-    res.json({ message: "PATCH endpoint WIP" });
-  } catch(error) {
+    res.json({ message: "Question deleted successfully" });
+  } catch (error) {
     await client.query("ROLLBACK");
+    console.error("Failed to delete question", error);
     res.status(500).json({ error: error.message });
   } finally {
     client.release();
   }
-})
+});
 
-// Returns all questions for a subtopic by SubtopicID
+// GET /api/questions/:subtopicId
+// Keep this route last to avoid stealing from more specific roots (above)
 router.get('/:subtopicId', async (req, res) => {
   const { subtopicId } = req.params;
   const client = await pool.connect();
@@ -112,7 +190,7 @@ router.get('/:subtopicId', async (req, res) => {
     
     res.json(result.rows);
   } catch (error) {
-    console.log("API: Failed to fetch desired results");
+    console.log("Failed to fetch desired results");
     res.status(500).json({ error: error.message });
   } finally {
     client.release();
@@ -175,15 +253,12 @@ const getSubtopicId = async (client, topicId, subtopic) => {
 const insertQuestion = async (client, { subtopicId, creator, questionTypeId, title, input, questionType }) => {
   const resolver = RESOLVER[questionType];
 
-  console.log("Input received by insertQuestions: ", JSON.stringify(input, null, 2));
-
   if (!resolver) throw new Error(`Unknown question type: ${questionType}`);
   if (!resolver.validate(input)) throw new Error(`Invalid input for type: ${questionType}`);
 
   const answer = questionType === 'algebra_missing_number'
     ? solveAlgebra(input)
     : resolver.solve(input);
-  console.log("Answer produced by solve: ", JSON.stringify(answer, null, 2));
 
   const result = await client.query(`
     INSERT INTO questions (subtopic_id, educator_uuid, question_type_id, title, input, answer)

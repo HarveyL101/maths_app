@@ -38,7 +38,7 @@
   .tp-button--secondary:hover { @apply bg-off-white; }
 
   /* Grid CSS */
-  .tp-grid { @apply flex flex-col items-center gap-4; }
+  .tp-grid { @apply flex flex-col items-center gap-4 m-4; }
 
   .tp-card {
     @apply

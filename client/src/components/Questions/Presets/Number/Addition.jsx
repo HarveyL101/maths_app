@@ -19,8 +19,6 @@ const createKatex = (params) => {
   const num1 = a.split("");
   const num2 = b.split("");
 
-  console.log(num1, num2);
-
   const maxDigits = Math.max(num1.length, num2.length); // allows for dynamic inputs independant of length
   const totalCols = maxDigits + 1; // extra column for  the operator (+)
 

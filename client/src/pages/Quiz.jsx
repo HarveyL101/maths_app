@@ -28,8 +28,6 @@ export const Quiz = () => {
       return { questionId: q.question_id, studentAnswer, is_correct };
     });
 
-    console.log(completions);
-
     const finalScore = completions.filter(c => c.is_correct).length;
     setScore(finalScore);
 

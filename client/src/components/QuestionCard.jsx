@@ -13,7 +13,6 @@ const QuestionCard = ({ question, answer, onAnswer }) => {
 
   // Render the equation in appropriate Katex format (again depending on question_type)
   const stringAsKatex = resolver ? resolver.render(question_input) : null;
-  console.log("Question Answer: ", question_answer);
   const isCorrect = answer !== undefined ? checkAnswer(question_answer, answer) : null;
 
   // Infer placeholder hint based on answer shape

@@ -19,8 +19,6 @@ const createKatex = (params) => {
   const num1 = a.split("");
   const num2 = b.split("");
 
-  console.log(num1, num2);
-
   if (num1.length < num2.length) {
     return `
     \\begin{array}{c}

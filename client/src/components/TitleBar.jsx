@@ -6,10 +6,6 @@ import { BlockMath } from 'react-katex';
 const TitleBar = () => {
   const { user, hasRole, isLoading } = useAuth();
 
-  // console.log("User:", user);
-  // console.log("Roles:", user?.roles);
-  // console.log("Has educator:", hasRole('educator'));
-
   if (isLoading) return null;
   return (
     <div className="titlebar-wrapper">

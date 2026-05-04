@@ -36,7 +36,6 @@ export function AuthProvider({ children }) {
 
         const data = await res.json();
         setUser(data?.user ?? null);
-        console.log("Auth Provider mounted");
       } catch (err) {
         console.error("Credentials could not be fetched", err);
         setUser(null);

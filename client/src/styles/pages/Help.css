@@ -1,0 +1,50 @@
+@layer pages {
+  .help-page {
+    @apply
+    flex flex-col
+    gap-6
+    px-6 py-6
+    max-w-3xl
+    mx-auto
+    w-full;
+  }
+
+  /* Header Portion */
+  .help-header {
+    @apply
+    flex flex-col
+    gap-1
+    pb-4
+    border-b-2 border-light-purple/20;
+  }
+
+  .help-title { @apply text-2xl text-deep-purple font-medium; }
+  .help-subtitle { @apply text-sm text-off-grey; }
+
+  /* FAQ Container */
+  .help-faq { @apply flex flex-col gap-3; }
+
+  /* FAQ Cards */
+  .faq-card {
+    @apply
+    flex flex-col
+    gap-2
+    bg-white
+    border-2 border-light-purple/20
+    rounded-xl
+    px-5 py-4
+    transition-colors duration-150;
+  }
+
+  .faq-card:hover { @apply border-light-purple/40 bg-off-white; }
+
+  .faq-question {
+    @apply
+    text-left text-deep-purple font-medium text-sm
+    bg-transparent
+    border-none
+    outline-none;
+  }
+
+  .faq-answer { @apply text-sm text-off-grey leading-6; }
+}

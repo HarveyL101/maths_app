@@ -29,7 +29,7 @@ const Help = () => {
             <button className="faq-question">Why can't I see enough questions in a quiz?</button>
             <p className="faq-answer">
               Some topics may not have enough questions to fill a full quiz. You
-              can still attempt them — the system will use however many are available.
+              can still attempt them, the system will just use however many are available.
             </p>
           </div>
 

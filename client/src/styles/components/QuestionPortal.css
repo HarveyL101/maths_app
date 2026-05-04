@@ -68,6 +68,9 @@
   }
 
   /* Question Form Fields */
+  .portal-body {
+    @apply flex items-center;
+  }
   .q-container {
     @apply flex flex-col lg:flex-row gap-10 p-10 min-h-screen bg-purple-50;
   }
@@ -106,6 +109,13 @@
     @apply flex-1 bg-purple-200 text-purple-500 rounded-lg py-3 font-semibold cursor-not-allowed;
   }
 
+  .qform-container, .preview-container {
+    @apply
+    min-w-120
+    max-w-300
+    w-auto
+    max-h-150;
+  }
   /* ******** VIEWQUESTIONS.CSS PRESETS ******** */
 
   .vq-header-container {

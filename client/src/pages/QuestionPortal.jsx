@@ -212,9 +212,7 @@ const QuestionPortal = () => {
                 </div>
 
                 <div className="portal-body"> {/* Selected preset component must pass form values back to the parent layer for submission */}
-                    <div> 
-                        {SelectedPreset && <SelectedPreset onSubmit={handleFormSubmit}/>}
-                    </div>
+                    {SelectedPreset && <SelectedPreset onSubmit={handleFormSubmit}/>}
                 </div>
             </div>
         </div>

@@ -144,7 +144,7 @@
   }
 
   .results-empty-message { @apply text-sm font-medium text-off-grey; }
-  .results-empt-sub {
+  .results-empty-sub {
     @apply
     text-xs text-off-grey/70
     max-w-[#220px] leading-relaxed;

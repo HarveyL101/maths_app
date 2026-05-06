@@ -92,7 +92,7 @@ const Learn = () => {
             onClick={() => startQuizHandler(pool)}
           >
             {hasEnough
-              ? `Start Quiz (${questionCount} Qs) ->`
+              ? `Start Quiz (${questionCount} Questions) ->`
               : `Start Quiz (${questionCount} available) ->`}
           </button>
         </div>

@@ -141,10 +141,10 @@ const ViewQuestions = () => {
 
         {!loading && !error && questions.length === 0 && (
           <div className='vq-state-message'>
-            You haven't created any questions yet.
-            <span className='vq-link' onClick={() => navigate('/question-portal')}>
+            <p>You haven't created any questions yet.</p>
+            <button className='vq-link' onClick={() => navigate('/question-portal')}>
               {"Create one now ->"}
-            </span>
+            </button>
           </div>
         )}
 

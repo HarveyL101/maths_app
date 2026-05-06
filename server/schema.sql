@@ -119,11 +119,17 @@ CREATE TABLE question_type (
 
 INSERT INTO question_type (name)
 VALUES
-  ('addition'),
-  ('subtraction'),
-  ('multiplication'),
-  ('division'),
-  ('fraction_addition');
+  ('number_addition'),
+  ('number_subtraction'),
+  ('number_multiplication'),
+  ('number_division'),
+  ('fraction_addition'),
+  ('fraction_subtraction'),
+  ('fraction_multiplication'),
+  ('fraction_division'),
+  ('fraction_count_up'),
+  ('fraction_decimals'),
+  ('fraction_decimals_percentages');
 
 -- 
 -- Questions Declaration
@@ -138,8 +144,6 @@ CREATE TABLE questions (
   input JSONB NOT NULL,
   answer JSONB,
 
-  difficulty SMALLINT CHECK (difficulty BETWEEN 1 AND 5), -- Accounts for future functionality of setting difficulties
-  version INT DEFAULT 1, -- Accounts for future functionality of altering questions
   is_active BOOLEAN DEFAULT TRUE, -- Allows for soft deletion of questions through querying
 
   created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP

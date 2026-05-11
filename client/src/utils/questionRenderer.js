@@ -184,7 +184,7 @@ export const QUESTION_RENDERER = {
     if (d1 === d2) {
       return `
         \\frac{${n1}}{${d1}} + \\frac{${n2}}{${d2}}
-        = \\frac{${n1 + n2}}{${d1}}
+        =
       `;
     }
 
@@ -202,7 +202,6 @@ export const QUESTION_RENDERER = {
         =
         \\frac{${a}}{${commonDenom}} + \\frac{${b}}{${commonDenom}}
         =
-        \\frac{${numerator}}{${commonDenom}}
       `;
     }
 
